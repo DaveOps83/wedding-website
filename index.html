@@ -25,10 +25,10 @@
     .hub-top-right p:first-child { color: var(--ink-soft); font-size: 0.875rem; }
     .hub-top-right p:last-child { font-weight: 500; }
     
-    .hub-content { flex: 1; overflow-y: auto; display: flex; justify-content: center; width: 100%; padding: 2rem 1rem 8rem 1rem; }
+    .hub-content { flex: 1; overflow-y: auto; display: flex; justify-content: center; width: 100%; padding: 2rem 1rem; }
     .hub-wrapper { max-width: 900px; width: 100%; }
     
-    .hub-footer { position: fixed; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; border-top: 1px solid var(--border); background: white; z-index: 5; }
+    .hub-footer { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; border-top: 1px solid var(--border); background: white; }
     .hub-footer-content { max-width: 900px; width: 100%; text-align: center; }
     
     .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
@@ -79,7 +79,7 @@
       .welcome-screen { padding: 1.5rem; }
       h1 { font-size: 2rem !important; }
       h2 { font-size: 2rem !important; }
-      .hub-content { padding: 1.5rem 1rem 8rem 1rem; }
+      .hub-content { padding: 1.5rem 1rem; }
       .hub-top-right { top: 1rem; right: 1rem; max-width: none; }
       .hub-footer { padding: 1.5rem 1rem; }
       .s-card-head { padding: 1rem; }
@@ -110,7 +110,7 @@
     <!-- Top right info box -->
     <div class="hub-top-right">
       <p>Questions?</p>
-      <p>Lucia · Event Coordinator · +34 666 89 11 00</p>
+      <p>Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
     </div>
     
     <!-- Main content -->
@@ -119,13 +119,13 @@
         <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome</h2>
         <p style="color: var(--ink-soft); margin-bottom: 3rem;">Here's everything you need for the weekend.</p>
         <div id="hubContent"></div>
-      </div>
-    </div>
-    
-    <!-- Footer with logout -->
-    <div class="hub-footer">
-      <div class="hub-footer-content">
-        <button onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Log out</button>
+        
+        <!-- Footer with logout (inside scrollable content) -->
+        <div class="hub-footer">
+          <div class="hub-footer-content">
+            <button onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Log out</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -257,7 +257,7 @@ function renderHub() {
     '<div class="day-title">Friday 11 September</div>' +
     '<div class="section-heading">Ceremony</div>' +
     '<table class="schedule-table">' +
-    '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, Málaga</a> (approx. 45min–1hr)</td></tr>' +
+    '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, M&aacute;laga</a> (approx. 45min&ndash;1hr)</td></tr>' +
     '<tr><td>~18:15</td><td>Photos outside the church (approx. 20 minutes)</td></tr>' +
     '</table>' +
     '<div class="section-heading">Reception</div>' +
@@ -269,12 +269,12 @@ function renderHub() {
     '<tr><td>01:15</td><td>Late-night bites</td></tr>' +
     '<tr><td>03:00</td><td>Open bar ends</td></tr>' +
     '</table>' +
-    '<div class="event-note">Important: cars aren\'t allowed into Málaga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</div>' +
+    '<div class="event-note">Important: cars aren\'t allowed into M&aacute;laga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</div>' +
     '</div>' +
     '<div class="day-block">' +
     '<div class="day-title">Saturday 12 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional, for confirmed guests)</span></div>' +
     '<table class="schedule-table">' +
-    '<tr><td>15:00–17:00</td><td>Drinks &amp; tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, Málaga</a></td></tr>' +
+    '<tr><td>15:00&ndash;17:00</td><td>Drinks &amp; tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, M&aacute;laga</a></td></tr>' +
     '<tr><td>From 17:00</td><td>Up to the terrace, chill-out area with skyline views, or the music &amp; DJ area if you feel like partying</td></tr>' +
     '<tr><td></td><td><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></td></tr>' +
     '</table>' +
@@ -292,7 +292,7 @@ function renderHub() {
   html += '<div class="s-card">' +
     '<div class="s-card-head" onclick="toggleCard(\'Practical\')">' +
     '<div class="s-card-title">Practical details</div>' +
-    '<span class="s-card-arr" id="arrPractical">▼</span>' +
+    '<span class="s-card-arr" id="arrPractical">\u25bc</span>' +
     '</div>' +
     '<div class="s-card-body" id="bodyPractical">' +
     '<div class="prac-item"><label>Friday dress code</label><span>Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</span></div>' +
@@ -300,8 +300,8 @@ function renderHub() {
     '<div class="prac-item"><label>Sunday dress code</label><span>Casual beachwear, obviously.</span></div>' +
     '<div class="prac-item"><label>Getting to Hacienda Nadales</label><span>We are not providing transport, please make your own way by taxi or car.</span></div>' +
     '<div class="prac-item"><label>Coordinator (all days)</label><span>Lucia<br>+34 666 89 11 00</span></div>' +
-    '<div class="prac-item"><label>Taxi (Málaga capital)</label><span>952 33 33 33</span></div>' +
-    '<div class="prac-item"><label>Weather</label><span>Warm, 27–32°C<br>Bring sun protection</span></div>' +
+    '<div class="prac-item"><label>Taxi (M&aacute;laga capital)</label><span>952 33 33 33</span></div>' +
+    '<div class="prac-item"><label>Weather</label><span>Warm, 27&ndash;32&deg;C<br>Bring sun protection</span></div>' +
     '<div class="hub-note" style="margin-top:1rem">Questions? Reach out to Lucia directly, she\'s coordinating all weekend and is here to help.</div>' +
     '</div>' +
     '</div>';
@@ -310,7 +310,7 @@ function renderHub() {
     '<div class="s-card-head" onclick="toggleCard(\'Group\')">' +
     '<div class="s-card-title">Stay in the loop</div>' +
     '<span class="s-card-badge ' + (sharedData.groupOptIn ? 'badge-done' : 'badge-pend') + '">' + (sharedData.groupOptIn ? 'Added' : 'Optional') + '</span>' +
-    '<span class="s-card-arr" id="arrGroup">▼</span>' +
+    '<span class="s-card-arr" id="arrGroup">\u25bc</span>' +
     '</div>' +
     '<div class="s-card-body" id="bodyGroup">' +
     '<div class="hub-note">Want live updates across the weekend? Leave your number and we will add you to our WhatsApp group. This is optional.</div>' +
@@ -319,7 +319,7 @@ function renderHub() {
     '<input type="tel" class="form-inp" id="groupPhoneInp" placeholder="e.g. +44 7123 456789" value="' + (sharedData.groupPhone || '') + '">' +
     '</div>' +
     '<button class="save-btn" onclick="saveGroup()">Add me to the group</button>' +
-    '<div class="save-ok" id="groupOk">✓ Thanks! We will add you shortly.</div>' +
+    '<div class="save-ok" id="groupOk">\u2713 Thanks! We will add you shortly.</div>' +
     '</div>' +
     '</div>';
 
@@ -331,7 +331,7 @@ function toggleCard(id) {
   const arr = document.getElementById('arr' + id);
   if (!body) return;
   body.classList.toggle('open');
-  arr.textContent = body.classList.contains('open') ? '▼' : '▶';
+  arr.textContent = body.classList.contains('open') ? '\u25bc' : '\u25b6';
 }
 
 function saveGroup() {
