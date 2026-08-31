@@ -4,48 +4,44 @@ Static single-page site for Merici & David's wedding guest hub (11–13 Septembe
 
 ## Live URL
 
-To be deployed to Netlify. Update this section with the live URL once deployed.
+**Status**: Ready to deploy to Netlify via GitHub.
+
+**To deploy:**
+1. Go to https://app.netlify.com/
+2. Click "Add new site" > "Import an existing project"
+3. Select "GitHub" and authorize
+4. Choose this repository (`DaveOps83/wedding-website`)
+5. Keep default settings (Netlify will auto-detect `netlify.toml`)
+6. Click "Deploy"
+
+Netlify will assign a live URL (e.g., `random-name-123.netlify.app`). You can customize the subdomain or connect a custom domain in Site settings → Domain management.
 
 ## Features
 
-- **Guest login** — Simple name-based authentication (no database required)
+- **Simple authentication** — Username/password login (no database, credentials in HTML)
 - **Weekend itinerary** — Friday ceremony at Iglesia de San Juan, Hacienda Nadales reception; Saturday drinks at Trocadero; Sunday beach at La Playa Surf House
 - **Practical details** — Dress codes, transport info, weather, coordinator contact (Lucia +34 666 89 11 00)
 - **WhatsApp opt-in** — Guests can leave their phone number to be added to the group chat
 - **Collapsible sections** — Smooth accordion-style cards for easy navigation
-- **Zero dependencies** — Single static HTML file with inline CSS and JavaScript; no build step, no external JS libraries
+- **Zero build dependencies** — Single static HTML file with inline CSS and JavaScript; `netlify.toml` handles publishing
 
-## Deployment
+## Current Auth Credentials
 
-### Via Netlify (drag-and-drop, easiest)
-
-1. Go to https://app.netlify.com/drop
-2. Drag `index.html` onto the page
-3. Netlify will assign a random URL (e.g., `random-name-123.netlify.app`)
-4. Customize the subdomain or connect a custom domain in Site settings → Domain management
-5. Share the live URL
-
-### Via Netlify CLI
-
-```bash
-npm install -g netlify-cli
-netlify login
-netlify deploy --dir=. --prod
-```
+Default credentials (change after deploy):
+- **Username**: `guest`
+- **Password**: `welcome2026`
 
 ## Customization
 
-### Update guest list
+### Update authentication
 
-Edit the `ALL_GUESTS` array in `index.html` (line 69):
+Edit the `AUTH_CREDENTIALS` object in `index.html` (line 62):
 
 ```javascript
-const ALL_GUESTS = [
-  {name: "Merici Pereira"},
-  {name: "David Opperman"},
-  {name: "Your Guest Name"},
-  // ...
-];
+const AUTH_CREDENTIALS = {
+  username: 'your-username',
+  password: 'your-password'
+};
 ```
 
 ### Update color scheme
@@ -67,11 +63,11 @@ CSS variables at the top of the `<style>` block (line 10):
 
 ### Update itinerary
 
-Edit the day blocks in the `renderHub()` function (lines 114–136) with specific times, venue names, and links.
+Edit the day blocks in the `renderHub()` function with specific times, venue names, and links.
 
 ### Update practical details
 
-Edit the practical items section (lines 140–156) with dress codes, contact info, and logistics.
+Edit the practical items section with dress codes, contact info, and logistics.
 
 ## External Resources
 
@@ -82,11 +78,20 @@ Both load fine from any Netlify domain with no additional configuration.
 
 ## QR Code for Print Materials
 
-Once deployed, generate a QR code pointing to the live URL and include it on printed invitations, programs, or signage.
+Once deployed and live, generate a QR code pointing to the live URL and include it on printed invitations, programs, or signage.
 
 Suggested tools:
 - https://qr-code-generator.com/ (paste the URL)
 - Built-in iOS camera app (generates QR from any URL)
+
+## Deployment via GitHub
+
+This repo includes:
+- `netlify.toml` — Netlify configuration
+- `index.html` — Single static page with all content, styles, and JavaScript
+- `.gitignore` — Standard ignores
+
+Every push to `main` will auto-deploy to Netlify (once you connect the repo).
 
 ## License
 
