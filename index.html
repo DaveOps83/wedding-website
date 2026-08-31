@@ -74,7 +74,7 @@
     .schedule-table td:last-child { padding-left: 1rem; color: var(--ink-soft); }
     
     .section-heading { font-size: 0.95rem; font-weight: 600; color: var(--terra); margin-top: 1rem; margin-bottom: 0.75rem; text-align: left; }
-    .section-heading:first-of-type { margin-top: 0; }
+    .section-heading:first-of-type { margin-top: 0; text-align: center; }
     
     .event-note { font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; font-style: italic; text-align: left; }
     .map-link { color: var(--terra); }
@@ -299,7 +299,11 @@ function renderHub() {
     '<tr><td>01:15</td><td>Late-night bites</td></tr>' +
     '<tr><td>03:00</td><td>Open bar ends</td></tr>' +
     '</table>' +
-    '<div class="event-note">Important: cars aren\'t allowed into M&aacute;laga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</div>' +
+    '<div class="section-heading">Location &amp; Transport</div>' +
+    '<table class="schedule-table">' +
+    '<tr><td>Ceremony</td><td><a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, M&aacute;laga historic centre. Only reachable on foot &mdash; cars aren\'t permitted, so allow a few extra minutes to arrive on time.</td></tr>' +
+    '<tr><td>Reception</td><td><a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, Camino de Casabermeja 128, M&aacute;laga. Taxi, Uber, or car are the easiest options; we are not providing transport.</td></tr>' +
+    '</table>' +
     '<div class="day-dress-code"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</div>' +
     '</div>' +
     '</div>';
