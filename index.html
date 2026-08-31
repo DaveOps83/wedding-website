@@ -80,12 +80,14 @@
     .schedule-table td:first-child { width: 88px; font-weight: 600; white-space: nowrap; color: var(--terra); vertical-align: top; padding-top: 0.75rem; }
     .schedule-table td:last-child { padding-left: 1rem; color: var(--ink-soft); padding-top: 0.65rem; }
 
-    /* Centered variant: used for Ceremony & Reception schedules so both
-       columns sit centered as a block within the card, matching the
-       centered section heading above each. */
+    /* Centered variant: used for ALL day schedules so every time column
+       aligns the same way — times right-aligned in a fixed-width column,
+       descriptions left-aligned immediately after, and the whole two-column
+       block centered within the card. This keeps every event's time column
+       visually aligned to the same point across Friday/Saturday/Sunday. */
     .schedule-table.centered { width: auto; margin: 0 auto 1rem; }
     .schedule-table.centered td { text-align: center; }
-    .schedule-table.centered td:first-child { width: auto; padding-right: 1.1rem; text-align: right; }
+    .schedule-table.centered td:first-child { width: 70px; padding-right: 1.1rem; text-align: right; }
     .schedule-table.centered td:last-child { padding-left: 0; text-align: left; }
     
     .section-heading { font-size: 1.05rem; font-weight: 700; color: var(--terra); letter-spacing: 0.01em; margin-top: 1.85rem; margin-bottom: 0.9rem; text-align: left; }
@@ -240,7 +242,7 @@ const translations = {
     sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
     sat_transport: "Taxi, Uber, or car recommended; we are not providing transport.",
     sat_dress: "Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.",
-    sun_1: "We'll be spending the day unwinding from the wedding, you're welcome to join us. If you'd like help arranging a beach bed, just let us know and we'll ask our planner.",
+    sun_1: "We'll be unwinding from the wedding on the beach, you're welcome to join us. If you'd like help arranging a beach bed, just let us know and we'll ask our planner.",
     sun_loc: "La Playa Surf House, Torremolinos.",
     sun_transport: "Taxi, Uber, or car recommended; we are not providing transport.",
     sun_dress: "Casual beachwear, obviously."
@@ -293,7 +295,7 @@ const translations = {
     sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
     sat_transport: "Se recomienda taxi, Uber o coche; no proporcionamos transporte.",
     sat_dress: "Informal elegante de resort. Trocadero es una terraza junto al mar con estilo, as\u00ed que piensa en algo elevado pero relajado: camisas de lino, vestidos de verano, sandalias elegantes o espadrilles. Sin ba\u00f1ador ni chanclas.",
-    sun_1: "Pasaremos el d\u00eda relaj\u00e1ndonos despu\u00e9s de la boda, est\u00e1is invitados a acompa\u00f1arnos. Si quer\u00e9is ayuda para reservar una cama en la playa, decidnoslo y se lo pediremos a nuestra wedding planner.",
+    sun_1: "Estaremos relaj\u00e1ndonos despu\u00e9s de la boda en la playa, est\u00e1is invitados a acompa\u00f1arnos. Si quer\u00e9is ayuda para reservar una cama en la playa, decidnoslo y se lo pediremos a nuestra wedding planner.",
     sun_loc: "La Playa Surf House, Torremolinos.",
     sun_transport: "Se recomienda taxi, Uber o coche; no proporcionamos transporte.",
     sun_dress: "Ropa de playa informal, evidentemente."
@@ -346,7 +348,7 @@ const translations = {
     sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
     sat_transport: "Recomenda-se t\u00e1xi, Uber ou carro; n\u00e3o fornecemos transporte.",
     sat_dress: "Casual chique de resort. O Trocadero \u00e9 um terra\u00e7o \u00e0 beira-mar com estilo, por isso pense em algo elegante mas relaxado: camisas de linho, vestidos de ver\u00e3o, sand\u00e1lias elegantes ou espadrilles. Sem roupa de banho nem chinelos.",
-    sun_1: "Vamos passar o dia a relaxar depois do casamento, s\u00e3o bem-vindos a juntar-se a n\u00f3s. Se quiserem ajuda a reservar uma cama de praia, basta avisar-nos e pedimos \u00e0 nossa wedding planner.",
+    sun_1: "Vamos estar a relaxar depois do casamento na praia, s\u00e3o bem-vindos a juntar-se a n\u00f3s. Se quiserem ajuda a reservar uma cama de praia, basta avisar-nos e pedimos \u00e0 nossa wedding planner.",
     sun_loc: "La Playa Surf House, Torremolinos.",
     sun_transport: "Recomenda-se t\u00e1xi, Uber ou carro; n\u00e3o fornecemos transporte.",
     sun_dress: "Roupa de praia casual, obviamente."
@@ -586,7 +588,7 @@ function renderHub() {
     '<div class="s-card-body">' +
 
     '<div class="section-heading">' + t('drinksHeading') + '</div>' +
-    '<table class="schedule-table">' +
+    '<table class="schedule-table centered">' +
     '<tr><td>15:00</td><td>' + t('sat_1') + '</td></tr>' +
     '<tr><td>17:00</td><td>' + t('sat_2') + '</td></tr>' +
     '</table>' +
@@ -604,7 +606,7 @@ function renderHub() {
     '<div class="s-card-body">' +
 
     '<div class="section-heading">' + t('beachHeading') + '</div>' +
-    '<table class="schedule-table">' +
+    '<table class="schedule-table centered">' +
     '<tr><td>13:00</td><td>' + t('sun_1') + '</td></tr>' +
     '</table>' +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House</a>, ' + t('sun_loc').replace('La Playa Surf House, ', '') + '</div>' +
