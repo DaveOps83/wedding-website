@@ -50,11 +50,18 @@
     .prac-item span { color: var(--ink-soft); font-size: 0.9rem; }
     .day-block { margin-bottom: 1.5rem; }
     .day-block:last-child { margin-bottom: 0; }
-    .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--terra); }
-    .event-section { margin-bottom: 1.5rem; }
-    .event-section-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--terra); margin-top: 1rem; }
-    .event-section-title:first-child { margin-top: 0; }
-    .event-line { margin-bottom: 0.75rem; line-height: 1.6; }
+    .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--terra); }
+    
+    /* Invisible table styles */
+    .schedule-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+    .schedule-table td { padding: 0.5rem 0; border: none; }
+    .schedule-table td:first-child { width: 80px; font-weight: 500; white-space: nowrap; }
+    .schedule-table td:last-child { padding-left: 1rem; color: var(--ink-soft); }
+    
+    .section-heading { font-size: 0.95rem; font-weight: 600; color: var(--terra); margin-top: 1rem; margin-bottom: 0.75rem; }
+    .section-heading:first-of-type { margin-top: 0; }
+    
+    .event-note { font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; font-style: italic; }
 
     /* Responsive design */
     @media (min-width: 768px) {
@@ -72,6 +79,7 @@
       .s-card-body { padding: 0 1rem; }
       .s-card-body.open { padding: 1rem; }
       .day-title { font-size: 1rem; }
+      .schedule-table td:first-child { width: 70px; font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -235,38 +243,36 @@ function renderHub() {
     '<div class="s-card-body open" id="bodyItinerary">' +
     '<div class="day-block">' +
     '<div class="day-title">Friday 11 September</div>' +
-    '<div class="event-section">' +
-    '<div class="event-section-title">Ceremony</div>' +
-    '<div class="event-line"><strong>17:30</strong> Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, Málaga</a> (approx. 45min–1hr)</div>' +
-    '<div class="event-line"><strong>~18:15</strong> Photos outside the church (approx. 20 minutes)</div>' +
-    '</div>' +
-    '<div class="event-section">' +
-    '<div class="event-section-title">Reception</div>' +
-    '<div class="event-line"><strong>19:00</strong> Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options</div>' +
-    '<div class="event-line"><strong>19:15</strong> Cocktails begin, lower area of the palacete</div>' +
-    '<div class="event-line"><strong>20:30</strong> Dinner &amp; celebration, in front of the palacete</div>' +
-    '<div class="event-line"><strong>22:45</strong> Open bar &amp; dancing</div>' +
-    '<div class="event-line"><strong>01:15</strong> Late-night bites</div>' +
-    '<div class="event-line"><strong>03:00</strong> Open bar ends</div>' +
-    '</div>' +
-    '<div class="event-section">' +
-    '<span style="color:var(--ink-soft);font-size:0.85rem">Important: cars aren\'t allowed into Málaga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</span>' +
-    '</div>' +
+    '<div class="section-heading">Ceremony</div>' +
+    '<table class="schedule-table">' +
+    '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, Málaga</a> (approx. 45min–1hr)</td></tr>' +
+    '<tr><td>~18:15</td><td>Photos outside the church (approx. 20 minutes)</td></tr>' +
+    '</table>' +
+    '<div class="section-heading">Reception</div>' +
+    '<table class="schedule-table">' +
+    '<tr><td>19:00</td><td>Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options</td></tr>' +
+    '<tr><td>19:15</td><td>Cocktails begin, lower area of the palacete</td></tr>' +
+    '<tr><td>20:30</td><td>Dinner &amp; celebration, in front of the palacete</td></tr>' +
+    '<tr><td>22:45</td><td>Open bar &amp; dancing</td></tr>' +
+    '<tr><td>01:15</td><td>Late-night bites</td></tr>' +
+    '<tr><td>03:00</td><td>Open bar ends</td></tr>' +
+    '</table>' +
+    '<div class="event-note">Important: cars aren\'t allowed into Málaga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</div>' +
     '</div>' +
     '<div class="day-block">' +
     '<div class="day-title">Saturday 12 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional, for confirmed guests)</span></div>' +
-    '<div class="event-section">' +
-    '<div class="event-line"><strong>15:00–17:00</strong> Drinks & tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, Málaga</a></div>' +
-    '<div class="event-line"><strong>From 17:00</strong> Up to the terrace, chill-out area with skyline views, or the music & DJ area if you feel like partying</div>' +
-    '<div class="event-line"><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></div>' +
-    '</div>' +
+    '<table class="schedule-table">' +
+    '<tr><td>15:00–17:00</td><td>Drinks &amp; tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, Málaga</a></td></tr>' +
+    '<tr><td>From 17:00</td><td>Up to the terrace, chill-out area with skyline views, or the music &amp; DJ area if you feel like partying</td></tr>' +
+    '<tr><td></td><td><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></td></tr>' +
+    '</table>' +
     '</div>' +
     '<div class="day-block">' +
     '<div class="day-title">Sunday 13 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional)</span></div>' +
-    '<div class="event-section">' +
-    '<div class="event-line"><strong>From 13:00</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos</a></div>' +
-    '<div class="event-line"><span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span></div>' +
-    '</div>' +
+    '<table class="schedule-table">' +
+    '<tr><td>From 13:00</td><td><a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos</a></td></tr>' +
+    '<tr><td></td><td><span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span></td></tr>' +
+    '</table>' +
     '</div>' +
     '</div>' +
     '</div>';
