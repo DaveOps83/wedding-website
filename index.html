@@ -19,11 +19,16 @@
     .welcome-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; width: 100%; }
     
     #hubPage { background: white; }
-    .hub-page { flex: 1; display: flex; flex-direction: column; width: 100%; height: 100%; }
+    .hub-page { flex: 1; display: flex; flex-direction: column; width: 100%; height: 100%; position: relative; }
+    .hub-top-right { position: absolute; top: 2rem; right: 2rem; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; background: white; max-width: 250px; z-index: 10; }
+    .hub-top-right p { margin: 0.5rem 0; font-size: 0.9rem; }
+    .hub-top-right p:first-child { color: var(--ink-soft); font-size: 0.875rem; }
+    .hub-top-right p:last-child { font-weight: 500; margin-bottom: 1rem; }
+    .hub-logout-btn { background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; width: 100%; }
+    .hub-logout-btn:hover { opacity: 0.8; }
+    
     .hub-content { flex: 1; overflow-y: auto; display: flex; justify-content: center; width: 100%; padding: 2rem 1rem; }
     .hub-wrapper { max-width: 900px; width: 100%; }
-    .hub-footer { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; border-top: 1px solid var(--border); flex-shrink: 0; background: white; }
-    .hub-footer-content { max-width: 900px; width: 100%; text-align: center; }
     
     .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
     .s-card-head { padding: 1.1rem; background: #F9F7F3; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; }
@@ -74,7 +79,7 @@
       h1 { font-size: 2rem !important; }
       h2 { font-size: 2rem !important; }
       .hub-content { padding: 1.5rem 1rem; }
-      .hub-footer { padding: 1.5rem 1rem; }
+      .hub-top-right { top: 1rem; right: 1rem; max-width: none; }
       .s-card-head { padding: 1rem; }
       .s-card-body { padding: 0 1rem; }
       .s-card-body.open { padding: 1rem; }
@@ -100,18 +105,19 @@
 <!-- Hub Page (Itinerary) -->
 <div id="hubPage" class="page">
   <div class="hub-page">
+    <!-- Top right info box -->
+    <div class="hub-top-right">
+      <p>Questions?</p>
+      <p>Lucia · Event Coordinator · +34 666 89 11 00</p>
+      <button class="hub-logout-btn" onclick="logout()">Log out</button>
+    </div>
+    
+    <!-- Main content -->
     <div class="hub-content">
       <div class="hub-wrapper">
         <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome</h2>
         <p style="color: var(--ink-soft); margin-bottom: 3rem;">Here's everything you need for the weekend.</p>
         <div id="hubContent"></div>
-      </div>
-    </div>
-    <div class="hub-footer">
-      <div class="hub-footer-content">
-        <p style="color: var(--ink-soft); font-size: 0.875rem; margin-bottom: 1rem;">Questions?</p>
-        <p style="font-weight: 500; margin-bottom: 1rem;">Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
-        <button onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 1rem;">Log out</button>
       </div>
     </div>
   </div>
