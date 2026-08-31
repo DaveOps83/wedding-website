@@ -10,14 +10,23 @@ exports.handler = async (event) => {
   try {
     const { password } = JSON.parse(event.body);
 
-    // Read password from environment variable
-    const correctPassword = process.env.WEDDING_PASSWORD || 'welcome2026';
+    // Read password from environment variable (required, no fallback)
+    const correctPassword = process.env.WEDDING_PASSWORD;
 
     // Validate
     if (!password) {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: 'Password required' })
+      };
+    }
+
+    // Must have environment variable set
+    if (!correctPassword) {
+      console.error('WEDDING_PASSWORD environment variable not set');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'Server configuration error' })
       };
     }
 
