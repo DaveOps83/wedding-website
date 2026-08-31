@@ -306,23 +306,6 @@ function renderHub() {
     '</div>' +
     '</div>';
 
-  html += '<div class="s-card" id="cardGroup">' +
-    '<div class="s-card-head" onclick="toggleCard(\'Group\')">' +
-    '<div class="s-card-title">Stay in the loop</div>' +
-    '<span class="s-card-badge ' + (sharedData.groupOptIn ? 'badge-done' : 'badge-pend') + '">' + (sharedData.groupOptIn ? 'Added' : 'Optional') + '</span>' +
-    '<span class="s-card-arr" id="arrGroup">\u25bc</span>' +
-    '</div>' +
-    '<div class="s-card-body" id="bodyGroup">' +
-    '<div class="hub-note">Want live updates across the weekend? Leave your number and we will add you to our WhatsApp group. This is optional.</div>' +
-    '<div class="form-grp">' +
-    '<label class="form-lbl">Mobile number (with country code)</label>' +
-    '<input type="tel" class="form-inp" id="groupPhoneInp" placeholder="e.g. +44 7123 456789" value="' + (sharedData.groupPhone || '') + '">' +
-    '</div>' +
-    '<button class="save-btn" onclick="saveGroup()">Add me to the group</button>' +
-    '<div class="save-ok" id="groupOk">\u2713 Thanks! We will add you shortly.</div>' +
-    '</div>' +
-    '</div>';
-
   c.innerHTML = html;
 }
 
@@ -332,16 +315,6 @@ function toggleCard(id) {
   if (!body) return;
   body.classList.toggle('open');
   arr.textContent = body.classList.contains('open') ? '\u25bc' : '\u25b6';
-}
-
-function saveGroup() {
-  const phone = document.getElementById('groupPhoneInp');
-  if (phone) sharedData.groupPhone = phone.value.trim();
-  if (!sharedData.groupPhone) return;
-  sharedData.groupOptIn = true;
-  document.getElementById('groupOk').classList.add('show');
-  const badge = document.querySelector('#cardGroup .s-card-badge');
-  if (badge) { badge.textContent = 'Added'; badge.className = 's-card-badge badge-done'; }
 }
 </script>
 </body>
