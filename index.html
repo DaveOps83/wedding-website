@@ -24,7 +24,12 @@
     .hub-content { flex: 1; overflow-y: auto; display: flex; justify-content: center; width: 100%; padding: 2rem 1rem; }
     .hub-wrapper { max-width: 900px; width: 100%; }
     
-    .hub-top-box { border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; background: white; margin-bottom: 2rem; width: 25%; margin-left: auto; }
+    .hub-header { display: flex; gap: 2rem; margin-bottom: 3rem; align-items: flex-start; }
+    .hub-welcome { flex: 1; }
+    .hub-welcome h2 { font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem; }
+    .hub-welcome p { color: var(--ink-soft); }
+    
+    .hub-top-box { border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; background: white; width: 25%; flex-shrink: 0; }
     .hub-top-box p { margin: 0.5rem 0; font-size: 0.9rem; }
     .hub-top-box p:first-child { color: var(--ink-soft); font-size: 0.875rem; }
     .hub-top-box p:last-child { font-weight: 500; }
@@ -87,7 +92,9 @@
       .s-card-body { padding: 1rem; }
       .day-title { font-size: 1rem; }
       .schedule-table td:first-child { width: 70px; font-size: 0.9rem; }
-      .hub-top-box { padding: 1rem; margin-bottom: 1.5rem; width: 100%; margin-left: 0; }
+      .hub-header { flex-direction: column; gap: 1rem; margin-bottom: 2rem; align-items: stretch; }
+      .hub-welcome h2 { font-size: 1.8rem; }
+      .hub-top-box { width: 100%; flex-shrink: auto; padding: 1rem; }
     }
   </style>
 </head>
@@ -111,13 +118,16 @@
     <!-- Main content -->
     <div class="hub-content">
       <div class="hub-wrapper">
-        <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome</h2>
-        <p style="color: var(--ink-soft); margin-bottom: 3rem;">Here's everything you need for the weekend.</p>
-        
-        <!-- Questions box moved here, right-aligned -->
-        <div class="hub-top-box">
-          <p>Questions?</p>
-          <p>Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
+        <!-- Welcome heading and Questions box on same row -->
+        <div class="hub-header">
+          <div class="hub-welcome">
+            <h2>Welcome</h2>
+            <p>Here's everything you need for the weekend.</p>
+          </div>
+          <div class="hub-top-box">
+            <p>Questions?</p>
+            <p>Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
+          </div>
         </div>
         
         <div id="hubContent"></div>
