@@ -214,7 +214,6 @@ const translations = {
     fridayTitle: "Friday 11 September",
     saturdayTitle: "Saturday 12 September",
     sundayTitle: "Sunday 13 September",
-    usefulInfoTitle: "Useful Information",
     ceremonyHeading: "Ceremony",
     receptionHeading: "Reception",
     drinksHeading: "Drinks & tapas",
@@ -223,9 +222,6 @@ const translations = {
     transportLabel: "Transport:",
     dressLabel: "Dress code:",
     weatherFieldLabel: "Weather:",
-    taxiLabel: "Taxi (M\u00e1laga capital)",
-    weatherLabel: "Weather",
-    weatherValue: "Warm, 27\u201332\u00b0C<br>Bring sun protection",
     weatherLoading: "Loading forecast\u2026",
     weatherUnavailable: "Forecast unavailable right now",
     rainLabel: "rain",
@@ -271,7 +267,6 @@ const translations = {
     fridayTitle: "Viernes 11 de septiembre",
     saturdayTitle: "S\u00e1bado 12 de septiembre",
     sundayTitle: "Domingo 13 de septiembre",
-    usefulInfoTitle: "Informaci\u00f3n \u00fatil",
     ceremonyHeading: "Ceremonia",
     receptionHeading: "Recepci\u00f3n",
     drinksHeading: "Copas y tapas",
@@ -280,9 +275,6 @@ const translations = {
     transportLabel: "Transporte:",
     dressLabel: "C\u00f3digo de vestimenta:",
     weatherFieldLabel: "Clima:",
-    taxiLabel: "Taxi (M\u00e1laga capital)",
-    weatherLabel: "Clima",
-    weatherValue: "C\u00e1lido, 27\u201332\u00b0C<br>Trae protecci\u00f3n solar",
     weatherLoading: "Cargando previsi\u00f3n\u2026",
     weatherUnavailable: "Previsi\u00f3n no disponible por ahora",
     rainLabel: "lluvia",
@@ -328,7 +320,6 @@ const translations = {
     fridayTitle: "Sexta-feira, 11 de setembro",
     saturdayTitle: "S\u00e1bado, 12 de setembro",
     sundayTitle: "Domingo, 13 de setembro",
-    usefulInfoTitle: "Informa\u00e7\u00e3o \u00fatil",
     ceremonyHeading: "Cerim\u00f3nia",
     receptionHeading: "Rece\u00e7\u00e3o",
     drinksHeading: "Copos e petiscos",
@@ -337,9 +328,6 @@ const translations = {
     transportLabel: "Transporte:",
     dressLabel: "C\u00f3digo de vestu\u00e1rio:",
     weatherFieldLabel: "Tempo:",
-    taxiLabel: "T\u00e1xi (M\u00e1laga capital)",
-    weatherLabel: "Tempo",
-    weatherValue: "Quente, 27\u201332\u00b0C<br>Traga prote\u00e7\u00e3o solar",
     weatherLoading: "A carregar previs\u00e3o\u2026",
     weatherUnavailable: "Previs\u00e3o indispon\u00edvel neste momento",
     rainLabel: "chuva",
@@ -396,9 +384,9 @@ function wxDescription(code) {
   return entry[currentLang] || entry.en;
 }
 
-// Weather is now rendered as its own event-field row (matching Location/
+// Weather is rendered as its own event-field row (matching Location/
 // Transport/Dress code), placed directly underneath Dress code in each
-// event card, rather than as a separate pill under the schedule table.
+// event card.
 function weatherFieldPlaceholder(loc, date) {
   return '<div class="event-field"><strong>' + t('weatherFieldLabel') + '</strong> <span data-wx-loc="' + loc + '" data-wx-date="' + date + '">' + t('weatherLoading') + '</span></div>';
 }
@@ -698,15 +686,6 @@ function renderHub() {
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sun_dress') + '</div>' +
     weatherFieldPlaceholder('torremolinos', '2026-09-13') +
 
-    '</div>' +
-    '</div>';
-
-  html += '<div class="s-card">' +
-    '<div class="s-card-head">' +
-    '<div class="s-card-title">' + t('usefulInfoTitle') + '</div>' +
-    '</div>' +
-    '<div class="s-card-body">' +
-    '<div class="prac-item"><label>' + t('taxiLabel') + '</label><span>+34 952 33 33 33</span></div>' +
     '</div>' +
     '</div>';
 
