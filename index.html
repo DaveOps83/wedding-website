@@ -30,6 +30,7 @@
     .form-inp:focus { outline: none; border-color: var(--terra); }
     .save-btn, .login-btn { background: var(--terra); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 500; }
     .save-btn:hover, .login-btn:hover { opacity: 0.9; }
+    .save-btn:disabled, .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .save-ok { display: none; color: var(--terra); font-size: 0.875rem; margin-top: 0.5rem; }
     .save-ok.show { display: block; }
     .login-err { color: #c23b3b; margin-top: 1rem; font-size: 0.875rem; }
@@ -54,7 +55,7 @@
     <div style="margin-bottom: 1rem; width: 100%; max-width: 300px;">
       <input type="password" id="passwordInp" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
     </div>
-    <button class="login-btn" onclick="tryLogin()" style="">Login</button>
+    <button class="login-btn" id="loginBtn" onclick="tryLogin()" style="">Login</button>
     <div id="loginErr" class="login-err"></div>
   </div>
 </div>
@@ -83,8 +84,6 @@
 let currentUser = null;
 let sharedData = {};
 
-const AUTH_PASSWORD = 'welcome2026';
-
 function navigate(path) {
   window.history.pushState({}, '', path);
   render();
@@ -109,7 +108,8 @@ function render() {
       }
     }, 0);
   } else if (path === '/hub') {
-    if (!currentUser) {
+    const token = sessionStorage.getItem('auth_token');
+    if (!token) {
       navigate('/');
       return;
     }
@@ -123,19 +123,50 @@ function render() {
 function tryLogin() {
   const pass = document.getElementById('passwordInp').value.trim();
   const err = document.getElementById('loginErr');
+  const btn = document.getElementById('loginBtn');
   
-  if (pass === AUTH_PASSWORD) {
-    currentUser = 'guest';
-    err.textContent = '';
-    navigate('/hub');
-  } else {
-    err.textContent = 'Invalid password.';
+  if (!pass) {
+    err.textContent = 'Password required.';
+    return;
   }
+
+  // Show loading state
+  const originalText = btn.textContent;
+  btn.textContent = 'Logging in...';
+  btn.disabled = true;
+
+  // Send password to server for validation
+  fetch('/.netlify/functions/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: pass })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.token) {
+      // Store token in sessionStorage (cleared when browser closes)
+      sessionStorage.setItem('auth_token', data.token);
+      currentUser = 'guest';
+      err.textContent = '';
+      navigate('/hub');
+    } else {
+      err.textContent = data.error || 'Authentication failed.';
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  })
+  .catch(err => {
+    console.error('Login error:', err);
+    err.textContent = 'Connection error. Please try again.';
+    btn.textContent = originalText;
+    btn.disabled = false;
+  });
 }
 
 function logout() {
   currentUser = null;
   sharedData = {};
+  sessionStorage.removeItem('auth_token');
   navigate('/');
 }
 
@@ -145,6 +176,13 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initial render
   render();
+  
+  // On page load, check if already authenticated via sessionStorage
+  const token = sessionStorage.getItem('auth_token');
+  if (token && (window.location.pathname === '/' || window.location.pathname === '')) {
+    // User was already logged in; redirect to hub
+    navigate('/hub');
+  }
 });
 
 // Allow Enter key on password field
