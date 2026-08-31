@@ -82,13 +82,14 @@
 
     /* Centered variant: used for ALL day schedules so every time column
        aligns the same way — times right-aligned in a fixed-width column,
-       descriptions left-aligned immediately after, and the whole two-column
-       block centered within the card. This keeps every event's time column
-       visually aligned to the same point across Friday/Saturday/Sunday. */
-    .schedule-table.centered { width: auto; margin: 0 auto 1rem; }
+       descriptions left-aligned immediately after. Capped at max-width so
+       long paragraphs (Saturday/Sunday) wrap into a narrower block instead
+       of stretching the table to the full card width, which would otherwise
+       cancel out the auto-margin centering entirely. */
+    .schedule-table.centered { width: auto; max-width: 480px; margin: 0 auto 1rem; }
     .schedule-table.centered td { text-align: center; }
     .schedule-table.centered td:first-child { width: 70px; padding-right: 1.1rem; text-align: right; }
-    .schedule-table.centered td:last-child { padding-left: 0; text-align: left; }
+    .schedule-table.centered td:last-child { padding-left: 0; text-align: left; width: 100%; }
     
     .section-heading { font-size: 1.05rem; font-weight: 700; color: var(--terra); letter-spacing: 0.01em; margin-top: 1.85rem; margin-bottom: 0.9rem; text-align: left; }
     .section-heading:first-of-type { margin-top: 0; text-align: center; }
@@ -118,7 +119,7 @@
       .day-title { font-size: 1rem; }
       .schedule-table td { font-size: 0.95rem; }
       .schedule-table td:first-child { width: 68px; font-size: 0.9rem; }
-      .schedule-table.centered { width: 100%; }
+      .schedule-table.centered { width: 100%; max-width: 100%; }
       .schedule-table.centered td:first-child { width: 68px; }
       .event-field { font-size: 0.9rem; }
       .event-field strong { min-width: 5.5rem; }
