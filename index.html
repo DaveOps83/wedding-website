@@ -9,10 +9,12 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     :root { --terra: #551C25; --orange: #551C25; --gold: #D4A843; --cobalt: #5B8DB8; --cream: #F6EEDF; --ink: #2C2A26; --ink-soft: #6B6459; --border: #E4DCC9; --bg: #FFFFFF; }
     body { font: 16px "DM Sans", sans-serif; background: var(--bg); color: var(--ink); line-height:1.6; }
+    .page { display: none; }
+    .page.active { display: flex; }
     .welcome-screen, .login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; text-align: center; }
     .welcome-screen { background: linear-gradient(135deg, var(--cream) 0%, white 100%); }
-    .hub { display: none; }
-    .hub.show { display: block; }
+    .hub-page { display: flex; flex-direction: column; min-height: 100vh; }
+    .hub-content { flex: 1; }
     .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
     .s-card-head { padding: 1.1rem; background: #F9F7F3; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; }
     .s-card-ico { font-size: 1.5rem; }
@@ -42,33 +44,50 @@
   </style>
 </head>
 <body>
-<div class="welcome-screen" id="welcomeScreen">
-  <p style="font-size: 0.9rem; letter-spacing: 0.15em; font-weight: 600; color: var(--terra); margin-bottom: 0.5rem;">THE WEDDING OF</p>
-  <h1 style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David</h1>
-  <p style="color: var(--ink-soft); margin-bottom: 3rem;">11 to 13 September 2026 &middot; M&aacute;laga, Spain</p>
-  <button onclick="goToLogin()" style="background: var(--terra); color: white; border: none; padding: 0.875rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Go to my hub</button>
-</div>
-<div class="login-screen" id="loginScreen">
-  <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Welcome</h2>
-  <div style="margin-bottom: 1rem; width: 100%; max-width: 300px;">
-    <input type="text" id="loginUser" placeholder="Username" autocomplete="username" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem; margin-bottom: 0.75rem;">
-    <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
+
+<!-- Welcome Page -->
+<div id="welcomePage" class="page">
+  <div class="welcome-screen">
+    <p style="font-size: 0.9rem; letter-spacing: 0.15em; font-weight: 600; color: var(--terra); margin-bottom: 0.5rem;">THE WEDDING OF</p>
+    <h1 style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David</h1>
+    <p style="color: var(--ink-soft); margin-bottom: 3rem;">11 to 13 September 2026 &middot; M&aacute;laga, Spain</p>
+    <button onclick="navigate('/login')" style="background: var(--terra); color: white; border: none; padding: 0.875rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Go to my hub</button>
   </div>
-  <button onclick="tryLogin()" style="background: var(--terra); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Log in</button>
-  <div id="loginErr" class="login-err"></div>
 </div>
-<div class="hub" id="hub">
-  <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
-    <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome</h2>
-    <p style="color: var(--ink-soft); margin-bottom: 3rem;">Here's everything you need for the weekend.</p>
-    <div id="hubContent"></div>
-    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center;">
-      <p style="color: var(--ink-soft); font-size: 0.875rem; margin-bottom: 1rem;">Questions?</p>
-      <p style="font-weight: 500;">Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
-      <button onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 2rem;">Log out</button>
+
+<!-- Login Page -->
+<div id="loginPage" class="page">
+  <div class="login-screen">
+    <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Welcome</h2>
+    <div style="margin-bottom: 1rem; width: 100%; max-width: 300px;">
+      <input type="text" id="loginUser" placeholder="Username" autocomplete="username" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem; margin-bottom: 0.75rem;">
+      <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
+    </div>
+    <button onclick="tryLogin()" style="background: var(--terra); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Log in</button>
+    <div id="loginErr" class="login-err"></div>
+  </div>
+</div>
+
+<!-- Hub Page (Itinerary) -->
+<div id="hubPage" class="page">
+  <div class="hub-page">
+    <div class="hub-content">
+      <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+        <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome</h2>
+        <p style="color: var(--ink-soft); margin-bottom: 3rem;">Here's everything you need for the weekend.</p>
+        <div id="hubContent"></div>
+      </div>
+    </div>
+    <div style="max-width: 900px; margin: 0 auto; padding: 0 1rem 2rem; width: 100%;">
+      <div style="padding-top: 2rem; border-top: 1px solid var(--border); text-align: center;">
+        <p style="color: var(--ink-soft); font-size: 0.875rem; margin-bottom: 1rem;">Questions?</p>
+        <p style="font-weight: 500;">Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
+        <button onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 2rem;">Log out</button>
+      </div>
     </div>
   </div>
 </div>
+
 <script>
 let currentUser = null;
 let sharedData = {};
@@ -78,9 +97,44 @@ const AUTH_CREDENTIALS = {
   password: 'welcome2026'
 };
 
-function goToLogin() {
-  document.getElementById('welcomeScreen').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
+function navigate(path) {
+  window.history.pushState({}, '', path);
+  render();
+}
+
+function render() {
+  const path = window.location.pathname;
+  
+  // Hide all pages
+  document.getElementById('welcomePage').classList.remove('active');
+  document.getElementById('loginPage').classList.remove('active');
+  document.getElementById('hubPage').classList.remove('active');
+  
+  // Show appropriate page
+  if (path === '/' || path === '') {
+    document.getElementById('welcomePage').classList.add('active');
+  } else if (path === '/login') {
+    document.getElementById('loginPage').classList.add('active');
+    // Clear form on page load
+    setTimeout(() => {
+      const user = document.getElementById('loginUser');
+      const pass = document.getElementById('loginPass');
+      if (user && pass) {
+        user.value = '';
+        pass.value = '';
+        user.focus();
+      }
+    }, 0);
+  } else if (path === '/hub') {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+    document.getElementById('hubPage').classList.add('active');
+    renderHub();
+  } else {
+    navigate('/');
+  }
 }
 
 function tryLogin() {
@@ -91,23 +145,32 @@ function tryLogin() {
   if (user === AUTH_CREDENTIALS.username && pass === AUTH_CREDENTIALS.password) {
     currentUser = user;
     err.textContent = '';
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('hub').classList.add('show');
-    renderHub();
+    navigate('/hub');
   } else {
     err.textContent = 'Invalid username or password.';
   }
 }
 
 function logout() {
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('hub').classList.remove('show');
-  document.getElementById('loginUser').value = '';
-  document.getElementById('loginPass').value = '';
   currentUser = null;
+  sharedData = {};
+  navigate('/');
 }
 
-document.getElementById('loginPass').addEventListener('keypress', function(e) { if (e.key === 'Enter') tryLogin(); });
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle back/forward buttons
+  window.addEventListener('popstate', render);
+  
+  // Initial render
+  render();
+});
+
+// Allow Enter key on password field
+document.addEventListener('keypress', function(e) {
+  if (e.target.id === 'loginPass' && e.key === 'Enter') {
+    tryLogin();
+  }
+});
 
 function renderHub() {
   const c = document.getElementById('hubContent');
