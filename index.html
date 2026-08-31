@@ -11,9 +11,9 @@
     body { font: 16px "DM Sans", sans-serif; background: var(--bg); color: var(--ink); line-height:1.6; }
     .page { display: none; }
     .page.active { display: flex; }
-    .welcome-screen, .login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; text-align: center; }
-    .welcome-screen { background: linear-gradient(135deg, var(--cream) 0%, white 100%); }
-    .hub-page { display: flex; flex-direction: column; min-height: 100vh; }
+    .welcome-screen, .hub-page { display: flex; }
+    .welcome-screen { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; text-align: center; background: linear-gradient(135deg, var(--cream) 0%, white 100%); }
+    .hub-page { flex-direction: column; min-height: 100vh; }
     .hub-content { flex: 1; }
     .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
     .s-card-head { padding: 1.1rem; background: #F9F7F3; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; }
@@ -28,10 +28,11 @@
     .form-lbl { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--ink); font-size: 0.875rem; }
     .form-inp { width: 100%; padding: 0.875rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: "DM Sans", sans-serif; }
     .form-inp:focus { outline: none; border-color: var(--terra); }
-    .save-btn { background: var(--terra); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 500; }
-    .save-btn:hover { opacity: 0.9; }
+    .save-btn, .login-btn { background: var(--terra); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 500; }
+    .save-btn:hover, .login-btn:hover { opacity: 0.9; }
     .save-ok { display: none; color: var(--terra); font-size: 0.875rem; margin-top: 0.5rem; }
     .save-ok.show { display: block; }
+    .login-err { color: #c23b3b; margin-top: 1rem; font-size: 0.875rem; }
     .hub-note { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.7; }
     .prac-item { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--border); gap: 1rem; }
     .prac-item:last-child { border-bottom: none; }
@@ -40,30 +41,20 @@
     .day-block { margin-bottom: 1.5rem; }
     .day-block:last-child { margin-bottom: 0; }
     .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--terra); }
-    .login-err { color: #c23b3b; margin-top: 1rem; font-size: 0.875rem; }
   </style>
 </head>
 <body>
 
-<!-- Welcome Page -->
+<!-- Welcome Page with Password -->
 <div id="welcomePage" class="page">
   <div class="welcome-screen">
     <p style="font-size: 0.9rem; letter-spacing: 0.15em; font-weight: 600; color: var(--terra); margin-bottom: 0.5rem;">THE WEDDING OF</p>
     <h1 style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David</h1>
     <p style="color: var(--ink-soft); margin-bottom: 3rem;">11 to 13 September 2026 &middot; M&aacute;laga, Spain</p>
-    <button onclick="navigate('/login')" style="background: var(--terra); color: white; border: none; padding: 0.875rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Go to my hub</button>
-  </div>
-</div>
-
-<!-- Login Page -->
-<div id="loginPage" class="page">
-  <div class="login-screen">
-    <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Welcome</h2>
     <div style="margin-bottom: 1rem; width: 100%; max-width: 300px;">
-      <input type="text" id="loginUser" placeholder="Username" autocomplete="username" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem; margin-bottom: 0.75rem;">
-      <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
+      <input type="password" id="passwordInp" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
     </div>
-    <button onclick="tryLogin()" style="background: var(--terra); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Log in</button>
+    <button class="login-btn" onclick="tryLogin()" style="">Login</button>
     <div id="loginErr" class="login-err"></div>
   </div>
 </div>
@@ -92,10 +83,7 @@
 let currentUser = null;
 let sharedData = {};
 
-const AUTH_CREDENTIALS = {
-  username: 'guest',
-  password: 'welcome2026'
-};
+const AUTH_PASSWORD = 'welcome2026';
 
 function navigate(path) {
   window.history.pushState({}, '', path);
@@ -107,27 +95,22 @@ function render() {
   
   // Hide all pages
   document.getElementById('welcomePage').classList.remove('active');
-  document.getElementById('loginPage').classList.remove('active');
   document.getElementById('hubPage').classList.remove('active');
   
   // Show appropriate page
   if (path === '/' || path === '') {
     document.getElementById('welcomePage').classList.add('active');
-  } else if (path === '/login') {
-    document.getElementById('loginPage').classList.add('active');
-    // Clear form on page load
+    // Clear and focus password field
     setTimeout(() => {
-      const user = document.getElementById('loginUser');
-      const pass = document.getElementById('loginPass');
-      if (user && pass) {
-        user.value = '';
+      const pass = document.getElementById('passwordInp');
+      if (pass) {
         pass.value = '';
-        user.focus();
+        pass.focus();
       }
     }, 0);
   } else if (path === '/hub') {
     if (!currentUser) {
-      navigate('/login');
+      navigate('/');
       return;
     }
     document.getElementById('hubPage').classList.add('active');
@@ -138,16 +121,15 @@ function render() {
 }
 
 function tryLogin() {
-  const user = document.getElementById('loginUser').value.trim();
-  const pass = document.getElementById('loginPass').value.trim();
+  const pass = document.getElementById('passwordInp').value.trim();
   const err = document.getElementById('loginErr');
   
-  if (user === AUTH_CREDENTIALS.username && pass === AUTH_CREDENTIALS.password) {
-    currentUser = user;
+  if (pass === AUTH_PASSWORD) {
+    currentUser = 'guest';
     err.textContent = '';
     navigate('/hub');
   } else {
-    err.textContent = 'Invalid username or password.';
+    err.textContent = 'Invalid password.';
   }
 }
 
@@ -167,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Allow Enter key on password field
 document.addEventListener('keypress', function(e) {
-  if (e.target.id === 'loginPass' && e.key === 'Enter') {
+  if (e.target.id === 'passwordInp' && e.key === 'Enter') {
     tryLogin();
   }
 });
