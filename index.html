@@ -79,6 +79,9 @@
     .event-note { font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; font-style: italic; text-align: left; }
     .map-link { color: var(--terra); }
 
+    .event-field { font-size: 0.85rem; color: var(--ink-soft); margin: 0.25rem 0 1.5rem; text-align: left; }
+    .event-field strong { color: var(--ink); }
+
     /* Responsive design */
     @media (min-width: 768px) {
       .prac-item { flex-direction: row; justify-content: space-between; gap: 1rem; text-align: left; }
@@ -290,6 +293,7 @@ function renderHub() {
     '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan, M&aacute;laga</a> (approx. 45min&ndash;1hr)</td></tr>' +
     '<tr><td>~18:15</td><td>Photos outside the church (approx. 20 minutes)</td></tr>' +
     '</table>' +
+    '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, M&aacute;laga historic centre. Only reachable on foot &mdash; cars aren\'t permitted, so allow a few extra minutes to arrive on time.</div>' +
     '<div class="section-heading">Reception</div>' +
     '<table class="schedule-table">' +
     '<tr><td>19:00</td><td>Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options</td></tr>' +
@@ -299,11 +303,7 @@ function renderHub() {
     '<tr><td>01:15</td><td>Late-night bites</td></tr>' +
     '<tr><td>03:00</td><td>Open bar ends</td></tr>' +
     '</table>' +
-    '<div class="section-heading">Location &amp; Transport</div>' +
-    '<table class="schedule-table">' +
-    '<tr><td>Ceremony</td><td><a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, M&aacute;laga historic centre. Only reachable on foot &mdash; cars aren\'t permitted, so allow a few extra minutes to arrive on time.</td></tr>' +
-    '<tr><td>Reception</td><td><a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, Camino de Casabermeja 128, M&aacute;laga. Taxi, Uber, or car are the easiest options; we are not providing transport.</td></tr>' +
-    '</table>' +
+    '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, Camino de Casabermeja 128, M&aacute;laga. Taxi, Uber, or car are the easiest options; we are not providing transport.</div>' +
     '<div class="day-dress-code"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</div>' +
     '</div>' +
     '</div>';
@@ -318,6 +318,7 @@ function renderHub() {
     '<tr><td>From 17:00</td><td>Up to the terrace, chill-out area with skyline views, or the music &amp; DJ area if you feel like partying</td></tr>' +
     '<tr><td></td><td><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></td></tr>' +
     '</table>' +
+    '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes</a>, Paseo de la Farola 25, M&aacute;laga. Taxi, Uber, or car recommended.</div>' +
     '<div class="day-dress-code"><strong>Dress code:</strong> Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.</div>' +
     '</div>' +
     '</div>';
@@ -331,6 +332,7 @@ function renderHub() {
     '<tr><td>From 13:00</td><td><a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House, Torremolinos</a></td></tr>' +
     '<tr><td></td><td><span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span></td></tr>' +
     '</table>' +
+    '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House</a>, Torremolinos. Taxi, Uber, or car recommended; we are not providing transport.</div>' +
     '<div class="day-dress-code"><strong>Dress code:</strong> Casual beachwear, obviously.</div>' +
     '</div>' +
     '</div>';
@@ -340,7 +342,6 @@ function renderHub() {
     '<div class="s-card-title">Practical details</div>' +
     '</div>' +
     '<div class="s-card-body">' +
-    '<div class="prac-item"><label>Getting to Hacienda Nadales</label><span>We are not providing transport, please make your own way by taxi or car.</span></div>' +
     '<div class="prac-item"><label>Coordinator (all days)</label><span>Lucia<br>+34 666 89 11 00</span></div>' +
     '<div class="prac-item"><label>Taxi (M&aacute;laga capital)</label><span>952 33 33 33</span></div>' +
     '<div class="prac-item"><label>Weather</label><span>Warm, 27&ndash;32&deg;C<br>Bring sun protection</span></div>' +
