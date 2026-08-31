@@ -7,14 +7,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height: 100%; }
     :root { --terra: #551C25; --orange: #551C25; --gold: #D4A843; --cobalt: #5B8DB8; --cream: #F6EEDF; --ink: #2C2A26; --ink-soft: #6B6459; --border: #E4DCC9; --bg: #FFFFFF; }
     body { font: 16px "DM Sans", sans-serif; background: var(--bg); color: var(--ink); line-height:1.6; }
-    .page { display: none; }
+    .page { display: none; height: 100vh; }
     .page.active { display: flex; }
     .welcome-screen, .hub-page { display: flex; }
-    .welcome-screen { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; text-align: center; background: linear-gradient(135deg, var(--cream) 0%, white 100%); }
-    .hub-page { flex-direction: column; min-height: 100vh; }
-    .hub-content { flex: 1; }
+    .welcome-screen { flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 2rem; text-align: center; background: linear-gradient(135deg, var(--cream) 0%, white 100%); }
+    .hub-page { flex-direction: column; height: 100vh; }
+    .hub-content { flex: 1; overflow-y: auto; }
     .hub-wrapper { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; width: 100%; }
     .hub-footer { max-width: 900px; margin: 0 auto; padding: 0 1rem 2rem; width: 100%; }
     .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
