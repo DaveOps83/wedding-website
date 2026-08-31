@@ -102,6 +102,11 @@
     .event-field:last-of-type { margin-bottom: 1rem; }
     .event-field strong { display: inline-block; min-width: 6.5rem; color: var(--terra); font-weight: 600; }
 
+    /* Live weather pill — shown per event, fetched from /.netlify/functions/weather */
+    .weather-pill { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--ink-soft); background: #F9F7F3; border: 1px solid var(--border); border-radius: 999px; padding: 0.35rem 0.85rem; margin: 0.5rem auto 1rem; }
+    .weather-pill-wrap { text-align: center; }
+    .weather-pill strong { color: var(--terra); font-weight: 600; }
+
     /* Responsive design */
     @media (min-width: 768px) {
       .prac-item { flex-direction: row; justify-content: space-between; gap: 1rem; text-align: left; }
@@ -192,6 +197,7 @@
 <script>
 let currentUser = null;
 let sharedData = {};
+let weatherData = null; // cached response from /.netlify/functions/weather
 
 /* ---------------- Translations ---------------- */
 const translations = {
@@ -224,6 +230,9 @@ const translations = {
     taxiLabel: "Taxi (M\u00e1laga capital)",
     weatherLabel: "Weather",
     weatherValue: "Warm, 27\u201332\u00b0C<br>Bring sun protection",
+    weatherLoading: "Loading forecast\u2026",
+    weatherUnavailable: "Forecast unavailable right now",
+    rainLabel: "rain",
     fri_c1: "Ceremony starts",
     fri_c2: "Photos outside the church",
     fri_c_loc: "Iglesia de San Juan, M\u00e1laga historic centre.",
@@ -277,6 +286,9 @@ const translations = {
     taxiLabel: "Taxi (M\u00e1laga capital)",
     weatherLabel: "Clima",
     weatherValue: "C\u00e1lido, 27\u201332\u00b0C<br>Trae protecci\u00f3n solar",
+    weatherLoading: "Cargando previsi\u00f3n\u2026",
+    weatherUnavailable: "Previsi\u00f3n no disponible por ahora",
+    rainLabel: "lluvia",
     fri_c1: "Comienza la ceremonia",
     fri_c2: "Fotos a la salida de la iglesia",
     fri_c_loc: "Iglesia de San Juan, centro hist\u00f3rico de M\u00e1laga.",
@@ -330,6 +342,9 @@ const translations = {
     taxiLabel: "T\u00e1xi (M\u00e1laga capital)",
     weatherLabel: "Tempo",
     weatherValue: "Quente, 27\u201332\u00b0C<br>Traga prote\u00e7\u00e3o solar",
+    weatherLoading: "A carregar previs\u00e3o\u2026",
+    weatherUnavailable: "Previs\u00e3o indispon\u00edvel neste momento",
+    rainLabel: "chuva",
     fri_c1: "A cerim\u00f3nia come\u00e7a",
     fri_c2: "Fotografias \u00e0 sa\u00edda da igreja",
     fri_c_loc: "Iglesia de San Juan, centro hist\u00f3rico de M\u00e1laga.",
@@ -355,6 +370,68 @@ const translations = {
     sun_dress: "Roupa de praia casual, obviamente."
   }
 };
+
+/* ---------------- Weather ---------------- */
+const wxCodeMap = {
+  0: { en: 'Clear sky', es: 'Cielo despejado', pt: 'C\u00e9u limpo' },
+  1: { en: 'Mostly clear', es: 'Mayormente despejado', pt: 'Praticamente limpo' },
+  2: { en: 'Partly cloudy', es: 'Parcialmente nublado', pt: 'Parcialmente nublado' },
+  3: { en: 'Cloudy', es: 'Nublado', pt: 'Nublado' },
+  45: { en: 'Fog', es: 'Niebla', pt: 'N\u00e9voa' },
+  48: { en: 'Fog', es: 'Niebla', pt: 'N\u00e9voa' },
+  51: { en: 'Light drizzle', es: 'Llovizna ligera', pt: 'Chuvisco leve' },
+  53: { en: 'Drizzle', es: 'Llovizna', pt: 'Chuvisco' },
+  55: { en: 'Heavy drizzle', es: 'Llovizna intensa', pt: 'Chuvisco forte' },
+  61: { en: 'Light rain', es: 'Lluvia ligera', pt: 'Chuva leve' },
+  63: { en: 'Rain', es: 'Lluvia', pt: 'Chuva' },
+  65: { en: 'Heavy rain', es: 'Lluvia intensa', pt: 'Chuva forte' },
+  80: { en: 'Rain showers', es: 'Chubascos', pt: 'Aguaceiros' },
+  81: { en: 'Rain showers', es: 'Chubascos', pt: 'Aguaceiros' },
+  82: { en: 'Heavy showers', es: 'Chubascos intensos', pt: 'Aguaceiros fortes' },
+  95: { en: 'Thunderstorm', es: 'Tormenta', pt: 'Trovoada' },
+  96: { en: 'Thunderstorm', es: 'Tormenta', pt: 'Trovoada' },
+  99: { en: 'Thunderstorm', es: 'Tormenta', pt: 'Trovoada' }
+};
+
+function wxDescription(code) {
+  const entry = wxCodeMap[code] || wxCodeMap[3];
+  return entry[currentLang] || entry.en;
+}
+
+function weatherPillPlaceholder(loc, date) {
+  return '<div class="weather-pill-wrap"><span class="weather-pill" data-loc="' + loc + '" data-date="' + date + '">' + t('weatherLoading') + '</span></div>';
+}
+
+function weatherPillInner(loc, date) {
+  if (!weatherData || weatherData.error || !weatherData[loc] || !weatherData[loc][date]) {
+    return t('weatherUnavailable');
+  }
+  const d = weatherData[loc][date];
+  return '<strong>' + d.max + '\u00b0/' + d.min + '\u00b0C</strong> \u00b7 ' + wxDescription(d.code) + ' \u00b7 ' + d.rain + '% ' + t('rainLabel');
+}
+
+function renderWeatherPills() {
+  document.querySelectorAll('.weather-pill[data-loc]').forEach(function (el) {
+    el.innerHTML = weatherPillInner(el.getAttribute('data-loc'), el.getAttribute('data-date'));
+  });
+}
+
+function fetchWeather() {
+  if (weatherData) {
+    renderWeatherPills();
+    return;
+  }
+  fetch('/.netlify/functions/weather')
+    .then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
+    .then(function (r) {
+      weatherData = r.ok ? r.body : { error: true };
+      renderWeatherPills();
+    })
+    .catch(function () {
+      weatherData = { error: true };
+      renderWeatherPills();
+    });
+}
 
 function getCookie(name) {
   const match = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
@@ -389,6 +466,7 @@ function changeLang(lang) {
   if (document.getElementById('hubPage').classList.contains('active')) {
     applyHubTranslations();
     renderHub();
+    renderWeatherPills();
   } else {
     applyWelcomeTranslations();
   }
@@ -468,6 +546,7 @@ function render() {
       applyHubTranslations();
       syncLangSelectors();
       renderHub();
+      fetchWeather();
     })
     .catch(() => {
       sessionStorage.removeItem('auth_token');
@@ -562,6 +641,7 @@ function renderHub() {
     '<tr><td>17:30</td><td>' + t('fri_c1') + '</td></tr>' +
     '<tr><td>18:15</td><td>' + t('fri_c2') + '</td></tr>' +
     '</table>' +
+    weatherPillPlaceholder('malaga', '2026-09-11') +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, ' + t('fri_c_loc').replace('Iglesia de San Juan, ', '') + '</div>' +
     '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('fri_c_transport') + '</div>' +
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('fri_c_dress') + '</div>' +
@@ -575,6 +655,7 @@ function renderHub() {
     '<tr><td>01:15</td><td>' + t('fri_r5') + '</td></tr>' +
     '<tr><td>03:00</td><td>' + t('fri_r6') + '</td></tr>' +
     '</table>' +
+    weatherPillPlaceholder('malaga', '2026-09-11') +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, ' + t('fri_r_loc').replace('Hacienda Nadales, ', '') + '</div>' +
     '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('fri_r_transport') + '</div>' +
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('fri_r_dress') + '</div>' +
@@ -593,6 +674,7 @@ function renderHub() {
     '<tr><td>15:00</td><td>' + t('sat_1') + '</td></tr>' +
     '<tr><td>17:00</td><td>' + t('sat_2') + '</td></tr>' +
     '</table>' +
+    weatherPillPlaceholder('malaga', '2026-09-12') +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes</a>, ' + t('sat_loc').replace('Trocadero Casa de Botes, ', '') + '</div>' +
     '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('sat_transport') + '</div>' +
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sat_dress') + '</div>' +
@@ -610,6 +692,7 @@ function renderHub() {
     '<table class="schedule-table centered">' +
     '<tr><td>13:00</td><td>' + t('sun_1') + '</td></tr>' +
     '</table>' +
+    weatherPillPlaceholder('torremolinos', '2026-09-13') +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House</a>, ' + t('sun_loc').replace('La Playa Surf House, ', '') + '</div>' +
     '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('sun_transport') + '</div>' +
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sun_dress') + '</div>' +
@@ -628,6 +711,7 @@ function renderHub() {
     '</div>';
 
   c.innerHTML = html;
+  renderWeatherPills();
 }
 </script>
 </body>
