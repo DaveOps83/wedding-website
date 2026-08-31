@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <title>Merici & David's Wedding</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     html { height: 100%; }
     body { height: 100%; margin: 0; padding: 0; font: 16px "DM Sans", sans-serif; background: white; color: var(--ink); line-height:1.6; }
-    :root { --terra: #551C25; --orange: #551C25; --gold: #D4A843; --cobalt: #5B8DB8; --cream: #F6EEDF; --ink: #2C2A26; --ink-soft: #6B6459; --border: #E4DCC9; --bg: #FFFFFF; }
+    :root { --terra: #551C25; --orange: #551C25; --gold: #D4A843; --cobalt: #5B8DB8; --cream: #F6EEDF; --ink: #2C2A26; --ink-soft: #5C5650; --border: #E4DCC9; --bg: #FFFFFF; }
     
     .page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; }
     .page.active { display: flex; }
@@ -22,29 +22,29 @@
     #hubPage { background: white; }
     .hub-page { flex: 1; display: flex; flex-direction: column; width: 100%; height: 100%; position: relative; }
     
-    .hub-content { flex: 1; overflow-y: auto; display: flex; justify-content: center; width: 100%; padding: 2rem 1rem; }
-    .hub-wrapper { max-width: 900px; width: 100%; }
+    .hub-content { flex: 1; overflow-y: auto; display: flex; justify-content: center; width: 100%; padding: 3rem 1.5rem; }
+    .hub-wrapper { max-width: 760px; width: 100%; }
     
     .hub-header { display: flex; gap: 2rem; margin-bottom: 3rem; align-items: flex-start; }
     .hub-welcome { flex: 1; }
     .hub-welcome h2 { font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem; }
-    .hub-welcome p { color: var(--ink-soft); }
+    .hub-welcome p { color: var(--ink-soft); font-size: 1.05rem; }
     
     .hub-top-box { border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; background: white; width: 25%; flex-shrink: 0; }
-    .hub-top-box p { margin: 0.5rem 0; font-size: 0.9rem; }
+    .hub-top-box p { margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5; }
     .hub-top-box p:first-child { color: var(--ink-soft); font-size: 0.875rem; }
-    .hub-top-box p:last-child { font-weight: 500; }
+    .hub-top-box p:last-child { font-weight: 600; }
     
     .hub-footer { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; border-top: 1px solid var(--border); background: white; }
-    .hub-footer-content { max-width: 900px; width: 100%; text-align: center; }
+    .hub-footer-content { max-width: 760px; width: 100%; text-align: center; }
     
-    .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
-    .s-card-head { padding: 1.1rem; background: #F9F7F3; display: flex; align-items: center; gap: 0.75rem; justify-content: center; }
-    .s-card-title { text-align: center; font-weight: 500; }
+    .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 2rem; overflow: hidden; background: white; }
+    .s-card-head { padding: 1.25rem; background: #F9F7F3; display: flex; align-items: center; gap: 0.75rem; justify-content: center; }
+    .s-card-title { text-align: center; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.01em; }
     .s-card-badge { font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 4px; background: #E8E0D0; color: var(--ink); flex-shrink: 0; }
     .badge-done { background: var(--terra); color: white; }
     .badge-pend { background: #F0E6D8; }
-    .s-card-body { padding: 1rem 1.1rem; text-align: center; }
+    .s-card-body { padding: 1.75rem 1.75rem; text-align: center; }
     .form-grp { margin: 1rem 0; }
     .form-lbl { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--ink); font-size: 0.875rem; }
     .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -57,10 +57,10 @@
     .save-ok.show { display: block; }
     .login-err { color: #c23b3b; margin-top: 1rem; font-size: 0.875rem; }
     .hub-note { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.7; }
-    .prac-item { display: flex; flex-direction: column; padding: 1rem 0; border-bottom: 1px solid var(--border); gap: 0.5rem; text-align: left; }
+    .prac-item { display: flex; flex-direction: column; padding: 1.1rem 0; border-bottom: 1px solid var(--border); gap: 0.5rem; text-align: left; }
     .prac-item:last-child { border-bottom: none; }
-    .prac-item label { font-weight: 500; }
-    .prac-item span { color: var(--ink-soft); font-size: 0.9rem; }
+    .prac-item label { font-weight: 600; }
+    .prac-item span { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6; }
     .day-block { margin-bottom: 1.5rem; }
     .day-block:last-child { margin-bottom: 0; }
     .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--terra); }
@@ -68,28 +68,29 @@
     .day-dress-code strong { color: var(--ink); }
     
     /* Invisible table styles */
-    .schedule-table { width: 100%; border-collapse: collapse; margin: 0 auto 0.75rem; }
-    .schedule-table td { padding: 0.5rem 0; border: none; text-align: left; }
-    .schedule-table td:first-child { width: 80px; font-weight: 500; white-space: nowrap; }
-    .schedule-table td:last-child { padding-left: 1rem; color: var(--ink-soft); }
+    .schedule-table { width: 100%; border-collapse: collapse; margin: 0 auto 1rem; }
+    .schedule-table td { padding: 0.65rem 0; border: none; text-align: left; font-size: 1rem; line-height: 1.55; }
+    .schedule-table td:first-child { width: 88px; font-weight: 600; white-space: nowrap; color: var(--terra); vertical-align: top; padding-top: 0.75rem; }
+    .schedule-table td:last-child { padding-left: 1rem; color: var(--ink-soft); padding-top: 0.65rem; }
 
     /* Centered variant: used for Ceremony & Reception schedules so both
        columns sit centered as a block within the card, matching the
        centered section heading above each. */
-    .schedule-table.centered { width: auto; margin: 0 auto 0.75rem; }
+    .schedule-table.centered { width: auto; margin: 0 auto 1rem; }
     .schedule-table.centered td { text-align: center; }
-    .schedule-table.centered td:first-child { width: auto; padding-right: 1rem; }
+    .schedule-table.centered td:first-child { width: auto; padding-right: 1.1rem; text-align: right; }
     .schedule-table.centered td:last-child { padding-left: 0; text-align: left; }
     
-    .section-heading { font-size: 0.95rem; font-weight: 600; color: var(--terra); margin-top: 1.5rem; margin-bottom: 0.75rem; text-align: left; }
+    .section-heading { font-size: 1.05rem; font-weight: 700; color: var(--terra); letter-spacing: 0.01em; margin-top: 1.85rem; margin-bottom: 0.9rem; text-align: left; }
     .section-heading:first-of-type { margin-top: 0; text-align: center; }
     
-    .event-note { font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; font-style: italic; text-align: left; }
-    .map-link { color: var(--terra); }
+    .event-note { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; margin-top: 1rem; font-style: italic; text-align: left; }
+    .map-link { color: var(--terra); text-decoration: underline; text-decoration-color: rgba(85,28,37,0.35); text-decoration-thickness: 1px; }
+    .map-link:hover { text-decoration-color: var(--terra); }
 
-    .event-field { font-size: 0.85rem; color: var(--ink-soft); margin: 0.25rem 0 0.5rem; text-align: left; }
-    .event-field:last-of-type { margin-bottom: 0.75rem; }
-    .event-field strong { color: var(--ink); }
+    .event-field { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; margin: 0.6rem 0; padding-left: 0.85rem; border-left: 3px solid var(--border); text-align: left; }
+    .event-field:last-of-type { margin-bottom: 1rem; }
+    .event-field strong { display: inline-block; min-width: 6.5rem; color: var(--terra); font-weight: 600; }
 
     /* Responsive design */
     @media (min-width: 768px) {
@@ -101,14 +102,17 @@
       .welcome-screen { padding: 1.5rem; }
       h1 { font-size: 2rem !important; }
       h2 { font-size: 2rem !important; }
-      .hub-content { padding: 1.5rem 1rem; }
+      .hub-content { padding: 2rem 1.25rem; }
       .hub-footer { padding: 1.5rem 1rem; }
-      .s-card-head { padding: 1rem; }
-      .s-card-body { padding: 1rem; }
+      .s-card-head { padding: 1.1rem; }
+      .s-card-body { padding: 1.25rem; }
       .day-title { font-size: 1rem; }
-      .schedule-table td:first-child { width: 70px; font-size: 0.9rem; }
+      .schedule-table td { font-size: 0.95rem; }
+      .schedule-table td:first-child { width: 68px; font-size: 0.9rem; }
       .schedule-table.centered { width: 100%; }
-      .schedule-table.centered td:first-child { width: 70px; }
+      .schedule-table.centered td:first-child { width: 68px; }
+      .event-field { font-size: 0.9rem; }
+      .event-field strong { min-width: 5.5rem; }
       .hub-header { flex-direction: column; gap: 1rem; margin-bottom: 2rem; align-items: stretch; }
       .hub-welcome h2 { font-size: 1.8rem; }
       .hub-top-box { width: 100%; flex-shrink: auto; padding: 1rem; }
