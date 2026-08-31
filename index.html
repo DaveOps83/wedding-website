@@ -27,7 +27,6 @@
     
     .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
     .s-card-head { padding: 1.1rem; background: #F9F7F3; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; }
-    .s-card-ico { font-size: 1.5rem; flex-shrink: 0; }
     .s-card-title { flex: 1; text-align: left; font-weight: 500; }
     .s-card-badge { font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 4px; background: #E8E0D0; color: var(--ink); flex-shrink: 0; }
     .badge-done { background: var(--terra); color: white; }
@@ -69,7 +68,6 @@
       .s-card-body { padding: 0 1rem; }
       .s-card-body.open { padding: 1rem; }
       .day-title { font-size: 1rem; }
-      .s-card-ico { font-size: 1.25rem; }
     }
   </style>
 </head>
@@ -227,7 +225,6 @@ function renderHub() {
 
   html += '<div class="s-card">' +
     '<div class="s-card-head" onclick="toggleCard(\'Itinerary\')">' +
-    '<span class="s-card-ico">•</span>' +
     '<div class="s-card-title">Weekend itinerary</div>' +
     '<span class="s-card-arr" id="arrItinerary">▼</span>' +
     '</div>' +
@@ -260,7 +257,6 @@ function renderHub() {
 
   html += '<div class="s-card">' +
     '<div class="s-card-head" onclick="toggleCard(\'Practical\')">' +
-    '<span class="s-card-ico">*</span>' +
     '<div class="s-card-title">Practical details</div>' +
     '<span class="s-card-arr" id="arrPractical">▼</span>' +
     '</div>' +
@@ -278,7 +274,6 @@ function renderHub() {
 
   html += '<div class="s-card" id="cardGroup">' +
     '<div class="s-card-head" onclick="toggleCard(\'Group\')">' +
-    '<span class="s-card-ico">+</span>' +
     '<div class="s-card-title">Stay in the loop</div>' +
     '<span class="s-card-badge ' + (sharedData.groupOptIn ? 'badge-done' : 'badge-pend') + '">' + (sharedData.groupOptIn ? 'Added' : 'Optional') + '</span>' +
     '<span class="s-card-arr" id="arrGroup">▼</span>' +
