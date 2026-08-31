@@ -1,5 +1,5 @@
 [build]
-  command = "echo 'Static site, no build needed'"
+  command = "node build.js"
   publish = "."
 
 [[redirects]]
@@ -8,7 +8,7 @@
   status = 200
 
 [context.production]
-  command = "echo 'Production build'"
+  command = "node build.js"
 
 [context.deploy-preview]
-  command = "echo 'Deploy preview'"
+  command = "node build.js"
