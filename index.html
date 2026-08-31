@@ -102,11 +102,6 @@
     .event-field:last-of-type { margin-bottom: 1rem; }
     .event-field strong { display: inline-block; min-width: 6.5rem; color: var(--terra); font-weight: 600; }
 
-    /* Live weather pill — shown per event, fetched from /.netlify/functions/weather */
-    .weather-pill { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--ink-soft); background: #F9F7F3; border: 1px solid var(--border); border-radius: 999px; padding: 0.35rem 0.85rem; margin: 0.5rem auto 1rem; }
-    .weather-pill-wrap { text-align: center; }
-    .weather-pill strong { color: var(--terra); font-weight: 600; }
-
     /* Responsive design */
     @media (min-width: 768px) {
       .prac-item { flex-direction: row; justify-content: space-between; gap: 1rem; text-align: left; }
@@ -227,6 +222,7 @@ const translations = {
     locationLabel: "Location:",
     transportLabel: "Transport:",
     dressLabel: "Dress code:",
+    weatherFieldLabel: "Weather:",
     taxiLabel: "Taxi (M\u00e1laga capital)",
     weatherLabel: "Weather",
     weatherValue: "Warm, 27\u201332\u00b0C<br>Bring sun protection",
@@ -283,6 +279,7 @@ const translations = {
     locationLabel: "Ubicaci\u00f3n:",
     transportLabel: "Transporte:",
     dressLabel: "C\u00f3digo de vestimenta:",
+    weatherFieldLabel: "Clima:",
     taxiLabel: "Taxi (M\u00e1laga capital)",
     weatherLabel: "Clima",
     weatherValue: "C\u00e1lido, 27\u201332\u00b0C<br>Trae protecci\u00f3n solar",
@@ -339,6 +336,7 @@ const translations = {
     locationLabel: "Local:",
     transportLabel: "Transporte:",
     dressLabel: "C\u00f3digo de vestu\u00e1rio:",
+    weatherFieldLabel: "Tempo:",
     taxiLabel: "T\u00e1xi (M\u00e1laga capital)",
     weatherLabel: "Tempo",
     weatherValue: "Quente, 27\u201332\u00b0C<br>Traga prote\u00e7\u00e3o solar",
@@ -398,21 +396,24 @@ function wxDescription(code) {
   return entry[currentLang] || entry.en;
 }
 
-function weatherPillPlaceholder(loc, date) {
-  return '<div class="weather-pill-wrap"><span class="weather-pill" data-loc="' + loc + '" data-date="' + date + '">' + t('weatherLoading') + '</span></div>';
+// Weather is now rendered as its own event-field row (matching Location/
+// Transport/Dress code), placed directly underneath Dress code in each
+// event card, rather than as a separate pill under the schedule table.
+function weatherFieldPlaceholder(loc, date) {
+  return '<div class="event-field"><strong>' + t('weatherFieldLabel') + '</strong> <span data-wx-loc="' + loc + '" data-wx-date="' + date + '">' + t('weatherLoading') + '</span></div>';
 }
 
-function weatherPillInner(loc, date) {
+function weatherFieldInner(loc, date) {
   if (!weatherData || weatherData.error || !weatherData[loc] || !weatherData[loc][date]) {
     return t('weatherUnavailable');
   }
   const d = weatherData[loc][date];
-  return '<strong>' + d.max + '\u00b0/' + d.min + '\u00b0C</strong> \u00b7 ' + wxDescription(d.code) + ' \u00b7 ' + d.rain + '% ' + t('rainLabel');
+  return '<strong style="color:var(--terra);">' + d.max + '\u00b0/' + d.min + '\u00b0C</strong> \u00b7 ' + wxDescription(d.code) + ' \u00b7 ' + d.rain + '% ' + t('rainLabel');
 }
 
 function renderWeatherPills() {
-  document.querySelectorAll('.weather-pill[data-loc]').forEach(function (el) {
-    el.innerHTML = weatherPillInner(el.getAttribute('data-loc'), el.getAttribute('data-date'));
+  document.querySelectorAll('[data-wx-loc]').forEach(function (el) {
+    el.innerHTML = weatherFieldInner(el.getAttribute('data-wx-loc'), el.getAttribute('data-wx-date'));
   });
 }
 
@@ -641,10 +642,10 @@ function renderHub() {
     '<tr><td>17:30</td><td>' + t('fri_c1') + '</td></tr>' +
     '<tr><td>18:15</td><td>' + t('fri_c2') + '</td></tr>' +
     '</table>' +
-    weatherPillPlaceholder('malaga', '2026-09-11') +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, ' + t('fri_c_loc').replace('Iglesia de San Juan, ', '') + '</div>' +
     '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('fri_c_transport') + '</div>' +
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('fri_c_dress') + '</div>' +
+    weatherFieldPlaceholder('malaga', '2026-09-11') +
 
     '<div class="section-heading" style="text-align:center">' + t('receptionHeading') + '</div>' +
     '<table class="schedule-table centered">' +
@@ -655,10 +656,10 @@ function renderHub() {
     '<tr><td>01:15</td><td>' + t('fri_r5') + '</td></tr>' +
     '<tr><td>03:00</td><td>' + t('fri_r6') + '</td></tr>' +
     '</table>' +
-    weatherPillPlaceholder('malaga', '2026-09-11') +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, ' + t('fri_r_loc').replace('Hacienda Nadales, ', '') + '</div>' +
     '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('fri_r_transport') + '</div>' +
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('fri_r_dress') + '</div>' +
+    weatherFieldPlaceholder('malaga', '2026-09-11') +
 
     '</div>' +
     '</div>';
@@ -674,10 +675,10 @@ function renderHub() {
     '<tr><td>15:00</td><td>' + t('sat_1') + '</td></tr>' +
     '<tr><td>17:00</td><td>' + t('sat_2') + '</td></tr>' +
     '</table>' +
-    weatherPillPlaceholder('malaga', '2026-09-12') +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes</a>, ' + t('sat_loc').replace('Trocadero Casa de Botes, ', '') + '</div>' +
     '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('sat_transport') + '</div>' +
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sat_dress') + '</div>' +
+    weatherFieldPlaceholder('malaga', '2026-09-12') +
 
     '</div>' +
     '</div>';
@@ -692,10 +693,10 @@ function renderHub() {
     '<table class="schedule-table centered">' +
     '<tr><td>13:00</td><td>' + t('sun_1') + '</td></tr>' +
     '</table>' +
-    weatherPillPlaceholder('torremolinos', '2026-09-13') +
     '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House</a>, ' + t('sun_loc').replace('La Playa Surf House, ', '') + '</div>' +
     '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('sun_transport') + '</div>' +
     '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sun_dress') + '</div>' +
+    weatherFieldPlaceholder('torremolinos', '2026-09-13') +
 
     '</div>' +
     '</div>';
@@ -706,7 +707,6 @@ function renderHub() {
     '</div>' +
     '<div class="s-card-body">' +
     '<div class="prac-item"><label>' + t('taxiLabel') + '</label><span>+34 952 33 33 33</span></div>' +
-    '<div class="prac-item"><label>' + t('weatherLabel') + '</label><span>' + t('weatherValue') + '</span></div>' +
     '</div>' +
     '</div>';
 
