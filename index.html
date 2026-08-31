@@ -56,6 +56,8 @@
     .day-block { margin-bottom: 1.5rem; }
     .day-block:last-child { margin-bottom: 0; }
     .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--terra); }
+    .day-dress-code { font-size: 0.875rem; color: var(--ink-soft); margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: left; }
+    .day-dress-code strong { color: var(--ink); }
     
     /* Invisible table styles */
     .schedule-table { width: 100%; border-collapse: collapse; margin: 0 auto 1.5rem; }
@@ -265,6 +267,7 @@ function renderHub() {
     '<tr><td>03:00</td><td>Open bar ends</td></tr>' +
     '</table>' +
     '<div class="event-note">Important: cars aren\'t allowed into M&aacute;laga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</div>' +
+    '<div class="day-dress-code"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</div>' +
     '</div>' +
     '</div>';
 
@@ -278,6 +281,7 @@ function renderHub() {
     '<tr><td>From 17:00</td><td>Up to the terrace, chill-out area with skyline views, or the music &amp; DJ area if you feel like partying</td></tr>' +
     '<tr><td></td><td><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></td></tr>' +
     '</table>' +
+    '<div class="day-dress-code"><strong>Dress code:</strong> Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.</div>' +
     '</div>' +
     '</div>';
 
@@ -290,6 +294,7 @@ function renderHub() {
     '<tr><td>From 13:00</td><td><a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos</a></td></tr>' +
     '<tr><td></td><td><span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span></td></tr>' +
     '</table>' +
+    '<div class="day-dress-code"><strong>Dress code:</strong> Casual beachwear, obviously.</div>' +
     '</div>' +
     '</div>';
 
@@ -298,9 +303,6 @@ function renderHub() {
     '<div class="s-card-title">Practical details</div>' +
     '</div>' +
     '<div class="s-card-body">' +
-    '<div class="prac-item"><label>Friday dress code</label><span>Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</span></div>' +
-    '<div class="prac-item"><label>Saturday dress code</label><span>Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.</span></div>' +
-    '<div class="prac-item"><label>Sunday dress code</label><span>Casual beachwear, obviously.</span></div>' +
     '<div class="prac-item"><label>Getting to Hacienda Nadales</label><span>We are not providing transport, please make your own way by taxi or car.</span></div>' +
     '<div class="prac-item"><label>Coordinator (all days)</label><span>Lucia<br>+34 666 89 11 00</span></div>' +
     '<div class="prac-item"><label>Taxi (M&aacute;laga capital)</label><span>952 33 33 33</span></div>' +
