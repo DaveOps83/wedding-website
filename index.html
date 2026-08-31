@@ -227,32 +227,32 @@ function renderHub() {
 
   html += '<div class="s-card">' +
     '<div class="s-card-head" onclick="toggleCard(\'Itinerary\')">' +
-    '<span class="s-card-ico">\u{1F4C5}</span>' +
+    '<span class="s-card-ico">•</span>' +
     '<div class="s-card-title">Weekend itinerary</div>' +
-    '<span class="s-card-arr" id="arrItinerary">\u25BC</span>' +
+    '<span class="s-card-arr" id="arrItinerary">▼</span>' +
     '</div>' +
     '<div class="s-card-body open" id="bodyItinerary">' +
     '<div class="day-block">' +
     '<div class="day-title">Friday 11 September</div>' +
-    '<strong>17:30</strong> Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, Málaga \u{1F4CD}</a> (approx. 45min–1hr)<br>' +
+    '<strong>17:30</strong> Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, Málaga</a> (approx. 45min–1hr)<br>' +
     '<strong>~18:15</strong> Photos outside the church (approx. 20 minutes)<br>' +
-    '<strong>19:00</strong> Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales \u{1F4CD}</a>, taxi, Uber, or car are the easiest options<br>' +
+    '<strong>19:00</strong> Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options<br>' +
     '<strong>19:15</strong> Cocktails begin, lower area of the palacete<br>' +
     '<strong>20:30</strong> Dinner &amp; celebration, in front of the palacete<br>' +
     '<strong>22:45</strong> Open bar &amp; dancing<br>' +
     '<strong>01:15</strong> Late-night bites<br>' +
     '<strong>03:00</strong> Open bar ends<br>' +
-    '<span style="color:var(--ink-soft);font-size:0.85rem">\u{1F6B6} Important: cars aren\'t allowed into Málaga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</span>' +
+    '<span style="color:var(--ink-soft);font-size:0.85rem">Important: cars aren\'t allowed into Málaga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</span>' +
     '</div>' +
     '<div class="day-block">' +
     '<div class="day-title">Saturday 12 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional, for confirmed guests)</span></div>' +
-    '<strong>15:00–17:00</strong> Drinks & tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, Málaga \u{1F4CD}</a><br>' +
+    '<strong>15:00–17:00</strong> Drinks & tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, Málaga</a><br>' +
     '<strong>From 17:00</strong> Up to the terrace, chill-out area with skyline views, or the music & DJ area if you feel like partying<br>' +
     '<em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em>' +
     '</div>' +
     '<div class="day-block">' +
     '<div class="day-title">Sunday 13 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional)</span></div>' +
-    '<strong>From 13:00</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos \u{1F4CD}</a><br>' +
+    '<strong>From 13:00</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos</a><br>' +
     '<span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span>' +
     '</div>' +
     '</div>' +
@@ -260,9 +260,9 @@ function renderHub() {
 
   html += '<div class="s-card">' +
     '<div class="s-card-head" onclick="toggleCard(\'Practical\')">' +
-    '<span class="s-card-ico">\u2139\uFE0F</span>' +
+    '<span class="s-card-ico">*</span>' +
     '<div class="s-card-title">Practical details</div>' +
-    '<span class="s-card-arr" id="arrPractical">\u25BC</span>' +
+    '<span class="s-card-arr" id="arrPractical">▼</span>' +
     '</div>' +
     '<div class="s-card-body" id="bodyPractical">' +
     '<div class="prac-item"><label>Friday dress code</label><span>Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</span></div>' +
@@ -278,10 +278,10 @@ function renderHub() {
 
   html += '<div class="s-card" id="cardGroup">' +
     '<div class="s-card-head" onclick="toggleCard(\'Group\')">' +
-    '<span class="s-card-ico">\u{1F4AC}</span>' +
+    '<span class="s-card-ico">+</span>' +
     '<div class="s-card-title">Stay in the loop</div>' +
     '<span class="s-card-badge ' + (sharedData.groupOptIn ? 'badge-done' : 'badge-pend') + '">' + (sharedData.groupOptIn ? 'Added' : 'Optional') + '</span>' +
-    '<span class="s-card-arr" id="arrGroup">\u25BC</span>' +
+    '<span class="s-card-arr" id="arrGroup">▼</span>' +
     '</div>' +
     '<div class="s-card-body" id="bodyGroup">' +
     '<div class="hub-note">Want live updates across the weekend? Leave your number and we will add you to our WhatsApp group. This is optional.</div>' +
