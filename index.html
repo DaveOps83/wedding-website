@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
   <title>Merici & David's Wedding</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
@@ -46,8 +47,9 @@
     .s-card-body { padding: 1rem 1.1rem; text-align: center; }
     .form-grp { margin: 1rem 0; }
     .form-lbl { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--ink); font-size: 0.875rem; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .form-inp { width: 100%; padding: 0.875rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: "DM Sans", sans-serif; }
-    .form-inp:focus { outline: none; border-color: var(--terra); }
+    .form-inp:focus { outline: none; border-color: var(--terra); box-shadow: 0 0 0 3px rgba(85,28,37,0.25); }
     .save-btn, .login-btn { background: var(--terra); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 500; font-size: 1rem; }
     .save-btn:hover, .login-btn:hover { opacity: 0.9; }
     .save-btn:disabled, .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -75,6 +77,7 @@
     .section-heading:first-of-type { margin-top: 0; }
     
     .event-note { font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; font-style: italic; text-align: left; }
+    .map-link { color: var(--terra); }
 
     /* Responsive design */
     @media (min-width: 768px) {
@@ -105,10 +108,11 @@
   <div class="welcome-screen">
     <h1 style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David's Wedding</h1>
     <div style="margin-bottom: 1rem; width: 100%; max-width: 300px; margin-left: auto; margin-right: auto;">
+      <label for="passwordInp" class="visually-hidden">Password</label>
       <input type="password" id="passwordInp" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
     </div>
     <button class="login-btn" id="loginBtn" onclick="tryLogin()" style="">Login</button>
-    <div id="loginErr" class="login-err"></div>
+    <div id="loginErr" class="login-err" role="alert" aria-live="polite"></div>
   </div>
 </div>
 
@@ -152,6 +156,18 @@ function navigate(path) {
   render();
 }
 
+function showWelcome() {
+  document.getElementById('welcomePage').classList.add('active');
+  document.getElementById('hubPage').classList.remove('active');
+  setTimeout(() => {
+    const pass = document.getElementById('passwordInp');
+    if (pass) {
+      pass.value = '';
+      pass.focus();
+    }
+  }, 0);
+}
+
 function render() {
   const path = window.location.pathname;
   
@@ -161,23 +177,34 @@ function render() {
   
   // Show appropriate page
   if (path === '/' || path === '') {
-    document.getElementById('welcomePage').classList.add('active');
-    // Clear and focus password field
-    setTimeout(() => {
-      const pass = document.getElementById('passwordInp');
-      if (pass) {
-        pass.value = '';
-        pass.focus();
-      }
-    }, 0);
+    showWelcome();
   } else if (path === '/hub') {
     const token = sessionStorage.getItem('auth_token');
     if (!token) {
       navigate('/');
       return;
     }
-    document.getElementById('hubPage').classList.add('active');
-    renderHub();
+    // Never trust the mere presence of a token — verify its signature and
+    // expiry with the server before rendering any hub content. This closes
+    // the bypass where a fake sessionStorage value used to grant access.
+    fetch('/.netlify/functions/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('invalid');
+      return res.json();
+    })
+    .then(data => {
+      if (!data.valid) throw new Error('invalid');
+      document.getElementById('hubPage').classList.add('active');
+      renderHub();
+    })
+    .catch(() => {
+      sessionStorage.removeItem('auth_token');
+      navigate('/');
+    });
   } else {
     navigate('/');
   }
@@ -207,7 +234,8 @@ function tryLogin() {
   .then(res => res.json())
   .then(data => {
     if (data.token) {
-      // Store token in sessionStorage (cleared when browser closes)
+      // Store the signed, time-bound token in sessionStorage (cleared when
+      // the browser closes). /hub re-verifies it server-side on every visit.
       sessionStorage.setItem('auth_token', data.token);
       currentUser = 'guest';
       err.textContent = '';
@@ -239,13 +267,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initial render
   render();
-  
-  // On page load, check if already authenticated via sessionStorage
-  const token = sessionStorage.getItem('auth_token');
-  if (token && (window.location.pathname === '/' || window.location.pathname === '')) {
-    // User was already logged in; redirect to hub
-    navigate('/hub');
-  }
 });
 
 // Allow Enter key on password field
@@ -266,12 +287,12 @@ function renderHub() {
     '<div class="s-card-body">' +
     '<div class="section-heading">Ceremony</div>' +
     '<table class="schedule-table">' +
-    '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, M&aacute;laga</a> (approx. 45min&ndash;1hr)</td></tr>' +
+    '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan, M&aacute;laga</a> (approx. 45min&ndash;1hr)</td></tr>' +
     '<tr><td>~18:15</td><td>Photos outside the church (approx. 20 minutes)</td></tr>' +
     '</table>' +
     '<div class="section-heading">Reception</div>' +
     '<table class="schedule-table">' +
-    '<tr><td>19:00</td><td>Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options</td></tr>' +
+    '<tr><td>19:00</td><td>Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options</td></tr>' +
     '<tr><td>19:15</td><td>Cocktails begin, lower area of the palacete</td></tr>' +
     '<tr><td>20:30</td><td>Dinner &amp; celebration, in front of the palacete</td></tr>' +
     '<tr><td>22:45</td><td>Open bar &amp; dancing</td></tr>' +
@@ -289,7 +310,7 @@ function renderHub() {
     '</div>' +
     '<div class="s-card-body">' +
     '<table class="schedule-table">' +
-    '<tr><td>15:00&ndash;17:00</td><td>Drinks &amp; tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, M&aacute;laga</a></td></tr>' +
+    '<tr><td>15:00&ndash;17:00</td><td>Drinks &amp; tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes, M&aacute;laga</a></td></tr>' +
     '<tr><td>From 17:00</td><td>Up to the terrace, chill-out area with skyline views, or the music &amp; DJ area if you feel like partying</td></tr>' +
     '<tr><td></td><td><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></td></tr>' +
     '</table>' +
@@ -303,7 +324,7 @@ function renderHub() {
     '</div>' +
     '<div class="s-card-body">' +
     '<table class="schedule-table">' +
-    '<tr><td>From 13:00</td><td><a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos</a></td></tr>' +
+    '<tr><td>From 13:00</td><td><a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House, Torremolinos</a></td></tr>' +
     '<tr><td></td><td><span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span></td></tr>' +
     '</table>' +
     '<div class="day-dress-code"><strong>Dress code:</strong> Casual beachwear, obviously.</div>' +
@@ -319,7 +340,6 @@ function renderHub() {
     '<div class="prac-item"><label>Coordinator (all days)</label><span>Lucia<br>+34 666 89 11 00</span></div>' +
     '<div class="prac-item"><label>Taxi (M&aacute;laga capital)</label><span>952 33 33 33</span></div>' +
     '<div class="prac-item"><label>Weather</label><span>Warm, 27&ndash;32&deg;C<br>Bring sun protection</span></div>' +
-    '<div class="hub-note" style="margin-top:1rem">Questions? Reach out to Lucia directly, she\'s coordinating all weekend and is here to help.</div>' +
     '</div>' +
     '</div>';
 
