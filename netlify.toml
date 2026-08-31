@@ -16,8 +16,8 @@
     Referrer-Policy = "no-referrer"
     # Permissions policy - restrict browser features
     Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
-    # Content Security Policy - restrict content sources
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
+    # Content Security Policy - allow inline styles/scripts (single-file SPA), restrict external content
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
     # Force HTTPS and enable preload
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
 
