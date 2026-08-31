@@ -32,8 +32,8 @@
     .hub-footer-content { max-width: 900px; width: 100%; text-align: center; }
     
     .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
-    .s-card-head { padding: 1.1rem; background: #F9F7F3; display: flex; align-items: center; gap: 0.75rem; }
-    .s-card-title { flex: 1; text-align: left; font-weight: 500; }
+    .s-card-head { padding: 1.1rem; background: #F9F7F3; display: flex; align-items: center; gap: 0.75rem; justify-content: center; }
+    .s-card-title { text-align: center; font-weight: 500; }
     .s-card-badge { font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 4px; background: #E8E0D0; color: var(--ink); flex-shrink: 0; }
     .badge-done { background: var(--terra); color: white; }
     .badge-pend { background: #F0E6D8; }
@@ -247,11 +247,9 @@ function renderHub() {
 
   html += '<div class="s-card">' +
     '<div class="s-card-head">' +
-    '<div class="s-card-title">Weekend itinerary</div>' +
+    '<div class="s-card-title">Friday 11 September</div>' +
     '</div>' +
     '<div class="s-card-body">' +
-    '<div class="day-block">' +
-    '<div class="day-title">Friday 11 September</div>' +
     '<div class="section-heading">Ceremony</div>' +
     '<table class="schedule-table">' +
     '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, M&aacute;laga</a> (approx. 45min&ndash;1hr)</td></tr>' +
@@ -268,21 +266,30 @@ function renderHub() {
     '</table>' +
     '<div class="event-note">Important: cars aren\'t allowed into M&aacute;laga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</div>' +
     '</div>' +
-    '<div class="day-block">' +
-    '<div class="day-title">Saturday 12 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional, for confirmed guests)</span></div>' +
+    '</div>';
+
+  html += '<div class="s-card">' +
+    '<div class="s-card-head">' +
+    '<div class="s-card-title">Saturday 12 September</div>' +
+    '</div>' +
+    '<div class="s-card-body">' +
     '<table class="schedule-table">' +
     '<tr><td>15:00&ndash;17:00</td><td>Drinks &amp; tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, M&aacute;laga</a></td></tr>' +
     '<tr><td>From 17:00</td><td>Up to the terrace, chill-out area with skyline views, or the music &amp; DJ area if you feel like partying</td></tr>' +
     '<tr><td></td><td><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></td></tr>' +
     '</table>' +
     '</div>' +
-    '<div class="day-block">' +
-    '<div class="day-title">Sunday 13 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional)</span></div>' +
+    '</div>';
+
+  html += '<div class="s-card">' +
+    '<div class="s-card-head">' +
+    '<div class="s-card-title">Sunday 13 September</div>' +
+    '</div>' +
+    '<div class="s-card-body">' +
     '<table class="schedule-table">' +
     '<tr><td>From 13:00</td><td><a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos</a></td></tr>' +
     '<tr><td></td><td><span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span></td></tr>' +
     '</table>' +
-    '</div>' +
     '</div>' +
     '</div>';
 
