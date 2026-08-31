@@ -72,6 +72,14 @@
     .schedule-table td { padding: 0.5rem 0; border: none; text-align: left; }
     .schedule-table td:first-child { width: 80px; font-weight: 500; white-space: nowrap; }
     .schedule-table td:last-child { padding-left: 1rem; color: var(--ink-soft); }
+
+    /* Centered variant: used for Ceremony & Reception schedules so both
+       columns sit centered as a block within the card, matching the
+       centered section heading above each. */
+    .schedule-table.centered { width: auto; margin: 0 auto 0.75rem; }
+    .schedule-table.centered td { text-align: center; }
+    .schedule-table.centered td:first-child { width: auto; padding-right: 1rem; }
+    .schedule-table.centered td:last-child { padding-left: 0; text-align: left; }
     
     .section-heading { font-size: 0.95rem; font-weight: 600; color: var(--terra); margin-top: 1.5rem; margin-bottom: 0.75rem; text-align: left; }
     .section-heading:first-of-type { margin-top: 0; text-align: center; }
@@ -99,6 +107,8 @@
       .s-card-body { padding: 1rem; }
       .day-title { font-size: 1rem; }
       .schedule-table td:first-child { width: 70px; font-size: 0.9rem; }
+      .schedule-table.centered { width: 100%; }
+      .schedule-table.centered td:first-child { width: 70px; }
       .hub-header { flex-direction: column; gap: 1rem; margin-bottom: 2rem; align-items: stretch; }
       .hub-welcome h2 { font-size: 1.8rem; }
       .hub-top-box { width: 100%; flex-shrink: auto; padding: 1rem; }
@@ -291,7 +301,7 @@ function renderHub() {
     '<div class="s-card-body">' +
 
     '<div class="section-heading">Ceremony</div>' +
-    '<table class="schedule-table">' +
+    '<table class="schedule-table centered">' +
     '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan, M&aacute;laga</a> (approx. 45min&ndash;1hr)</td></tr>' +
     '<tr><td>~18:15</td><td>Photos outside the church (approx. 20 minutes)</td></tr>' +
     '</table>' +
@@ -299,8 +309,8 @@ function renderHub() {
     '<div class="event-field"><strong>Transport:</strong> Only reachable on foot &mdash; cars aren\'t permitted in the historic centre, so allow a few extra minutes to arrive on time.</div>' +
     '<div class="event-field"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. Please cover your shoulders for the ceremony.</div>' +
 
-    '<div class="section-heading">Reception</div>' +
-    '<table class="schedule-table">' +
+    '<div class="section-heading" style="text-align:center">Reception</div>' +
+    '<table class="schedule-table centered">' +
     '<tr><td>19:00</td><td>Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options</td></tr>' +
     '<tr><td>19:15</td><td>Cocktails begin, lower area of the palacete</td></tr>' +
     '<tr><td>20:30</td><td>Dinner &amp; celebration, in front of the palacete</td></tr>' +
