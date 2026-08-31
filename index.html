@@ -32,13 +32,12 @@
     .hub-footer-content { max-width: 900px; width: 100%; text-align: center; }
     
     .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
-    .s-card-head { padding: 1.1rem; background: #F9F7F3; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; }
+    .s-card-head { padding: 1.1rem; background: #F9F7F3; display: flex; align-items: center; gap: 0.75rem; }
     .s-card-title { flex: 1; text-align: left; font-weight: 500; }
     .s-card-badge { font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 4px; background: #E8E0D0; color: var(--ink); flex-shrink: 0; }
     .badge-done { background: var(--terra); color: white; }
     .badge-pend { background: #F0E6D8; }
-    .s-card-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 1.1rem; text-align: center; }
-    .s-card-body.open { max-height: 2000px; padding: 1rem 1.1rem; }
+    .s-card-body { padding: 1rem 1.1rem; text-align: center; }
     .form-grp { margin: 1rem 0; }
     .form-lbl { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--ink); font-size: 0.875rem; }
     .form-inp { width: 100%; padding: 0.875rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: "DM Sans", sans-serif; }
@@ -83,8 +82,7 @@
       .hub-top-right { top: 1rem; right: 1rem; max-width: none; }
       .hub-footer { padding: 1.5rem 1rem; }
       .s-card-head { padding: 1rem; }
-      .s-card-body { padding: 0 1rem; }
-      .s-card-body.open { padding: 1rem; }
+      .s-card-body { padding: 1rem; }
       .day-title { font-size: 1rem; }
       .schedule-table td:first-child { width: 70px; font-size: 0.9rem; }
     }
@@ -248,11 +246,10 @@ function renderHub() {
   let html = '';
 
   html += '<div class="s-card">' +
-    '<div class="s-card-head" onclick="toggleCard(\'Itinerary\')">' +
+    '<div class="s-card-head">' +
     '<div class="s-card-title">Weekend itinerary</div>' +
-    '<span class="s-card-arr" id="arrItinerary">\u25bc</span>' +
     '</div>' +
-    '<div class="s-card-body open" id="bodyItinerary">' +
+    '<div class="s-card-body">' +
     '<div class="day-block">' +
     '<div class="day-title">Friday 11 September</div>' +
     '<div class="section-heading">Ceremony</div>' +
@@ -290,11 +287,10 @@ function renderHub() {
     '</div>';
 
   html += '<div class="s-card">' +
-    '<div class="s-card-head" onclick="toggleCard(\'Practical\')">' +
+    '<div class="s-card-head">' +
     '<div class="s-card-title">Practical details</div>' +
-    '<span class="s-card-arr" id="arrPractical">\u25bc</span>' +
     '</div>' +
-    '<div class="s-card-body" id="bodyPractical">' +
+    '<div class="s-card-body">' +
     '<div class="prac-item"><label>Friday dress code</label><span>Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</span></div>' +
     '<div class="prac-item"><label>Saturday dress code</label><span>Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.</span></div>' +
     '<div class="prac-item"><label>Sunday dress code</label><span>Casual beachwear, obviously.</span></div>' +
@@ -307,14 +303,6 @@ function renderHub() {
     '</div>';
 
   c.innerHTML = html;
-}
-
-function toggleCard(id) {
-  const body = document.getElementById('body' + id);
-  const arr = document.getElementById('arr' + id);
-  if (!body) return;
-  body.classList.toggle('open');
-  arr.textContent = body.classList.contains('open') ? '\u25bc' : '\u25b6';
 }
 </script>
 </body>
