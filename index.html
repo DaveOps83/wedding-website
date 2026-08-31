@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow, noarchive">
   <title>Merici & David's Wedding</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦤</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -34,6 +35,12 @@
     .hub-top-box p { margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5; }
     .hub-top-box p:first-child { color: var(--ink-soft); font-size: 0.875rem; }
     .hub-top-box p:last-child { font-weight: 600; }
+
+    /* Language selector */
+    .lang-bar { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
+    .lang-select { border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.6rem; font-size: 0.85rem; font-family: "DM Sans", sans-serif; color: var(--ink); background: white; cursor: pointer; }
+    .lang-select:focus { outline: none; border-color: var(--terra); }
+    .lang-bar-welcome { margin-bottom: 1.5rem; }
     
     .hub-footer { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; border-top: 1px solid var(--border); background: white; }
     .hub-footer-content { max-width: 760px; width: 100%; text-align: center; }
@@ -124,9 +131,16 @@
 <!-- Welcome Page with Password -->
 <div id="welcomePage" class="page">
   <div class="welcome-screen">
-    <h1 style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David's Wedding</h1>
+    <div class="lang-bar lang-bar-welcome">
+      <select id="langSelectWelcome" class="lang-select" onchange="changeLang(this.value)" aria-label="Language / Idioma / Idioma">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="pt">Português</option>
+      </select>
+    </div>
+    <h1 id="welcomeHeading" style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David's Wedding</h1>
     <div style="margin-bottom: 1rem; width: 100%; max-width: 300px; margin-left: auto; margin-right: auto;">
-      <label for="passwordInp" class="visually-hidden">Password</label>
+      <label for="passwordInp" class="visually-hidden" id="passwordLabel">Password</label>
       <input type="password" id="passwordInp" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
     </div>
     <button class="login-btn" id="loginBtn" onclick="tryLogin()" style="">Login</button>
@@ -140,15 +154,22 @@
     <!-- Main content -->
     <div class="hub-content">
       <div class="hub-wrapper">
+        <div class="lang-bar">
+          <select id="langSelectHub" class="lang-select" onchange="changeLang(this.value)" aria-label="Language / Idioma / Idioma">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+          </select>
+        </div>
         <!-- Welcome heading and Questions box on same row -->
         <div class="hub-header">
           <div class="hub-welcome">
-            <h2>Welcome</h2>
-            <p>Here's everything you need for the weekend.</p>
+            <h2 id="hubWelcomeHeading">Welcome</h2>
+            <p id="hubSubtitleText">Here's everything you need for the weekend.</p>
           </div>
           <div class="hub-top-box">
-            <p>Questions?</p>
-            <p>Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
+            <p id="hubQuestionsLabel">Questions?</p>
+            <p id="hubCoordinatorLine">Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
           </div>
         </div>
         
@@ -157,7 +178,7 @@
         <!-- Footer with logout (inside scrollable content) -->
         <div class="hub-footer">
           <div class="hub-footer-content">
-            <button onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Log out</button>
+            <button id="hubLogoutBtn" onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Log out</button>
           </div>
         </div>
       </div>
@@ -169,6 +190,227 @@
 let currentUser = null;
 let sharedData = {};
 
+/* ---------------- Translations ---------------- */
+const translations = {
+  en: {
+    pageTitle: "Merici & David's Wedding",
+    welcomeHeading: "Merici & David's Wedding",
+    passwordPlaceholder: "Password",
+    passwordLabel: "Password",
+    loginBtn: "Login",
+    loggingIn: "Logging in...",
+    errPasswordRequired: "Password required.",
+    errAuthFailed: "Authentication failed.",
+    errConnection: "Connection error. Please try again.",
+    hubWelcome: "Welcome",
+    hubSubtitle: "Here's everything you need for the weekend.",
+    questionsLabel: "Questions?",
+    coordinatorLine: "Lucia \u00b7 Event Coordinator \u00b7 +34 666 89 11 00",
+    logout: "Log out",
+    fridayTitle: "Friday 11 September",
+    saturdayTitle: "Saturday 12 September",
+    sundayTitle: "Sunday 13 September",
+    usefulInfoTitle: "Useful Information",
+    ceremonyHeading: "Ceremony",
+    receptionHeading: "Reception",
+    drinksHeading: "Drinks & tapas",
+    beachHeading: "Beach day",
+    locationLabel: "Location:",
+    transportLabel: "Transport:",
+    dressLabel: "Dress code:",
+    taxiLabel: "Taxi (M\u00e1laga capital)",
+    weatherLabel: "Weather",
+    weatherValue: "Warm, 27\u201332\u00b0C<br>Bring sun protection",
+    fri_c1: "Ceremony starts",
+    fri_c2: "Photos outside the church",
+    fri_c_loc: "Iglesia de San Juan, M\u00e1laga historic centre.",
+    fri_c_transport: "Only reachable on foot \u2014 cars aren't permitted in the historic centre, so allow a few extra minutes to arrive on time.",
+    fri_c_dress: "Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. Please cover your shoulders for the ceremony.",
+    fri_r1: "Guests arrive",
+    fri_r2: "Cocktails begin, lower forecourt",
+    fri_r3: "Dinner & celebration, main forecourt",
+    fri_r4: "Open bar & dancing",
+    fri_r5: "Late-night bites",
+    fri_r6: "Open bar ends",
+    fri_r_loc: "Hacienda Nadales, Camino de Casabermeja 128, M\u00e1laga.",
+    fri_r_transport: "Taxi, Uber, or car are the easiest options; we are not providing transport.",
+    fri_r_dress: "Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer.",
+    sat_1: "Drinks & tapas",
+    sat_2: "Up to the terrace, chill-out area with skyline views, or the music & DJ area if you feel like partying. No fixed plan after that, we'll see how we feel.",
+    sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
+    sat_transport: "Taxi, Uber, or car recommended; we are not providing transport.",
+    sat_dress: "Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.",
+    sun_1: "We'll be spending the day unwinding from the wedding, you're welcome to join us. If you'd like help arranging a beach bed, just let us know and we'll ask our planner.",
+    sun_loc: "La Playa Surf House, Torremolinos.",
+    sun_transport: "Taxi, Uber, or car recommended; we are not providing transport.",
+    sun_dress: "Casual beachwear, obviously."
+  },
+  es: {
+    pageTitle: "Boda de Merici y David",
+    welcomeHeading: "Boda de Merici y David",
+    passwordPlaceholder: "Contrase\u00f1a",
+    passwordLabel: "Contrase\u00f1a",
+    loginBtn: "Entrar",
+    loggingIn: "Entrando...",
+    errPasswordRequired: "Se requiere contrase\u00f1a.",
+    errAuthFailed: "Error de autenticaci\u00f3n.",
+    errConnection: "Error de conexi\u00f3n. Int\u00e9ntalo de nuevo.",
+    hubWelcome: "Bienvenidos",
+    hubSubtitle: "Aqu\u00ed ten\u00e9is todo lo que necesit\u00e1is para el fin de semana.",
+    questionsLabel: "\u00bfPreguntas?",
+    coordinatorLine: "Lucia \u00b7 Coordinadora del evento \u00b7 +34 666 89 11 00",
+    logout: "Cerrar sesi\u00f3n",
+    fridayTitle: "Viernes 11 de septiembre",
+    saturdayTitle: "S\u00e1bado 12 de septiembre",
+    sundayTitle: "Domingo 13 de septiembre",
+    usefulInfoTitle: "Informaci\u00f3n \u00fatil",
+    ceremonyHeading: "Ceremonia",
+    receptionHeading: "Recepci\u00f3n",
+    drinksHeading: "Copas y tapas",
+    beachHeading: "D\u00eda de playa",
+    locationLabel: "Ubicaci\u00f3n:",
+    transportLabel: "Transporte:",
+    dressLabel: "C\u00f3digo de vestimenta:",
+    taxiLabel: "Taxi (M\u00e1laga capital)",
+    weatherLabel: "Clima",
+    weatherValue: "C\u00e1lido, 27\u201332\u00b0C<br>Trae protecci\u00f3n solar",
+    fri_c1: "Comienza la ceremonia",
+    fri_c2: "Fotos a la salida de la iglesia",
+    fri_c_loc: "Iglesia de San Juan, centro hist\u00f3rico de M\u00e1laga.",
+    fri_c_transport: "Solo se puede llegar a pie \u2014 no se permiten coches en el centro hist\u00f3rico, as\u00ed que reserva unos minutos extra para llegar a tiempo.",
+    fri_c_dress: "Elegante informal o c\u00f3ctel: vestidos largos de verano, camisa entallada, o pantal\u00f3n de vestir con corbata y chaqueta. Por favor, cubre los hombros para la ceremonia.",
+    fri_r1: "Llegada de los invitados",
+    fri_r2: "Comienzan los c\u00f3cteles, patio inferior",
+    fri_r3: "Cena y celebraci\u00f3n, patio principal",
+    fri_r4: "Barra libre y baile",
+    fri_r5: "Aperitivos de madrugada",
+    fri_r6: "Termina la barra libre",
+    fri_r_loc: "Hacienda Nadales, Camino de Casabermeja 128, M\u00e1laga.",
+    fri_r_transport: "Taxi, Uber o coche son las opciones m\u00e1s sencillas; no proporcionamos transporte.",
+    fri_r_dress: "Elegante informal o c\u00f3ctel: vestidos largos de verano, camisa entallada, o pantal\u00f3n de vestir con corbata y chaqueta.",
+    sat_1: "Copas y tapas",
+    sat_2: "Sube a la terraza, zona chill-out con vistas al horizonte, o a la pista si te apetece fiesta. Sin plan fijo despu\u00e9s, \u00a1lo decidimos seg\u00fan nos sintamos!",
+    sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
+    sat_transport: "Se recomienda taxi, Uber o coche; no proporcionamos transporte.",
+    sat_dress: "Informal elegante de resort. Trocadero es una terraza junto al mar con estilo, as\u00ed que piensa en algo elevado pero relajado: camisas de lino, vestidos de verano, sandalias elegantes o espadrilles. Sin ba\u00f1ador ni chanclas.",
+    sun_1: "Pasaremos el d\u00eda relaj\u00e1ndonos despu\u00e9s de la boda, est\u00e1is invitados a acompa\u00f1arnos. Si quer\u00e9is ayuda para reservar una cama en la playa, decidnoslo y se lo pediremos a nuestra wedding planner.",
+    sun_loc: "La Playa Surf House, Torremolinos.",
+    sun_transport: "Se recomienda taxi, Uber o coche; no proporcionamos transporte.",
+    sun_dress: "Ropa de playa informal, evidentemente."
+  },
+  pt: {
+    pageTitle: "Casamento de Merici e David",
+    welcomeHeading: "Casamento de Merici e David",
+    passwordPlaceholder: "Palavra-passe",
+    passwordLabel: "Palavra-passe",
+    loginBtn: "Entrar",
+    loggingIn: "A entrar...",
+    errPasswordRequired: "Palavra-passe obrigat\u00f3ria.",
+    errAuthFailed: "Falha na autentica\u00e7\u00e3o.",
+    errConnection: "Erro de liga\u00e7\u00e3o. Tente novamente.",
+    hubWelcome: "Bem-vindos",
+    hubSubtitle: "Aqui est\u00e1 tudo o que precisam para o fim de semana.",
+    questionsLabel: "Perguntas?",
+    coordinatorLine: "Lucia \u00b7 Coordenadora do evento \u00b7 +34 666 89 11 00",
+    logout: "Sair",
+    fridayTitle: "Sexta-feira, 11 de setembro",
+    saturdayTitle: "S\u00e1bado, 12 de setembro",
+    sundayTitle: "Domingo, 13 de setembro",
+    usefulInfoTitle: "Informa\u00e7\u00e3o \u00fatil",
+    ceremonyHeading: "Cerim\u00f3nia",
+    receptionHeading: "Rece\u00e7\u00e3o",
+    drinksHeading: "Copos e petiscos",
+    beachHeading: "Dia de praia",
+    locationLabel: "Local:",
+    transportLabel: "Transporte:",
+    dressLabel: "C\u00f3digo de vestu\u00e1rio:",
+    taxiLabel: "T\u00e1xi (M\u00e1laga capital)",
+    weatherLabel: "Tempo",
+    weatherValue: "Quente, 27\u201332\u00b0C<br>Traga prote\u00e7\u00e3o solar",
+    fri_c1: "A cerim\u00f3nia come\u00e7a",
+    fri_c2: "Fotografias \u00e0 sa\u00edda da igreja",
+    fri_c_loc: "Iglesia de San Juan, centro hist\u00f3rico de M\u00e1laga.",
+    fri_c_transport: "S\u00f3 \u00e9 poss\u00edvel chegar a p\u00e9 \u2014 n\u00e3o s\u00e3o permitidos carros no centro hist\u00f3rico, por isso reserve alguns minutos extra para chegar a tempo.",
+    fri_c_dress: "Elegante casual ou cocktail: vestidos longos de ver\u00e3o, camisa social, ou cal\u00e7as de vestir com gravata e blazer. Por favor cubra os ombros para a cerim\u00f3nia.",
+    fri_r1: "Chegada dos convidados",
+    fri_r2: "In\u00edcio dos cocktails, p\u00e1tio inferior",
+    fri_r3: "Jantar e celebra\u00e7\u00e3o, p\u00e1tio principal",
+    fri_r4: "Bar aberto e dan\u00e7a",
+    fri_r5: "Petiscos noturnos",
+    fri_r6: "Fim do bar aberto",
+    fri_r_loc: "Hacienda Nadales, Camino de Casabermeja 128, M\u00e1laga.",
+    fri_r_transport: "T\u00e1xi, Uber ou carro s\u00e3o as op\u00e7\u00f5es mais f\u00e1ceis; n\u00e3o fornecemos transporte.",
+    fri_r_dress: "Elegante casual ou cocktail: vestidos longos de ver\u00e3o, camisa social, ou cal\u00e7as de vestir com gravata e blazer.",
+    sat_1: "Copos e petiscos",
+    sat_2: "Suba at\u00e9 ao terra\u00e7o, zona de descontra\u00e7\u00e3o com vista para o horizonte, ou \u00e0 pista de dan\u00e7a se quiser festa. Sem plano fixo depois disso, vamos ver como nos sentimos!",
+    sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
+    sat_transport: "Recomenda-se t\u00e1xi, Uber ou carro; n\u00e3o fornecemos transporte.",
+    sat_dress: "Casual chique de resort. O Trocadero \u00e9 um terra\u00e7o \u00e0 beira-mar com estilo, por isso pense em algo elegante mas relaxado: camisas de linho, vestidos de ver\u00e3o, sand\u00e1lias elegantes ou espadrilles. Sem roupa de banho nem chinelos.",
+    sun_1: "Vamos passar o dia a relaxar depois do casamento, s\u00e3o bem-vindos a juntar-se a n\u00f3s. Se quiserem ajuda a reservar uma cama de praia, basta avisar-nos e pedimos \u00e0 nossa wedding planner.",
+    sun_loc: "La Playa Surf House, Torremolinos.",
+    sun_transport: "Recomenda-se t\u00e1xi, Uber ou carro; n\u00e3o fornecemos transporte.",
+    sun_dress: "Roupa de praia casual, obviamente."
+  }
+};
+
+function getCookie(name) {
+  const match = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
+  return match ? decodeURIComponent(match[1]) : null;
+}
+function setCookie(name, value, days) {
+  const maxAge = days * 24 * 60 * 60;
+  document.cookie = name + '=' + encodeURIComponent(value) + '; max-age=' + maxAge + '; path=/; SameSite=Lax';
+}
+
+let currentLang = getCookie('lang') || 'en';
+if (!translations[currentLang]) currentLang = 'en';
+
+function t(key) {
+  return (translations[currentLang] && translations[currentLang][key]) || translations.en[key] || '';
+}
+
+function syncLangSelectors() {
+  const w = document.getElementById('langSelectWelcome');
+  const h = document.getElementById('langSelectHub');
+  if (w) w.value = currentLang;
+  if (h) h.value = currentLang;
+}
+
+function changeLang(lang) {
+  if (!translations[lang]) return;
+  currentLang = lang;
+  setCookie('lang', lang, 365);
+  document.documentElement.lang = lang;
+  document.title = t('pageTitle');
+  syncLangSelectors();
+  if (document.getElementById('hubPage').classList.contains('active')) {
+    applyHubTranslations();
+    renderHub();
+  } else {
+    applyWelcomeTranslations();
+  }
+}
+
+function applyWelcomeTranslations() {
+  document.getElementById('welcomeHeading').textContent = t('welcomeHeading');
+  document.getElementById('passwordLabel').textContent = t('passwordLabel');
+  const pass = document.getElementById('passwordInp');
+  if (pass) pass.placeholder = t('passwordPlaceholder');
+  const btn = document.getElementById('loginBtn');
+  if (btn && !btn.disabled) btn.textContent = t('loginBtn');
+  document.getElementById('loginErr').textContent = '';
+}
+
+function applyHubTranslations() {
+  document.getElementById('hubWelcomeHeading').textContent = t('hubWelcome');
+  document.getElementById('hubSubtitleText').textContent = t('hubSubtitle');
+  document.getElementById('hubQuestionsLabel').textContent = t('questionsLabel');
+  document.getElementById('hubCoordinatorLine').innerHTML = t('coordinatorLine');
+  document.getElementById('hubLogoutBtn').textContent = t('logout');
+}
+
+/* ---------------- Routing ---------------- */
+
 function navigate(path) {
   window.history.pushState({}, '', path);
   render();
@@ -177,6 +419,8 @@ function navigate(path) {
 function showWelcome() {
   document.getElementById('welcomePage').classList.add('active');
   document.getElementById('hubPage').classList.remove('active');
+  applyWelcomeTranslations();
+  syncLangSelectors();
   setTimeout(() => {
     const pass = document.getElementById('passwordInp');
     if (pass) {
@@ -217,6 +461,9 @@ function render() {
     .then(data => {
       if (!data.valid) throw new Error('invalid');
       document.getElementById('hubPage').classList.add('active');
+      document.title = t('pageTitle');
+      applyHubTranslations();
+      syncLangSelectors();
       renderHub();
     })
     .catch(() => {
@@ -234,13 +481,13 @@ function tryLogin() {
   const btn = document.getElementById('loginBtn');
   
   if (!pass) {
-    err.textContent = 'Password required.';
+    err.textContent = t('errPasswordRequired');
     return;
   }
 
   // Show loading state
-  const originalText = btn.textContent;
-  btn.textContent = 'Logging in...';
+  const originalText = t('loginBtn');
+  btn.textContent = t('loggingIn');
   btn.disabled = true;
 
   // Send password to server for validation
@@ -259,14 +506,14 @@ function tryLogin() {
       err.textContent = '';
       navigate('/hub');
     } else {
-      err.textContent = data.error || 'Authentication failed.';
+      err.textContent = data.error ? t('errAuthFailed') : t('errAuthFailed');
       btn.textContent = originalText;
       btn.disabled = false;
     }
   })
-  .catch(err => {
-    console.error('Login error:', err);
-    err.textContent = 'Connection error. Please try again.';
+  .catch(err2 => {
+    console.error('Login error:', err2);
+    err.textContent = t('errConnection');
     btn.textContent = originalText;
     btn.disabled = false;
   });
@@ -280,6 +527,9 @@ function logout() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  document.documentElement.lang = currentLang;
+  document.title = t('pageTitle');
+  syncLangSelectors();
   // Handle back/forward buttons
   window.addEventListener('popstate', render);
   
@@ -300,77 +550,77 @@ function renderHub() {
 
   html += '<div class="s-card">' +
     '<div class="s-card-head">' +
-    '<div class="s-card-title">Friday 11 September</div>' +
+    '<div class="s-card-title">' + t('fridayTitle') + '</div>' +
     '</div>' +
     '<div class="s-card-body">' +
 
-    '<div class="section-heading">Ceremony</div>' +
+    '<div class="section-heading">' + t('ceremonyHeading') + '</div>' +
     '<table class="schedule-table centered">' +
-    '<tr><td>17:30</td><td>Ceremony starts</td></tr>' +
-    '<tr><td>18:15</td><td>Photos outside the church</td></tr>' +
+    '<tr><td>17:30</td><td>' + t('fri_c1') + '</td></tr>' +
+    '<tr><td>18:15</td><td>' + t('fri_c2') + '</td></tr>' +
     '</table>' +
-    '<div class="event-field"><strong>Location:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, M&aacute;laga historic centre.</div>' +
-    '<div class="event-field"><strong>Transport:</strong> Only reachable on foot &mdash; cars aren\'t permitted in the historic centre, so allow a few extra minutes to arrive on time.</div>' +
-    '<div class="event-field"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. Please cover your shoulders for the ceremony.</div>' +
+    '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, ' + t('fri_c_loc').replace('Iglesia de San Juan, ', '') + '</div>' +
+    '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('fri_c_transport') + '</div>' +
+    '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('fri_c_dress') + '</div>' +
 
-    '<div class="section-heading" style="text-align:center">Reception</div>' +
+    '<div class="section-heading" style="text-align:center">' + t('receptionHeading') + '</div>' +
     '<table class="schedule-table centered">' +
-    '<tr><td>19:00</td><td>Guests arrive</td></tr>' +
-    '<tr><td>19:15</td><td>Cocktails begin, lower forecourt</td></tr>' +
-    '<tr><td>20:30</td><td>Dinner &amp; celebration, main forecourt</td></tr>' +
-    '<tr><td>22:45</td><td>Open bar &amp; dancing</td></tr>' +
-    '<tr><td>01:15</td><td>Late-night bites</td></tr>' +
-    '<tr><td>03:00</td><td>Open bar ends</td></tr>' +
+    '<tr><td>19:00</td><td>' + t('fri_r1') + '</td></tr>' +
+    '<tr><td>19:15</td><td>' + t('fri_r2') + '</td></tr>' +
+    '<tr><td>20:30</td><td>' + t('fri_r3') + '</td></tr>' +
+    '<tr><td>22:45</td><td>' + t('fri_r4') + '</td></tr>' +
+    '<tr><td>01:15</td><td>' + t('fri_r5') + '</td></tr>' +
+    '<tr><td>03:00</td><td>' + t('fri_r6') + '</td></tr>' +
     '</table>' +
-    '<div class="event-field"><strong>Location:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, Camino de Casabermeja 128, M&aacute;laga.</div>' +
-    '<div class="event-field"><strong>Transport:</strong> Taxi, Uber, or car are the easiest options; we are not providing transport.</div>' +
-    '<div class="event-field"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer.</div>' +
+    '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, ' + t('fri_r_loc').replace('Hacienda Nadales, ', '') + '</div>' +
+    '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('fri_r_transport') + '</div>' +
+    '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('fri_r_dress') + '</div>' +
 
     '</div>' +
     '</div>';
 
   html += '<div class="s-card">' +
     '<div class="s-card-head">' +
-    '<div class="s-card-title">Saturday 12 September</div>' +
+    '<div class="s-card-title">' + t('saturdayTitle') + '</div>' +
     '</div>' +
     '<div class="s-card-body">' +
 
-    '<div class="section-heading">Drinks &amp; tapas</div>' +
+    '<div class="section-heading">' + t('drinksHeading') + '</div>' +
     '<table class="schedule-table">' +
-    '<tr><td>15:00</td><td>Drinks &amp; tapas</td></tr>' +
-    '<tr><td>17:00</td><td>Up to the terrace, chill-out area with skyline views, or the music &amp; DJ area if you feel like partying. No fixed plan after that, we\'ll see how we feel.</td></tr>' +
+    '<tr><td>15:00</td><td>' + t('sat_1') + '</td></tr>' +
+    '<tr><td>17:00</td><td>' + t('sat_2') + '</td></tr>' +
     '</table>' +
-    '<div class="event-field"><strong>Location:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes</a>, Paseo de la Farola 25, M&aacute;laga.</div>' +
-    '<div class="event-field"><strong>Transport:</strong> Taxi, Uber, or car recommended; we are not providing transport.</div>' +
-    '<div class="event-field"><strong>Dress code:</strong> Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.</div>' +
+    '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes</a>, ' + t('sat_loc').replace('Trocadero Casa de Botes, ', '') + '</div>' +
+    '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('sat_transport') + '</div>' +
+    '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sat_dress') + '</div>' +
 
     '</div>' +
     '</div>';
 
   html += '<div class="s-card">' +
     '<div class="s-card-head">' +
-    '<div class="s-card-title">Sunday 13 September</div>' +
+    '<div class="s-card-title">' + t('sundayTitle') + '</div>' +
     '</div>' +
     '<div class="s-card-body">' +
 
-    '<div class="section-heading">Beach day</div>' +
+    '<div class="section-heading">' + t('beachHeading') + '</div>' +
     '<table class="schedule-table">' +
-    '<tr><td>13:00</td><td>We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</td></tr>' +
+    '<tr><td>13:00</td><td>' + t('sun_1') + '</td></tr>' +
     '</table>' +
-    '<div class="event-field"><strong>Location:</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House</a>, Torremolinos.</div>' +
-    '<div class="event-field"><strong>Transport:</strong> Taxi, Uber, or car recommended; we are not providing transport.</div>' +
-    '<div class="event-field"><strong>Dress code:</strong> Casual beachwear, obviously.</div>' +
+    '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House</a>, ' + t('sun_loc').replace('La Playa Surf House, ', '') + '</div>' +
+    '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('sun_transport') + '</div>' +
+    '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sun_dress') + '</div>' +
 
     '</div>' +
     '</div>';
 
   html += '<div class="s-card">' +
     '<div class="s-card-head">' +
-    '<div class="s-card-title">Useful Information</div>' +
+    '<div class="s-card-title">' + t('usefulInfoTitle') + '</div>' +
     '</div>' +
     '<div class="s-card-body">' +
-    '<div class="prac-item"><label>Taxi (M&aacute;laga capital)</label><span>+34 952 33 33 33</span></div>' +
-    '<div class="prac-item"><label>Weather</label><span>Warm, 27&ndash;32&deg;C<br>Bring sun protection</span></div>' +
+    '<div class="prac-item"><label>' + t('taxiLabel') + '</label><span>+34 952 33 33 33</span></div>' +
+    '<div class="prac-item"><label>' + t('weatherLabel') + '</label><span>' + t('weatherValue') + '</span></div>' +
     '</div>' +
     '</div>';
 
