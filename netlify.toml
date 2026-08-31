@@ -1,6 +1,7 @@
 [build]
-  command = "node build.js"
+  command = "echo 'Static site, no build needed'"
   publish = "."
+  functions = "netlify/functions"
 
 [[redirects]]
   from = "/*"
@@ -8,7 +9,7 @@
   status = 200
 
 [context.production]
-  command = "node build.js"
+  command = "echo 'Production build'"
 
 [context.deploy-preview]
-  command = "node build.js"
+  command = "echo 'Deploy preview'"
