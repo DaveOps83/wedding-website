@@ -38,6 +38,7 @@
     .day-block { margin-bottom: 1.5rem; }
     .day-block:last-child { margin-bottom: 0; }
     .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--terra); }
+    .login-err { color: #c23b3b; margin-top: 1rem; font-size: 0.875rem; }
   </style>
 </head>
 <body>
@@ -45,17 +46,20 @@
   <p style="font-size: 0.9rem; letter-spacing: 0.15em; font-weight: 600; color: var(--terra); margin-bottom: 0.5rem;">THE WEDDING OF</p>
   <h1 style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David</h1>
   <p style="color: var(--ink-soft); margin-bottom: 3rem;">11 to 13 September 2026 &middot; M&aacute;laga, Spain</p>
-  <button onclick="goToHub()" style="background: var(--terra); color: white; border: none; padding: 0.875rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Go to my hub</button>
+  <button onclick="goToLogin()" style="background: var(--terra); color: white; border: none; padding: 0.875rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Go to my hub</button>
 </div>
 <div class="login-screen" id="loginScreen">
   <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Welcome</h2>
-  <input type="text" class="login-inp" id="loginInp" placeholder="Your full name..." autocomplete="name" style="border: 2px solid var(--terra); padding: 0.875rem; border-radius: 8px; font-size: 1rem;">
-  <button onclick="tryLogin()" style="background: var(--terra); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500; margin-top: 1rem;">Log in</button>
-  <div id="loginErr" style="color: #c23b3b; margin-top: 1rem; font-size: 0.875rem;"></div>
+  <div style="margin-bottom: 1rem; width: 100%; max-width: 300px;">
+    <input type="text" id="loginUser" placeholder="Username" autocomplete="username" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem; margin-bottom: 0.75rem;">
+    <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
+  </div>
+  <button onclick="tryLogin()" style="background: var(--terra); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Log in</button>
+  <div id="loginErr" class="login-err"></div>
 </div>
 <div class="hub" id="hub">
   <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
-    <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome, <span id="welcomeName">Guest</span></h2>
+    <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome</h2>
     <p style="color: var(--ink-soft); margin-bottom: 3rem;">Here's everything you need for the weekend.</p>
     <div id="hubContent"></div>
     <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center;">
@@ -66,39 +70,44 @@
   </div>
 </div>
 <script>
-const ALL_GUESTS = [{name: "Merici Pereira"}, {name: "David Opperman"}, {name: "Alison Ager"}, {name: "Yaniana Blanco"}];
-let currentGuest = null;
+let currentUser = null;
 let sharedData = {};
 
+const AUTH_CREDENTIALS = {
+  username: 'guest',
+  password: 'welcome2026'
+};
+
+function goToLogin() {
+  document.getElementById('welcomeScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
 function tryLogin() {
-  const inp = document.getElementById('loginInp').value.trim();
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
   const err = document.getElementById('loginErr');
-  const matched = ALL_GUESTS.find(function(g) { return g.name.toLowerCase() === inp.toLowerCase(); });
-  if (matched) {
-    currentGuest = matched;
+  
+  if (user === AUTH_CREDENTIALS.username && pass === AUTH_CREDENTIALS.password) {
+    currentUser = user;
     err.textContent = '';
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('hub').classList.add('show');
-    document.getElementById('welcomeName').textContent = matched.name.split(' ')[0];
     renderHub();
   } else {
-    err.textContent = "\"" + inp + "\" is not on the guest list. Check your spelling.";
+    err.textContent = 'Invalid username or password.';
   }
-}
-
-function goToHub() {
-  document.getElementById('welcomeScreen').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
 }
 
 function logout() {
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('hub').classList.remove('show');
-  document.getElementById('loginInp').value = '';
-  currentGuest = null;
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  currentUser = null;
 }
 
-document.getElementById('loginInp').addEventListener('keypress', function(e) { if (e.key === 'Enter') tryLogin(); });
+document.getElementById('loginPass').addEventListener('keypress', function(e) { if (e.key === 'Enter') tryLogin(); });
 
 function renderHub() {
   const c = document.getElementById('hubContent');
@@ -117,8 +126,8 @@ function renderHub() {
     '<strong>~18:15</strong> Photos outside the church (approx. 20 minutes)<br>' +
     '<strong>19:00</strong> Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales \u{1F4CD}</a>, taxi, Uber, or car are the easiest options<br>' +
     '<strong>19:15</strong> Cocktails begin, lower area of the palacete<br>' +
-    '<strong>20:30</strong> Dinner & celebration, in front of the palacete<br>' +
-    '<strong>22:45</strong> Open bar & dancing<br>' +
+    '<strong>20:30</strong> Dinner &amp; celebration, in front of the palacete<br>' +
+    '<strong>22:45</strong> Open bar &amp; dancing<br>' +
     '<strong>01:15</strong> Late-night bites<br>' +
     '<strong>03:00</strong> Open bar ends<br>' +
     '<span style="color:var(--ink-soft);font-size:0.85rem">\u{1F6B6} Important: cars aren\'t allowed into Málaga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</span>' +
