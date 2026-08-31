@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merici &amp; David, Guest Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root { --terra: #551C25; --orange: #551C25; --gold: #D4A843; --cobalt: #5B8DB8; --cream: #F6EEDF; --ink: #2C2A26; --ink-soft: #6B6459; --border: #E4DCC9; --bg: #FFFFFF; }
+    body { font: 16px "DM Sans", sans-serif; background: var(--bg); color: var(--ink); line-height:1.6; }
+    .welcome-screen, .login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; text-align: center; }
+    .welcome-screen { background: linear-gradient(135deg, var(--cream) 0%, white 100%); }
+    .hub { display: none; }
+    .hub.show { display: block; }
+    .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; background: white; }
+    .s-card-head { padding: 1.1rem; background: #F9F7F3; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; }
+    .s-card-ico { font-size: 1.5rem; }
+    .s-card-title { flex: 1; text-align: left; font-weight: 500; }
+    .s-card-badge { font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 4px; background: #E8E0D0; color: var(--ink); }
+    .badge-done { background: var(--terra); color: white; }
+    .badge-pend { background: #F0E6D8; }
+    .s-card-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 1.1rem; }
+    .s-card-body.open { max-height: 2000px; padding: 1rem 1.1rem; }
+    .form-grp { margin: 1rem 0; }
+    .form-lbl { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--ink); font-size: 0.875rem; }
+    .form-inp { width: 100%; padding: 0.875rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: "DM Sans", sans-serif; }
+    .form-inp:focus { outline: none; border-color: var(--terra); }
+    .save-btn { background: var(--terra); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 500; }
+    .save-btn:hover { opacity: 0.9; }
+    .save-ok { display: none; color: var(--terra); font-size: 0.875rem; margin-top: 0.5rem; }
+    .save-ok.show { display: block; }
+    .hub-note { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.7; }
+    .prac-item { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--border); gap: 1rem; }
+    .prac-item:last-child { border-bottom: none; }
+    .prac-item label { font-weight: 500; flex-shrink: 0; }
+    .prac-item span { text-align: right; color: var(--ink-soft); font-size: 0.9rem; }
+    .day-block { margin-bottom: 1.5rem; }
+    .day-block:last-child { margin-bottom: 0; }
+    .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--terra); }
+  </style>
+</head>
+<body>
+<div class="welcome-screen" id="welcomeScreen">
+  <p style="font-size: 0.9rem; letter-spacing: 0.15em; font-weight: 600; color: var(--terra); margin-bottom: 0.5rem;">THE WEDDING OF</p>
+  <h1 style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David</h1>
+  <p style="color: var(--ink-soft); margin-bottom: 3rem;">11 to 13 September 2026 &middot; M&aacute;laga, Spain</p>
+  <button onclick="goToHub()" style="background: var(--terra); color: white; border: none; padding: 0.875rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500;">Go to my hub</button>
+</div>
+<div class="login-screen" id="loginScreen">
+  <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Welcome</h2>
+  <input type="text" class="login-inp" id="loginInp" placeholder="Your full name..." autocomplete="name" style="border: 2px solid var(--terra); padding: 0.875rem; border-radius: 8px; font-size: 1rem;">
+  <button onclick="tryLogin()" style="background: var(--terra); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; cursor: pointer; font-weight: 500; margin-top: 1rem;">Log in</button>
+  <div id="loginErr" style="color: #c23b3b; margin-top: 1rem; font-size: 0.875rem;"></div>
+</div>
+<div class="hub" id="hub">
+  <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+    <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome, <span id="welcomeName">Guest</span></h2>
+    <p style="color: var(--ink-soft); margin-bottom: 3rem;">Here's everything you need for the weekend.</p>
+    <div id="hubContent"></div>
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center;">
+      <p style="color: var(--ink-soft); font-size: 0.875rem; margin-bottom: 1rem;">Questions?</p>
+      <p style="font-weight: 500;">Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
+      <button onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 2rem;">Log out</button>
+    </div>
+  </div>
+</div>
+<script>
+const ALL_GUESTS = [{name: "Merici Pereira"}, {name: "David Opperman"}, {name: "Alison Ager"}, {name: "Yaniana Blanco"}];
+let currentGuest = null;
+let sharedData = {};
+
+function tryLogin() {
+  const inp = document.getElementById('loginInp').value.trim();
+  const err = document.getElementById('loginErr');
+  const matched = ALL_GUESTS.find(function(g) { return g.name.toLowerCase() === inp.toLowerCase(); });
+  if (matched) {
+    currentGuest = matched;
+    err.textContent = '';
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('hub').classList.add('show');
+    document.getElementById('welcomeName').textContent = matched.name.split(' ')[0];
+    renderHub();
+  } else {
+    err.textContent = "\"" + inp + "\" is not on the guest list. Check your spelling.";
+  }
+}
+
+function goToHub() {
+  document.getElementById('welcomeScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function logout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('hub').classList.remove('show');
+  document.getElementById('loginInp').value = '';
+  currentGuest = null;
+}
+
+document.getElementById('loginInp').addEventListener('keypress', function(e) { if (e.key === 'Enter') tryLogin(); });
+
+function renderHub() {
+  const c = document.getElementById('hubContent');
+  let html = '';
+
+  html += '<div class="s-card">' +
+    '<div class="s-card-head" onclick="toggleCard(\'Itinerary\')">' +
+    '<span class="s-card-ico">\u{1F4C5}</span>' +
+    '<div class="s-card-title">Weekend itinerary</div>' +
+    '<span class="s-card-arr" id="arrItinerary">\u25BC</span>' +
+    '</div>' +
+    '<div class="s-card-body open" id="bodyItinerary">' +
+    '<div class="day-block">' +
+    '<div class="day-title">Friday 11 September</div>' +
+    '<strong>17:30</strong> Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, Málaga \u{1F4CD}</a> (approx. 45min–1hr)<br>' +
+    '<strong>~18:15</strong> Photos outside the church (approx. 20 minutes)<br>' +
+    '<strong>19:00</strong> Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales \u{1F4CD}</a>, taxi, Uber, or car are the easiest options<br>' +
+    '<strong>19:15</strong> Cocktails begin, lower area of the palacete<br>' +
+    '<strong>20:30</strong> Dinner & celebration, in front of the palacete<br>' +
+    '<strong>22:45</strong> Open bar & dancing<br>' +
+    '<strong>01:15</strong> Late-night bites<br>' +
+    '<strong>03:00</strong> Open bar ends<br>' +
+    '<span style="color:var(--ink-soft);font-size:0.85rem">\u{1F6B6} Important: cars aren\'t allowed into Málaga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</span>' +
+    '</div>' +
+    '<div class="day-block">' +
+    '<div class="day-title">Saturday 12 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional, for confirmed guests)</span></div>' +
+    '<strong>15:00–17:00</strong> Drinks & tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, Málaga \u{1F4CD}</a><br>' +
+    '<strong>From 17:00</strong> Up to the terrace, chill-out area with skyline views, or the music & DJ area if you feel like partying<br>' +
+    '<em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em>' +
+    '</div>' +
+    '<div class="day-block">' +
+    '<div class="day-title">Sunday 13 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional)</span></div>' +
+    '<strong>From 13:00</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos \u{1F4CD}</a><br>' +
+    '<span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span>' +
+    '</div>' +
+    '</div>' +
+    '</div>';
+
+  html += '<div class="s-card">' +
+    '<div class="s-card-head" onclick="toggleCard(\'Practical\')">' +
+    '<span class="s-card-ico">\u2139\uFE0F</span>' +
+    '<div class="s-card-title">Practical details</div>' +
+    '<span class="s-card-arr" id="arrPractical">\u25BC</span>' +
+    '</div>' +
+    '<div class="s-card-body" id="bodyPractical">' +
+    '<div class="prac-item"><label>Friday dress code</label><span>Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</span></div>' +
+    '<div class="prac-item"><label>Saturday dress code</label><span>Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.</span></div>' +
+    '<div class="prac-item"><label>Sunday dress code</label><span>Casual beachwear, obviously.</span></div>' +
+    '<div class="prac-item"><label>Getting to Hacienda Nadales</label><span>We are not providing transport, please make your own way by taxi or car.</span></div>' +
+    '<div class="prac-item"><label>Coordinator (all days)</label><span>Lucia<br>+34 666 89 11 00</span></div>' +
+    '<div class="prac-item"><label>Taxi (Málaga capital)</label><span>952 33 33 33</span></div>' +
+    '<div class="prac-item"><label>Weather</label><span>Warm, 27–32°C<br>Bring sun protection</span></div>' +
+    '<div class="hub-note" style="margin-top:1rem">Questions? Reach out to Lucia directly, she\'s coordinating all weekend and is here to help.</div>' +
+    '</div>' +
+    '</div>';
+
+  html += '<div class="s-card" id="cardGroup">' +
+    '<div class="s-card-head" onclick="toggleCard(\'Group\')">' +
+    '<span class="s-card-ico">\u{1F4AC}</span>' +
+    '<div class="s-card-title">Stay in the loop</div>' +
+    '<span class="s-card-badge ' + (sharedData.groupOptIn ? 'badge-done' : 'badge-pend') + '">' + (sharedData.groupOptIn ? 'Added' : 'Optional') + '</span>' +
+    '<span class="s-card-arr" id="arrGroup">\u25BC</span>' +
+    '</div>' +
+    '<div class="s-card-body" id="bodyGroup">' +
+    '<div class="hub-note">Want live updates across the weekend? Leave your number and we will add you to our WhatsApp group. This is optional.</div>' +
+    '<div class="form-grp">' +
+    '<label class="form-lbl">Mobile number (with country code)</label>' +
+    '<input type="tel" class="form-inp" id="groupPhoneInp" placeholder="e.g. +44 7123 456789" value="' + (sharedData.groupPhone || '') + '">' +
+    '</div>' +
+    '<button class="save-btn" onclick="saveGroup()">Add me to the group</button>' +
+    '<div class="save-ok" id="groupOk">✓ Thanks! We will add you shortly.</div>' +
+    '</div>' +
+    '</div>';
+
+  c.innerHTML = html;
+}
+
+function toggleCard(id) {
+  const body = document.getElementById('body' + id);
+  const arr = document.getElementById('arr' + id);
+  if (!body) return;
+  body.classList.toggle('open');
+  arr.textContent = body.classList.contains('open') ? '▼' : '▶';
+}
+
+function saveGroup() {
+  const phone = document.getElementById('groupPhoneInp');
+  if (phone) sharedData.groupPhone = phone.value.trim();
+  if (!sharedData.groupPhone) return;
+  sharedData.groupOptIn = true;
+  document.getElementById('groupOk').classList.add('show');
+  const badge = document.querySelector('#cardGroup .s-card-badge');
+  if (badge) { badge.textContent = 'Added'; badge.className = 's-card-badge badge-done'; }
+}
+</script>
+</body>
+</html>
