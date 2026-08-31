@@ -24,12 +24,10 @@
     .hub-content { flex: 1; overflow-y: auto; display: flex; justify-content: center; width: 100%; padding: 2rem 1rem; }
     .hub-wrapper { max-width: 900px; width: 100%; }
     
-    .hub-top-box { border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; background: white; margin-bottom: 2rem; }
+    .hub-top-box { border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; background: white; margin-bottom: 2rem; width: 25%; margin-left: auto; }
     .hub-top-box p { margin: 0.5rem 0; font-size: 0.9rem; }
     .hub-top-box p:first-child { color: var(--ink-soft); font-size: 0.875rem; }
-    .hub-top-box p:last-child { font-weight: 500; margin-bottom: 1rem; }
-    .hub-top-box button { background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; width: 100%; }
-    .hub-top-box button:hover { opacity: 0.8; }
+    .hub-top-box p:last-child { font-weight: 500; }
     
     .hub-footer { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; border-top: 1px solid var(--border); background: white; }
     .hub-footer-content { max-width: 900px; width: 100%; text-align: center; }
@@ -89,7 +87,7 @@
       .s-card-body { padding: 1rem; }
       .day-title { font-size: 1rem; }
       .schedule-table td:first-child { width: 70px; font-size: 0.9rem; }
-      .hub-top-box { padding: 1rem; margin-bottom: 1.5rem; }
+      .hub-top-box { padding: 1rem; margin-bottom: 1.5rem; width: 100%; margin-left: 0; }
     }
   </style>
 </head>
@@ -116,11 +114,10 @@
         <h2 style="font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem;">Welcome</h2>
         <p style="color: var(--ink-soft); margin-bottom: 3rem;">Here's everything you need for the weekend.</p>
         
-        <!-- Questions box moved here -->
+        <!-- Questions box moved here, right-aligned -->
         <div class="hub-top-box">
           <p>Questions?</p>
           <p>Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
-          <button onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Log out</button>
         </div>
         
         <div id="hubContent"></div>
