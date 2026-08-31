@@ -51,6 +51,10 @@
     .day-block { margin-bottom: 1.5rem; }
     .day-block:last-child { margin-bottom: 0; }
     .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--terra); }
+    .event-section { margin-bottom: 1.5rem; }
+    .event-section-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--terra); margin-top: 1rem; }
+    .event-section-title:first-child { margin-top: 0; }
+    .event-line { margin-bottom: 0.75rem; line-height: 1.6; }
 
     /* Responsive design */
     @media (min-width: 768px) {
@@ -226,31 +230,43 @@ function renderHub() {
   html += '<div class="s-card">' +
     '<div class="s-card-head" onclick="toggleCard(\'Itinerary\')">' +
     '<div class="s-card-title">Weekend itinerary</div>' +
-    '<span class="s-card-arr" id="arrItinerary">▼</span>' +
+    '<span class="s-card-arr" id="arrItinerary">\u25bc</span>' +
     '</div>' +
     '<div class="s-card-body open" id="bodyItinerary">' +
     '<div class="day-block">' +
     '<div class="day-title">Friday 11 September</div>' +
-    '<strong>17:30</strong> Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, Málaga</a> (approx. 45min–1hr)<br>' +
-    '<strong>~18:15</strong> Photos outside the church (approx. 20 minutes)<br>' +
-    '<strong>19:00</strong> Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options<br>' +
-    '<strong>19:15</strong> Cocktails begin, lower area of the palacete<br>' +
-    '<strong>20:30</strong> Dinner &amp; celebration, in front of the palacete<br>' +
-    '<strong>22:45</strong> Open bar &amp; dancing<br>' +
-    '<strong>01:15</strong> Late-night bites<br>' +
-    '<strong>03:00</strong> Open bar ends<br>' +
+    '<div class="event-section">' +
+    '<div class="event-section-title">Ceremony</div>' +
+    '<div class="event-line"><strong>17:30</strong> Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Iglesia de San Juan, Málaga</a> (approx. 45min–1hr)</div>' +
+    '<div class="event-line"><strong>~18:15</strong> Photos outside the church (approx. 20 minutes)</div>' +
+    '</div>' +
+    '<div class="event-section">' +
+    '<div class="event-section-title">Reception</div>' +
+    '<div class="event-line"><strong>19:00</strong> Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options</div>' +
+    '<div class="event-line"><strong>19:15</strong> Cocktails begin, lower area of the palacete</div>' +
+    '<div class="event-line"><strong>20:30</strong> Dinner &amp; celebration, in front of the palacete</div>' +
+    '<div class="event-line"><strong>22:45</strong> Open bar &amp; dancing</div>' +
+    '<div class="event-line"><strong>01:15</strong> Late-night bites</div>' +
+    '<div class="event-line"><strong>03:00</strong> Open bar ends</div>' +
+    '</div>' +
+    '<div class="event-section">' +
     '<span style="color:var(--ink-soft);font-size:0.85rem">Important: cars aren\'t allowed into Málaga\'s historic centre. Iglesia de San Juan is only reachable on foot, please allow a few extra minutes to arrive on time.</span>' +
+    '</div>' +
     '</div>' +
     '<div class="day-block">' +
     '<div class="day-title">Saturday 12 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional, for confirmed guests)</span></div>' +
-    '<strong>15:00–17:00</strong> Drinks & tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, Málaga</a><br>' +
-    '<strong>From 17:00</strong> Up to the terrace, chill-out area with skyline views, or the music & DJ area if you feel like partying<br>' +
-    '<em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em>' +
+    '<div class="event-section">' +
+    '<div class="event-line"><strong>15:00–17:00</strong> Drinks & tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" style="color:var(--terra)">Trocadero Casa de Botes, Málaga</a></div>' +
+    '<div class="event-line"><strong>From 17:00</strong> Up to the terrace, chill-out area with skyline views, or the music & DJ area if you feel like partying</div>' +
+    '<div class="event-line"><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></div>' +
+    '</div>' +
     '</div>' +
     '<div class="day-block">' +
     '<div class="day-title">Sunday 13 September <span style="font-weight:400;font-size:0.85rem;color:var(--ink-soft)">(optional)</span></div>' +
-    '<strong>From 13:00</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos</a><br>' +
-    '<span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span>' +
+    '<div class="event-section">' +
+    '<div class="event-line"><strong>From 13:00</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" style="color:var(--terra)">La Playa Surf House, Torremolinos</a></div>' +
+    '<div class="event-line"><span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span></div>' +
+    '</div>' +
     '</div>' +
     '</div>' +
     '</div>';
@@ -258,7 +274,7 @@ function renderHub() {
   html += '<div class="s-card">' +
     '<div class="s-card-head" onclick="toggleCard(\'Practical\')">' +
     '<div class="s-card-title">Practical details</div>' +
-    '<span class="s-card-arr" id="arrPractical">▼</span>' +
+    '<span class="s-card-arr" id="arrPractical">\u25bc</span>' +
     '</div>' +
     '<div class="s-card-body" id="bodyPractical">' +
     '<div class="prac-item"><label>Friday dress code</label><span>Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</span></div>' +
@@ -276,7 +292,7 @@ function renderHub() {
     '<div class="s-card-head" onclick="toggleCard(\'Group\')">' +
     '<div class="s-card-title">Stay in the loop</div>' +
     '<span class="s-card-badge ' + (sharedData.groupOptIn ? 'badge-done' : 'badge-pend') + '">' + (sharedData.groupOptIn ? 'Added' : 'Optional') + '</span>' +
-    '<span class="s-card-arr" id="arrGroup">▼</span>' +
+    '<span class="s-card-arr" id="arrGroup">\u25bc</span>' +
     '</div>' +
     '<div class="s-card-body" id="bodyGroup">' +
     '<div class="hub-note">Want live updates across the weekend? Leave your number and we will add you to our WhatsApp group. This is optional.</div>' +
@@ -285,7 +301,7 @@ function renderHub() {
     '<input type="tel" class="form-inp" id="groupPhoneInp" placeholder="e.g. +44 7123 456789" value="' + (sharedData.groupPhone || '') + '">' +
     '</div>' +
     '<button class="save-btn" onclick="saveGroup()">Add me to the group</button>' +
-    '<div class="save-ok" id="groupOk">✓ Thanks! We will add you shortly.</div>' +
+    '<div class="save-ok" id="groupOk">\u2713 Thanks! We will add you shortly.</div>' +
     '</div>' +
     '</div>';
 
@@ -297,7 +313,7 @@ function toggleCard(id) {
   const arr = document.getElementById('arr' + id);
   if (!body) return;
   body.classList.toggle('open');
-  arr.textContent = body.classList.contains('open') ? '▼' : '▶';
+  arr.textContent = body.classList.contains('open') ? '\u25bc' : '\u25b6';
 }
 
 function saveGroup() {
