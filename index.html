@@ -64,22 +64,22 @@
     .day-block { margin-bottom: 1.5rem; }
     .day-block:last-child { margin-bottom: 0; }
     .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--terra); }
-    .day-dress-code { font-size: 0.875rem; color: var(--ink-soft); margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: left; }
+    .day-dress-code { font-size: 0.875rem; color: var(--ink-soft); margin-top: 0.5rem; margin-bottom: 1.5rem; text-align: left; }
     .day-dress-code strong { color: var(--ink); }
     
     /* Invisible table styles */
-    .schedule-table { width: 100%; border-collapse: collapse; margin: 0 auto 1.5rem; }
+    .schedule-table { width: 100%; border-collapse: collapse; margin: 0 auto 0.75rem; }
     .schedule-table td { padding: 0.5rem 0; border: none; text-align: left; }
     .schedule-table td:first-child { width: 80px; font-weight: 500; white-space: nowrap; }
     .schedule-table td:last-child { padding-left: 1rem; color: var(--ink-soft); }
     
-    .section-heading { font-size: 0.95rem; font-weight: 600; color: var(--terra); margin-top: 1rem; margin-bottom: 0.75rem; text-align: left; }
+    .section-heading { font-size: 0.95rem; font-weight: 600; color: var(--terra); margin-top: 1.5rem; margin-bottom: 0.75rem; text-align: left; }
     .section-heading:first-of-type { margin-top: 0; text-align: center; }
     
     .event-note { font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; font-style: italic; text-align: left; }
     .map-link { color: var(--terra); }
 
-    .event-field { font-size: 0.85rem; color: var(--ink-soft); margin: 0.25rem 0 1.5rem; text-align: left; }
+    .event-field { font-size: 0.85rem; color: var(--ink-soft); margin: 0.25rem 0 0.75rem; text-align: left; }
     .event-field strong { color: var(--ink); }
 
     /* Responsive design */
@@ -288,12 +288,15 @@ function renderHub() {
     '<div class="s-card-title">Friday 11 September</div>' +
     '</div>' +
     '<div class="s-card-body">' +
+
     '<div class="section-heading">Ceremony</div>' +
     '<table class="schedule-table">' +
     '<tr><td>17:30</td><td>Ceremony at <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan, M&aacute;laga</a> (approx. 45min&ndash;1hr)</td></tr>' +
     '<tr><td>~18:15</td><td>Photos outside the church (approx. 20 minutes)</td></tr>' +
     '</table>' +
     '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, M&aacute;laga historic centre. Only reachable on foot &mdash; cars aren\'t permitted, so allow a few extra minutes to arrive on time.</div>' +
+    '<div class="event-field"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. Please cover your shoulders for the ceremony.</div>' +
+
     '<div class="section-heading">Reception</div>' +
     '<table class="schedule-table">' +
     '<tr><td>19:00</td><td>Guest arrival at <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, taxi, Uber, or car are the easiest options</td></tr>' +
@@ -304,7 +307,8 @@ function renderHub() {
     '<tr><td>03:00</td><td>Open bar ends</td></tr>' +
     '</table>' +
     '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, Camino de Casabermeja 128, M&aacute;laga. Taxi, Uber, or car are the easiest options; we are not providing transport.</div>' +
-    '<div class="day-dress-code"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. If you\'re joining us at the church, please cover your shoulders for the ceremony.</div>' +
+    '<div class="event-field"><strong>Dress code:</strong> Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer.</div>' +
+
     '</div>' +
     '</div>';
 
@@ -313,13 +317,16 @@ function renderHub() {
     '<div class="s-card-title">Saturday 12 September</div>' +
     '</div>' +
     '<div class="s-card-body">' +
+
+    '<div class="section-heading">Drinks &amp; tapas</div>' +
     '<table class="schedule-table">' +
     '<tr><td>15:00&ndash;17:00</td><td>Drinks &amp; tapas at <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes, M&aacute;laga</a></td></tr>' +
     '<tr><td>From 17:00</td><td>Up to the terrace, chill-out area with skyline views, or the music &amp; DJ area if you feel like partying</td></tr>' +
     '<tr><td></td><td><em style="color:var(--ink-soft)">No fixed plan after that, we\'ll see how we feel.</em></td></tr>' +
     '</table>' +
-    '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes</a>, Paseo de la Farola 25, M&aacute;laga. Taxi, Uber, or car recommended.</div>' +
-    '<div class="day-dress-code"><strong>Dress code:</strong> Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.</div>' +
+    '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes</a>, Paseo de la Farola 25, M&aacute;laga. Taxi, Uber, or car recommended; we are not providing transport.</div>' +
+    '<div class="event-field"><strong>Dress code:</strong> Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.</div>' +
+
     '</div>' +
     '</div>';
 
@@ -328,12 +335,15 @@ function renderHub() {
     '<div class="s-card-title">Sunday 13 September</div>' +
     '</div>' +
     '<div class="s-card-body">' +
+
+    '<div class="section-heading">Beach day</div>' +
     '<table class="schedule-table">' +
     '<tr><td>From 13:00</td><td><a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House, Torremolinos</a></td></tr>' +
     '<tr><td></td><td><span style="color:var(--ink-soft)">We\'ll be spending the day unwinding from the wedding, you\'re welcome to join us. If you\'d like help arranging a beach bed, just let us know and we\'ll ask our planner.</span></td></tr>' +
     '</table>' +
     '<div class="event-field"><strong>Location &amp; transport:</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House</a>, Torremolinos. Taxi, Uber, or car recommended; we are not providing transport.</div>' +
-    '<div class="day-dress-code"><strong>Dress code:</strong> Casual beachwear, obviously.</div>' +
+    '<div class="event-field"><strong>Dress code:</strong> Casual beachwear, obviously.</div>' +
+
     '</div>' +
     '</div>';
 
