@@ -324,18 +324,23 @@ let weatherData = null;
 let currentDay = getStoredDay();
 let menuOpen = false;
 
+function todayIso() { return new Date().toISOString().slice(0,10); }
+
 function todayDay() {
-  const iso = new Date().toISOString().slice(0,10);
+  const iso = todayIso();
   if (iso === "2026-09-12") return "sat";
   if (iso === "2026-09-13") return "sun";
   return "fri";
 }
 
-// Restores the tab the guest was last viewing across a page refresh, falling
-// back to today's day if nothing was saved yet (or it's no longer valid).
+// Restores the tab the guest was last viewing across a page refresh, but only
+// within the same calendar day — a browser tab left open past midnight (very
+// plausible over a wedding weekend) should still land on the new day's tab
+// by default instead of wherever it was left the night before.
 function getStoredDay() {
   const saved = sessionStorage.getItem('currentDay');
-  if (saved && ['fri', 'sat', 'sun', 'extra'].includes(saved)) return saved;
+  const savedDate = sessionStorage.getItem('currentDayDate');
+  if (saved && savedDate === todayIso() && ['fri', 'sat', 'sun', 'extra'].includes(saved)) return saved;
   return todayDay();
 }
 
@@ -404,7 +409,12 @@ function applyHubTranslations() {
 }
 
 /* ---------------- Day tabs ---------------- */
-function setDay(day) { currentDay = day; sessionStorage.setItem('currentDay', day); renderDay(); }
+function setDay(day) {
+  currentDay = day;
+  sessionStorage.setItem('currentDay', day);
+  sessionStorage.setItem('currentDayDate', todayIso());
+  renderDay();
+}
 
 function renderDay() {
   document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.day === currentDay));
