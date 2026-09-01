@@ -39,10 +39,10 @@ const CONTENT = {
     sun_dress: "Casual beachwear, obviously.",
     sun_venue: "La Playa Surf House",
     sun_notes: [
-      "This is an entirely optional event, if the beach is not your thing or you would like to do something else on Sunday, go for it.",
-      "If you'd like help arranging a sun bed, just let us know. They come as a set of two and are €10 per set.",
-      "Booking a table at the venue does not automatically book you a sun bed as well. They are separate things.",
-      "Always remember to bring a towel..."
+      "This is an entirely optional event, if the beach is not your thing or you would like to do something else on Sunday, you do you!",
+      "If you'd like help arranging a sun bed, just let us know. They accommodate two and are €10 per set.",
+      "Booking a table at the venue does not automatically book you a sun bed as well. These are separate things.",
+      "<em>\"And always remember to bring a towel...\"</em>"
     ],
     sun_map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e0!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk"
   },
@@ -78,10 +78,10 @@ const CONTENT = {
     sun_dress: "Ropa de playa informal, evidentemente.",
     sun_venue: "La Playa Surf House",
     sun_notes: [
-      "Este es un evento totalmente opcional; si la playa no es lo tuyo o prefieres hacer otra cosa el domingo, adelante.",
-      "Si queréis ayuda para conseguir una tumbona, decidnoslo. Vienen en juegos de dos y cuestan 10 € el juego.",
+      "Este es un evento totalmente opcional; si la playa no es lo tuyo o prefieres hacer otra cosa el domingo, ¡haz lo que quieras!",
+      "Si queréis ayuda para conseguir una tumbona, decidnoslo. Son para dos personas y cuestan 10 € el juego.",
       "Reservar una mesa en el lugar no os reserva automáticamente una tumbona también. Son cosas independientes.",
-      "Recuerda siempre traer una toalla..."
+      "Y recuerda siempre traer una toalla..."
     ],
     sun_map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e0!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk"
   },
@@ -117,10 +117,10 @@ const CONTENT = {
     sun_dress: "Roupa de praia casual, obviamente.",
     sun_venue: "La Playa Surf House",
     sun_notes: [
-      "Este é um evento totalmente opcional; se a praia não for a tua onda ou preferires fazer outra coisa no domingo, força.",
-      "Se quiserem ajuda a conseguir uma espreguiçadeira, basta avisar-nos. Vêm em conjuntos de duas e custam 10 € o conjunto.",
+      "Este é um evento totalmente opcional; se a praia não for a tua onda ou preferires fazer outra coisa no domingo, faz o que quiseres!",
+      "Se quiserem ajuda a conseguir uma espreguiçadeira, basta avisar-nos. São para duas pessoas e custam 10 € o conjunto.",
       "Reservar uma mesa no local não reserva automaticamente uma espreguiçadeira também. São coisas separadas.",
-      "Lembra-te sempre de trazer uma toalha..."
+      "E lembra-te sempre de trazer uma toalha..."
     ],
     sun_map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e0!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk"
   }
