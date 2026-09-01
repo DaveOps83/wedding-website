@@ -25,9 +25,14 @@ function collectPrivateStrings() {
       if (typeof value === 'string') {
         strings.add(value);
       } else if (Array.isArray(value)) {
-        // schedule arrays: [[time, text], ...]
+        // Either a schedule array ([[time, text], ...]) or a flat list of
+        // strings (e.g. sun_notes) — handle both shapes.
         for (const row of value) {
-          for (const cell of row) strings.add(String(cell));
+          if (Array.isArray(row)) {
+            for (const cell of row) strings.add(String(cell));
+          } else {
+            strings.add(String(row));
+          }
         }
       }
     }

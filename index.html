@@ -117,6 +117,9 @@
   .map-embed { position:relative; width:100%; aspect-ratio:16/10; border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:8px; }
   .map-embed iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
   .map-caption { font:400 14px "DM Sans",sans-serif; color:#3E3A34; }
+  .notes-list { display:flex; flex-direction:column; gap:8px; }
+  .notes-item { position:relative; padding-left:14px; font:400 14px "DM Sans",sans-serif; color:#3E3A34; }
+  .notes-item::before { content:'•'; position:absolute; left:0; color:var(--gold); }
 
   .qr-card { text-align:center; }
   .qr-body { padding:22px 18px 24px; }
@@ -218,7 +221,7 @@ const translations = {
     logout: "Log out", questionsLabel: "Have any questions during the day?", callBtn: "Call", whatsappBtn: "WhatsApp",
     tabFri: "Fri 11", tabSat: "Sat 12", tabSun: "Sun 13", tabExtra: "Guest book & gifts",
     ceremonyHeading: "Ceremony", receptionHeading: "Reception", drinksHeading: "Afternoon Drinks", beachHeading: "Beach day",
-    locationLabel: "Location", transportLabel: "Transport", dressLabel: "Dress code", scheduleLabel: "Schedule",
+    locationLabel: "Location", transportLabel: "Transport", dressLabel: "Dress code", scheduleLabel: "Schedule", notesLabel: "Notes",
     dayNameFri: "Friday", dayNameSat: "Saturday", dayNameSun: "Sunday",
     dayDateFri: "11 September", dayDateSat: "12 September", dayDateSun: "13 September",
     weatherLoading: "loading forecast…", weatherUnavailable: "forecast unavailable", rainLabel: "rain",
@@ -233,7 +236,7 @@ const translations = {
     logout: "Cerrar sesión", questionsLabel: "¿Tienes alguna pregunta durante el día?", callBtn: "Llamar", whatsappBtn: "WhatsApp",
     tabFri: "Vie 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Libro y regalo",
     ceremonyHeading: "Ceremonia", receptionHeading: "Recepción", drinksHeading: "Copas de la tarde", beachHeading: "Día de playa",
-    locationLabel: "Ubicación", transportLabel: "Transporte", dressLabel: "Código de vestimenta", scheduleLabel: "Horario",
+    locationLabel: "Ubicación", transportLabel: "Transporte", dressLabel: "Código de vestimenta", scheduleLabel: "Horario", notesLabel: "Notas",
     dayNameFri: "Viernes", dayNameSat: "Sábado", dayNameSun: "Domingo",
     dayDateFri: "11 de septiembre", dayDateSat: "12 de septiembre", dayDateSun: "13 de septiembre",
     weatherLoading: "cargando previsión…", weatherUnavailable: "previsión no disponible", rainLabel: "lluvia",
@@ -248,7 +251,7 @@ const translations = {
     logout: "Sair", questionsLabel: "Tens alguma pergunta durante o dia?", callBtn: "Ligar", whatsappBtn: "WhatsApp",
     tabFri: "Sex 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Livro e presente",
     ceremonyHeading: "Cerimónia", receptionHeading: "Receção", drinksHeading: "Copos da tarde", beachHeading: "Dia de praia",
-    locationLabel: "Local", transportLabel: "Transporte", dressLabel: "Código de vestuário", scheduleLabel: "Horário",
+    locationLabel: "Local", transportLabel: "Transporte", dressLabel: "Código de vestuário", scheduleLabel: "Horário", notesLabel: "Notas",
     dayNameFri: "Sexta-feira", dayNameSat: "Sábado", dayNameSun: "Domingo",
     dayDateFri: "11 de setembro", dayDateSat: "12 de setembro", dayDateSun: "13 de setembro",
     weatherLoading: "a carregar previsão…", weatherUnavailable: "previsão indisponível", rainLabel: "chuva",
@@ -438,6 +441,9 @@ function renderDay() {
   function mapEmbed(mapKey, venueKey, locKey) {
     return '<div class="map-embed"><iframe src="' + t(mapKey) + '" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">' + t(venueKey) + ', ' + t(locKey) + '</div>';
   }
+  function notesList(key) {
+    return '<div class="notes-list">' + t(key).map(item => '<div class="notes-item">' + item + '</div>').join('') + '</div>';
+  }
 
   let html = '<div class="day-panel">';
   if (currentDay === 'fri') {
@@ -461,7 +467,8 @@ function renderDay() {
     html += card('beachHeading', t('sun_schedule'), [
       [t('locationLabel'), mapEmbed('sun_map', 'sun_venue', 'sun_loc')],
       [t('transportLabel'), t('sun_transport')],
-      [t('dressLabel'), t('sun_dress')]
+      [t('dressLabel'), t('sun_dress')],
+      [t('notesLabel'), notesList('sun_notes')]
     ]);
   }
   html += '</div>';

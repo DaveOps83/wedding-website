@@ -84,5 +84,12 @@ test('serves the full content payload for a valid token, never cached client-sid
       assert.equal(typeof c[prefix + '_venue'], 'string', `${lang}.${prefix}_venue missing`);
       assert.match(c[prefix + '_map'], /^https:\/\/www\.google\.com\/maps\/embed\?pb=/, `${lang}.${prefix}_map should be a Maps embed URL`);
     }
+
+    // Beach day's extra Notes field is a non-empty flat array of non-empty strings
+    assert.ok(Array.isArray(c.sun_notes) && c.sun_notes.length > 0, `${lang}.sun_notes should be a non-empty array`);
+    for (const note of c.sun_notes) {
+      assert.equal(typeof note, 'string');
+      assert.ok(note.length > 0);
+    }
   }
 }));
