@@ -29,9 +29,9 @@ Netlify will assign a live URL (e.g., `random-name-123.netlify.app`). You can cu
 - **Auto-redirect** — Landing on `/` with a still-valid session token skips the login screen and goes straight to the hub
 - **Embedded venue maps** — Each location card embeds a live Google Map pinned at the venue, instead of a plain link
 - **Live weather forecast** — 3-day forecast for Málaga and Torremolinos proxied server-side from Open-Meteo (auth-gated, cached ~30 min)
-- **Guest book & gift fund** — QR codes and tappable links to the Wedibox guest book and Revolut gift fund
+- **Guest book & gift fund** — QR codes (generated server-side, auth-gated — no third-party QR service ever sees the URLs) and tappable links to the Wedibox guest book and Revolut gift fund
 - **Coordinator contact card** — Call and WhatsApp buttons for the event coordinator
-- **Zero dependencies** — Single static HTML file with inline CSS and JavaScript; no build step
+- **Near-zero dependencies** — `index.html` is a single static file with inline CSS/JS and no build step; the only runtime dependency anywhere in the project is `qrcode-generator` (zero transitive dependencies of its own), used solely by `qrcode.js` to compute the QR module grid
 - **Security-first** — Strong security headers, no crawlers allowed, HTTPS enforced
 
 ## Security
@@ -41,7 +41,7 @@ This site is configured with security-first defaults:
 ### Authentication
 - Password validated server-side via Netlify Function; never appears in client-side code
 - Password and token-signing secret stored only in Netlify environment variables (`WEDDING_PASSWORD`, `WEDDING_TOKEN_SECRET`)
-- Session token is HMAC-signed and time-bound (~30 days); `verify.js`, `weather.js`, and `content.js` all re-check it server-side with a constant-time comparison
+- Session token is HMAC-signed and time-bound (~30 days); `verify.js`, `weather.js`, `content.js`, and `qrcode.js` all re-check it server-side with a constant-time comparison
 - Token stored in sessionStorage, so it doesn't survive the browser tab closing
 - `login.js` rate-limits wrong-password attempts: after 5 failures from the same IP within 15 minutes, further attempts (including a correct password) get a `429` immediately. This is an in-memory, best-effort limiter — it's scoped to a single warm function instance, so a distributed attacker across many concurrent/cold instances isn't fully stopped by it; the fixed ~1.2s delay on every wrong attempt is what covers that case. A persistent store (e.g. Netlify Blobs) would close that gap at the cost of adding a dependency
 
@@ -49,10 +49,11 @@ This site is configured with security-first defaults:
 - The wedding schedule, venue names/addresses, dress codes, transport notes, coordinator name/role/phone, guest book URL, and gift fund URL live only in `netlify/functions/content.js`, never in `index.html`
 - `index.html` only ever contains generic UI chrome (button labels, tab names, field labels) that reveals nothing about the event — this is enforced by `tests/no-leak.test.js`, which fails the build if any private string from `content.js` reappears in the shipped client file
 - The login screen's own branding (couple's names, city, date) is an inherent exception: it has to render before anyone authenticates, since it *is* the login screen
+- QR codes for the guest book/gift fund are generated server-side by `qrcode.js` (auth-gated, `Cache-Control: no-store`) instead of the browser sending those URLs to a third-party QR image service. `index.html` fetches them with an `Authorization` header and turns the response into a `blob:` object URL for the `<img>` tag — an `<img src>` can't send custom headers, and putting the token in the URL as a query param instead would risk it turning up in infrastructure logs
 
 ### HTTP Security Headers
 - **Strict-Transport-Security** — Force HTTPS, preload enabled
-- **Content-Security-Policy** — Restrict content to same-origin only, except Google Fonts and embedded Google Maps (`frame-src`)
+- **Content-Security-Policy** — Restrict content to same-origin only, except Google Fonts and embedded Google Maps (`frame-src`). `img-src` is `'self' data:` — no external image host is needed now that QR codes are generated server-side
 - **X-Frame-Options** — Prevent clickjacking (DENY)
 - **X-Content-Type-Options** — Prevent MIME sniffing (nosniff)
 - **X-XSS-Protection** — Enable browser XSS filter
@@ -124,9 +125,11 @@ Suggested tools:
 - `netlify/functions/verify.js` — Serverless function that verifies a session token
 - `netlify/functions/weather.js` — Serverless function that proxies and caches the Open-Meteo forecast, gated behind the same session token
 - `netlify/functions/content.js` — Serverless function that serves the actual private wedding content (schedule, venues, coordinator contact, guest book/gift fund links, map embeds), gated behind the same session token
-- `netlify/functions/lib/tokens.js` — Shared HMAC sign/verify logic and token TTL used by the four functions above
+- `netlify/functions/qrcode.js` — Serverless function that generates the guest book/gift fund QR codes server-side (SVG, via `lib/qr.js`), gated behind the same session token
+- `netlify/functions/lib/tokens.js` — Shared HMAC sign/verify logic and token TTL used by the five functions above
+- `netlify/functions/lib/qr.js` — Renders a QR code (from `qrcode-generator`'s module grid) to an SVG string
 - `tests/` — Node's built-in test runner (`node:test`); see Testing below
-- `package.json` — `npm test` script; no runtime dependencies
+- `package.json` / `package-lock.json` — `npm test` script; one runtime dependency (`qrcode-generator`, zero transitive deps), used only by `qrcode.js`
 - `AGENTS.md` — Standing instructions for AI coding agents working in this repo
 - `netlify.toml` — Netlify build config (headers, functions, redirects)
 - `_redirects` — URL redirect rules (robots.txt + SPA rewrite)
@@ -149,13 +152,15 @@ Suggested tools:
 npm test
 ```
 
-Runs Node's built-in test runner (`node --test`) over `tests/` — no dependencies to install. Covers:
+Runs Node's built-in test runner (`node --test`) over `tests/` — run `npm install` once first to pull in `qrcode-generator` (the one runtime dependency). Covers:
 - `lib/tokens.js` — signing/verification, TTL boundaries, tampering, malformed input
 - `login.js`, `verify.js` — auth flows, fail-closed behavior when env vars are missing
 - `weather.js` — auth gating, upstream failure handling, and a regression test for the cache-stampede race condition (concurrent cold-cache requests must share one upstream fetch)
 - `content.js` — auth gating and payload shape for all three languages
+- `qrcode.js` — auth gating, the `key` whitelist (rejects unknown/arbitrary values — this isn't an open QR-generation proxy), and correctness (the returned SVG is regenerated independently and compared byte-for-byte)
 - `no-leak.test.js` — regression guard asserting no private content string (schedule, venues, coordinator contact, guest book/gift fund links, map URLs) appears in the shipped `index.html`
 - `redirects.test.js` — regression guard asserting `_redirects` still force-blocks direct static access to source files (see Source file exposure above)
+- `csp.test.js` — regression guard asserting `img-src` doesn't regain a bare `https:` wildcard
 
 See `AGENTS.md` for the standing rule: run `npm test` before every push, and add a test for any new functionality.
 

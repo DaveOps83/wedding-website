@@ -275,6 +275,7 @@ function wxDescription(code){ const e = wxCodeMap[code] || wxCodeMap[3]; return 
 let currentUser = null;
 let weatherData = null;
 let contentLoaded = false;
+let qrImages = { guestbook: null, giftfund: null }; // blob: object URLs once fetched
 let currentDay = getStoredDay();
 let menuOpen = false;
 
@@ -335,6 +336,22 @@ function fetchContent() {
       renderDay();
     })
     .catch(() => { renderDay(); });
+}
+
+// QR images are fetched with an Authorization header (an <img src> can't send
+// one) and turned into blob: object URLs, rather than passing the token in
+// the URL as a query param — query strings are more commonly logged by
+// intermediate infrastructure than headers.
+function fetchQrImage(key) {
+  if (qrImages[key]) return Promise.resolve(qrImages[key]);
+  const authToken = sessionStorage.getItem('auth_token');
+  return fetch('/.netlify/functions/qrcode?key=' + key, { headers: authToken ? { 'Authorization': 'Bearer ' + authToken } : {} })
+    .then(res => res.ok ? res.blob() : Promise.reject())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      qrImages[key] = url;
+      return url;
+    });
 }
 
 /* ---------------- Language & menu ---------------- */
@@ -408,17 +425,24 @@ function renderDay() {
   }
 
   if (currentDay === 'extra') {
+    if (!qrImages.guestbook || !qrImages.giftfund) {
+      c.innerHTML = '<div class="day-panel"><div class="card qr-card"><div class="qr-body"><div class="qr-note">' + t('loadingContent') + '</div></div></div></div>';
+      Promise.all([fetchQrImage('guestbook'), fetchQrImage('giftfund')])
+        .then(() => { if (currentDay === 'extra') renderDay(); })
+        .catch(() => {});
+      return;
+    }
     const guestbookUrl = t('guestbookUrl');
     const giftfundUrl = t('giftfundUrl');
     c.innerHTML =
       '<div class="day-panel">' +
         '<div class="card qr-card"><div class="card-head center"><div class="dot"></div><div class="card-head-title">' + t('guestbookHeading') + '</div></div>' +
           '<div class="qr-body"><div class="qr-note">' + t('guestbookNote') + '</div>' +
-          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(guestbookUrl) + '" alt="Guest book QR code">' +
+          '<img class="qr-img" src="' + qrImages.guestbook + '" alt="Guest book QR code">' +
           '<a class="qr-link" href="' + guestbookUrl + '" target="_blank" rel="noopener">' + guestbookUrl.replace(/^https?:\/\//,'') + '</a></div></div>' +
         '<div class="card qr-card"><div class="card-head center"><div class="dot"></div><div class="card-head-title">' + t('giftfundHeading') + '</div></div>' +
           '<div class="qr-body"><div class="qr-note">' + t('giftfundNote') + '</div>' +
-          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(giftfundUrl) + '" alt="Gift fund QR code">' +
+          '<img class="qr-img" src="' + qrImages.giftfund + '" alt="Gift fund QR code">' +
           '<a class="qr-link" href="' + giftfundUrl + '" target="_blank" rel="noopener">' + giftfundUrl.replace(/^https?:\/\//,'') + '</a></div></div>' +
       '</div>' + thankYouBlock();
     return;
@@ -557,7 +581,15 @@ function tryLogin() {
     .catch(() => { err.textContent = t('errConnection'); err.style.display='block'; btn.textContent = originalText; btn.disabled = false; });
 }
 
-function logout() { currentUser = null; sessionStorage.removeItem('auth_token'); navigate('/'); }
+function logout() {
+  currentUser = null;
+  sessionStorage.removeItem('auth_token');
+  Object.keys(qrImages).forEach(key => {
+    if (qrImages[key]) URL.revokeObjectURL(qrImages[key]);
+    qrImages[key] = null;
+  });
+  navigate('/');
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   document.documentElement.lang = currentLang;
