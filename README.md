@@ -63,6 +63,9 @@ This site is configured with security-first defaults:
 - `_redirects` — Ensures robots.txt is served before SPA rewrite
 - Site not visible in search engines
 
+### Source file exposure
+`netlify.toml` publishes the whole repo root (`publish = "."`), which means without an explicit block, Netlify would serve this repo's own source files as plain static assets — e.g. `netlify/functions/content.js` (no leading dot) is a *different* path than the real, auth-gated `/.netlify/functions/content` (leading dot) invocation endpoint, and existing files take precedence over redirects. `_redirects` force-blocks `/netlify/*`, `/tests/*`, `/package.json`, and `/AGENTS.md` with a `404!` for this reason — see `tests/redirects.test.js`.
+
 ## Customization
 
 ### Update authentication password
@@ -151,6 +154,7 @@ Runs Node's built-in test runner (`node --test`) over `tests/` — no dependenci
 - `weather.js` — auth gating, upstream failure handling, and a regression test for the cache-stampede race condition (concurrent cold-cache requests must share one upstream fetch)
 - `content.js` — auth gating and payload shape for all three languages
 - `no-leak.test.js` — regression guard asserting no private content string (schedule, venues, coordinator contact, guest book/gift fund links, map URLs) appears in the shipped `index.html`
+- `redirects.test.js` — regression guard asserting `_redirects` still force-blocks direct static access to source files (see Source file exposure above)
 
 See `AGENTS.md` for the standing rule: run `npm test` before every push, and add a test for any new functionality.
 

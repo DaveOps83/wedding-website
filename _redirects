@@ -1,5 +1,18 @@
 # Serve robots.txt without SPA rewrite
 /robots.txt /robots.txt 200
 
+# Block direct static access to source files that would otherwise be served
+# as plain files from the publish root ("." — see netlify.toml). The reserved
+# /.netlify/functions/* path (leading dot) is what actually invokes the
+# auth-gated Functions; this repo's own netlify/functions/ source directory
+# (no leading dot) is a *different* path that Netlify would otherwise serve
+# untouched as a static file — exposing the private CONTENT payload, the
+# login/token-signing implementation, etc. with zero authentication. The
+# trailing "!" forces this to apply even though the file exists on disk.
+/netlify/* /index.html 404!
+/tests/* /index.html 404!
+/package.json /index.html 404!
+/AGENTS.md /index.html 404!
+
 # SPA rewrite for all other routes
 /* /index.html 200
