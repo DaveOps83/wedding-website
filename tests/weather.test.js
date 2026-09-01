@@ -59,7 +59,7 @@ test('rejects a forged token', () => withEnv(async () => {
   assert.equal(res.statusCode, 401);
 }));
 
-test('serves forecast data for a valid token, with a private (not public) cache header', () => withEnv(async () => {
+test('serves forecast data for a valid token, never cached client-side', () => withEnv(async () => {
   const fetchMock = mockFetch(async () => ({ ok: true, json: async () => OPEN_METEO_OK_BODY }));
   try {
     const handler = freshHandler();
@@ -68,8 +68,13 @@ test('serves forecast data for a valid token, with a private (not public) cache 
     assert.equal(res.statusCode, 200);
     assert.equal(body.malaga['2026-09-11'].max, 28);
     assert.equal(body.torremolinos['2026-09-13'].min, 21);
-    assert.match(res.headers['Cache-Control'], /private/);
-    assert.doesNotMatch(res.headers['Cache-Control'], /public/);
+    // Regression: "private, max-age=..." previously let a browser's OWN cache replay
+    // this exact response to a later request with a different/missing Authorization
+    // header (cache keys aren't header-aware without Vary) — confirmed live: a
+    // tampered signature, a forged future timestamp, and no token at all were all
+    // served a stale cached 200 until the fetch bypassed cache. no-store forces
+    // every request to really re-hit the server and re-verify the token.
+    assert.equal(res.headers['Cache-Control'], 'no-store');
   } finally {
     fetchMock.restore();
   }

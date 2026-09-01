@@ -37,11 +37,16 @@ test('fails closed when WEDDING_TOKEN_SECRET is not configured', async () => {
   }
 });
 
-test('serves the full content payload for a valid token, with a private cache header', () => withEnv(async () => {
+test('serves the full content payload for a valid token, never cached client-side', () => withEnv(async () => {
   const res = await handler({ headers: { authorization: 'Bearer ' + validToken() } });
   assert.equal(res.statusCode, 200);
-  assert.match(res.headers['Cache-Control'], /private/);
-  assert.doesNotMatch(res.headers['Cache-Control'], /public/);
+  // Regression: "private, max-age=..." previously let a browser's OWN cache replay
+  // this exact response to a later request with a different/missing Authorization
+  // header (cache keys aren't header-aware without Vary), serving private content
+  // on a shared device even after logout. no-store forces every request to really
+  // re-hit the server and re-verify the token — see tests/weather.test.js for the
+  // same regression, and the live confirmation this was actually exploitable.
+  assert.equal(res.headers['Cache-Control'], 'no-store');
 
   const body = JSON.parse(res.body);
   for (const lang of ['en', 'es', 'pt']) {
