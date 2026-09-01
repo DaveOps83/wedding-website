@@ -507,7 +507,11 @@ function render() {
   const path = window.location.pathname;
   document.getElementById('welcomePage').classList.remove('active');
   document.getElementById('hubPage').classList.remove('active');
-  if (path === '/' || path === '') { showWelcome(); return; }
+  if (path === '/' || path === '') {
+    if (sessionStorage.getItem('auth_token')) { navigate('/hub'); return; }
+    showWelcome();
+    return;
+  }
   if (path === '/hub') {
     const token = sessionStorage.getItem('auth_token');
     if (!token) { navigate('/'); return; }
