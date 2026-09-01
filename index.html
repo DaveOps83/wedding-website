@@ -91,7 +91,8 @@
   .qr-body { padding:22px 18px 24px; }
   .qr-note { font:400 14px "DM Sans",sans-serif; color:var(--ink-soft); margin-bottom:16px; }
   .qr-img { display:block; margin:0 auto; width:180px; height:180px; border:1px solid var(--border); border-radius:8px; background:#fff; }
-  .qr-url { font:400 12.5px "DM Sans",sans-serif; color:#8A8378; margin-top:12px; }
+  .qr-link { display:inline-block; margin-top:14px; padding:11px 22px; border:1px solid var(--terra); border-radius:999px; background:#fff; font:600 14px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
+  .qr-link:hover { background:var(--terra); color:var(--cream); }
 
   .footer-card { padding:20px 20px 30px; }
   .footer-inner { border:1px dashed var(--gold); border-radius:14px; padding:18px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; row-gap:12px; }
@@ -169,7 +170,7 @@
 <script>
 /* ---------------- Data ---------------- */
 const GUESTBOOK_URL = "https://www.wedibox.com/w/merici-and-david-malaga";
-const GIFTFUND_URL  = "https://example.com/giftfund";  // replace with your real link
+const GIFTFUND_URL  = "https://revolut.me/merici0c9";
 
 const translations = {
   en: {
@@ -377,11 +378,11 @@ function renderDay() {
         '<div class="card qr-card"><div class="card-head center"><div class="dot"></div><div class="card-head-title">' + t('guestbookHeading') + '</div></div>' +
           '<div class="qr-body"><div class="qr-note">' + t('guestbookNote') + '</div>' +
           '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(GUESTBOOK_URL) + '" alt="Guest book QR code">' +
-          '<div class="qr-url">' + GUESTBOOK_URL.replace(/^https?:\/\//,'') + '</div></div></div>' +
+          '<a class="qr-link" href="' + GUESTBOOK_URL + '" target="_blank" rel="noopener">' + GUESTBOOK_URL.replace(/^https?:\/\//,'') + '</a></div></div>' +
         '<div class="card qr-card"><div class="card-head center"><div class="dot"></div><div class="card-head-title">' + t('giftfundHeading') + '</div></div>' +
           '<div class="qr-body"><div class="qr-note">' + t('giftfundNote') + '</div>' +
           '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(GIFTFUND_URL) + '" alt="Gift fund QR code">' +
-          '<div class="qr-url">' + GIFTFUND_URL.replace(/^https?:\/\//,'') + '</div></div></div>' +
+          '<a class="qr-link" href="' + GIFTFUND_URL + '" target="_blank" rel="noopener">' + GIFTFUND_URL.replace(/^https?:\/\//,'') + '</a></div></div>' +
       '</div>' + footerCard();
     return;
   }
