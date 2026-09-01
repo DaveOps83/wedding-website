@@ -22,7 +22,8 @@ Netlify will assign a live URL (e.g., `random-name-123.netlify.app`). You can cu
 ## Features
 
 - **Server-side password validation** — Password validated via Netlify Function, never exposed in client-side code
-- **Signed session tokens** — Login issues an HMAC-signed, time-bound token (valid ~30 days) stored in sessionStorage; every hub/weather request re-verifies it server-side
+- **Signed session tokens** — Login issues an HMAC-signed, time-bound token (valid ~30 days) stored in sessionStorage; every hub/weather/content request re-verifies it server-side
+- **Private content stays server-side** — The actual schedule, venues, dress codes, coordinator contact, and guest book/gift fund links are never in the static `index.html` bundle (readable via "View Source" before login); they're fetched from an auth-gated endpoint only after a verified login. See `netlify/functions/content.js`
 - **Trilingual** — English, Spanish, and Portuguese, switchable from the login screen or the hub menu
 - **Day-based navigation** — Tabs for Friday (ceremony + reception), Saturday (Afternoon Drinks), Sunday (Beach day), and Guest book & gifts; the selected tab is remembered across a refresh (but resets to the correct day once a new calendar day starts)
 - **Auto-redirect** — Landing on `/` with a still-valid session token skips the login screen and goes straight to the hub
@@ -40,8 +41,13 @@ This site is configured with security-first defaults:
 ### Authentication
 - Password validated server-side via Netlify Function; never appears in client-side code
 - Password and token-signing secret stored only in Netlify environment variables (`WEDDING_PASSWORD`, `WEDDING_TOKEN_SECRET`)
-- Session token is HMAC-signed and time-bound (~30 days); `verify.js` and `weather.js` both re-check it server-side with a constant-time comparison
+- Session token is HMAC-signed and time-bound (~30 days); `verify.js`, `weather.js`, and `content.js` all re-check it server-side with a constant-time comparison
 - Token stored in sessionStorage, so it doesn't survive the browser tab closing
+
+### Private content
+- The wedding schedule, venue names/addresses, dress codes, transport notes, coordinator name/role/phone, guest book URL, and gift fund URL live only in `netlify/functions/content.js`, never in `index.html`
+- `index.html` only ever contains generic UI chrome (button labels, tab names, field labels) that reveals nothing about the event — this is enforced by `tests/no-leak.test.js`, which fails the build if any private string from `content.js` reappears in the shipped client file
+- The login screen's own branding (couple's names, city, date) is an inherent exception: it has to render before anyone authenticates, since it *is* the login screen
 
 ### HTTP Security Headers
 - **Strict-Transport-Security** — Force HTTPS, preload enabled
@@ -83,11 +89,11 @@ Edit the CSS variables at the top of `index.html`'s `<style>` block:
 
 ### Update itinerary
 
-Edit the day blocks in the `renderDay()` function (in the `<script>` section) with specific times, venue names, and links. Copy text lives in the `translations` object (one block per language) further up the same script.
+Edit the `CONTENT` object in `netlify/functions/content.js` (one block per language) — schedule times/text, venue names, map embeds, dress code, and transport notes all live there, not in `index.html`. `renderDay()` in `index.html` only controls layout, not the copy itself. After editing, update `tests/content.test.js` and `tests/no-leak.test.js` if you added/renamed a key, then run `npm test`.
 
 ### Update practical details
 
-Edit the relevant translation keys (dress code, transport, location) and the `card()`/`fields()` calls in `renderDay()` for each day's practical items.
+Same as above — dress code, transport, and location copy are all translation keys inside `netlify/functions/content.js`'s `CONTENT` object.
 
 ## External Resources
 
@@ -109,11 +115,15 @@ Suggested tools:
 
 ### Files
 
-- `index.html` — Single static HTML page (welcome + hub + client-side routing, all three languages)
+- `index.html` — Single static HTML page (welcome + hub + client-side routing, all three languages); contains no private wedding details, only generic UI chrome
 - `netlify/functions/login.js` — Serverless function for password validation and token issuance
 - `netlify/functions/verify.js` — Serverless function that verifies a session token
 - `netlify/functions/weather.js` — Serverless function that proxies and caches the Open-Meteo forecast, gated behind the same session token
-- `netlify/functions/lib/tokens.js` — Shared HMAC sign/verify logic and token TTL used by the three functions above
+- `netlify/functions/content.js` — Serverless function that serves the actual private wedding content (schedule, venues, coordinator contact, guest book/gift fund links, map embeds), gated behind the same session token
+- `netlify/functions/lib/tokens.js` — Shared HMAC sign/verify logic and token TTL used by the four functions above
+- `tests/` — Node's built-in test runner (`node:test`); see Testing below
+- `package.json` — `npm test` script; no runtime dependencies
+- `AGENTS.md` — Standing instructions for AI coding agents working in this repo
 - `netlify.toml` — Netlify build config (headers, functions, redirects)
 - `_redirects` — URL redirect rules (robots.txt + SPA rewrite)
 - `robots.txt` — Crawler disallow rules
@@ -128,6 +138,21 @@ Suggested tools:
 4. `netlify.toml` headers applied to all responses
 5. `_redirects` ensures `robots.txt` is served, then SPA rewrite for other routes
 6. `WEDDING_PASSWORD` and `WEDDING_TOKEN_SECRET` env vars injected at runtime into the serverless functions
+
+## Testing
+
+```bash
+npm test
+```
+
+Runs Node's built-in test runner (`node --test`) over `tests/` — no dependencies to install. Covers:
+- `lib/tokens.js` — signing/verification, TTL boundaries, tampering, malformed input
+- `login.js`, `verify.js` — auth flows, fail-closed behavior when env vars are missing
+- `weather.js` — auth gating, upstream failure handling, and a regression test for the cache-stampede race condition (concurrent cold-cache requests must share one upstream fetch)
+- `content.js` — auth gating and payload shape for all three languages
+- `no-leak.test.js` — regression guard asserting no private content string (schedule, venues, coordinator contact, guest book/gift fund links, map URLs) appears in the shipped `index.html`
+
+See `AGENTS.md` for the standing rule: run `npm test` before every push, and add a test for any new functionality.
 
 ## License
 

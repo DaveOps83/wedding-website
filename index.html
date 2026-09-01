@@ -201,17 +201,21 @@
 </div>
 
 <script>
-/* ---------------- Data ---------------- */
-const GUESTBOOK_URL = "https://www.wedibox.com/w/merici-and-david-malaga";
-const GIFTFUND_URL  = "https://revolut.me/merici0c9";
-
+/* ---------------- Data ----------------
+   Only generic, non-sensitive UI chrome lives here — it has to, since this
+   file is served (and readable via "View Source") before anyone logs in.
+   Everything about the actual wedding (schedule, venues, dress codes,
+   coordinator contact, guest book / gift fund links, map embeds) is fetched
+   from /.netlify/functions/content after a verified login; see
+   fetchContent() below. It's merged into these per-language objects, so
+   t(key) keeps working the same everywhere else in this file. */
 const translations = {
   en: {
     pageTitle: "Merici & David's Wedding", weddingKicker: "The Wedding", amp: "&",
     passwordPlaceholder: "Password", passwordLabel: "Password", loginBtn: "Login", loggingIn: "Logging in...",
     errPasswordRequired: "Password required.", errAuthFailed: "Authentication failed.", errConnection: "Connection error. Please try again.",
     langHint: "Language can be changed later from the menu.",
-    logout: "Log out", questionsLabel: "Have any questions during the day?", coordinatorName: "Lucía de Andrés", coordinatorRole: "Event Coordinator", callBtn: "Call", whatsappBtn: "WhatsApp",
+    logout: "Log out", questionsLabel: "Have any questions during the day?", callBtn: "Call", whatsappBtn: "WhatsApp",
     tabFri: "Fri 11", tabSat: "Sat 12", tabSun: "Sun 13", tabExtra: "Guest book & gifts",
     ceremonyHeading: "Ceremony", receptionHeading: "Reception", drinksHeading: "Afternoon Drinks", beachHeading: "Beach day",
     locationLabel: "Location", transportLabel: "Transport", dressLabel: "Dress code", scheduleLabel: "Schedule",
@@ -219,32 +223,14 @@ const translations = {
     dayDateFri: "11 September", dayDateSat: "12 September", dayDateSun: "13 September",
     weatherLoading: "loading forecast…", weatherUnavailable: "forecast unavailable", rainLabel: "rain",
     guestbookHeading: "Guest book", giftfundHeading: "Gift fund", thankYou: "Thank you!",
-    guestbookNote: "Leave us a message and upload your photos. You can also add song requests to the party playlist. This only opens up for use on the wedding day.",
-    giftfundNote: "Having you here is truly the best gift. But if you want to give us another, we'd prefer money.",
-    fri_c1: "Ceremony starts", fri_c2: "Photos outside the church",
-    fri_c_loc: "Málaga historic centre.",
-    fri_c_transport: "Only reachable on foot. Cars aren't permitted in the historic centre, so allow a few extra minutes to arrive on time.",
-    fri_c_dress: "Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. Please cover your shoulders for the ceremony.",
-    fri_r1: "Guests arrive", fri_r2: "Cocktails on the lower forecourt", fri_r3: "Dinner on the main forecourt",
-    fri_r4: "The party begins!", fri_r5: "Late-night bites", fri_r6: "Open bar ends",
-    fri_r_loc: "Camino de Casabermeja 128, Málaga.",
-    fri_r_transport: "Taxi, Uber, or car are the easiest options.",
-    fri_r_dress: "Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer.",
-    sat_1: "Drinks & tapas", sat_2: "Up to the terrace or the dance area if you feel like partying. We have no fixed plan for afterwards, let's see where the night takes us.",
-    sat_loc: "Paseo de la Farola 25, Málaga.",
-    sat_transport: "Taxi, Uber, or car recommended.",
-    sat_dress: "Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.",
-    sun_1: "We'll be unwinding on the beach from this time, you're welcome to join us. If you'd like help arranging a sun lounger, just let us know. They come as a set of two and are €10 per set.",
-    sun_loc: "Torremolinos.",
-    sun_transport: "Taxi, Uber, or car recommended.",
-    sun_dress: "Casual beachwear, obviously."
+    loadingContent: "Loading…"
   },
   es: {
     pageTitle: "Boda de Merici y David", weddingKicker: "La boda", amp: "y",
     passwordPlaceholder: "Contraseña", passwordLabel: "Contraseña", loginBtn: "Entrar", loggingIn: "Entrando...",
     errPasswordRequired: "Se requiere contraseña.", errAuthFailed: "Error de autenticación.", errConnection: "Error de conexión. Inténtalo de nuevo.",
     langHint: "Puedes cambiar el idioma después desde el menú.",
-    logout: "Cerrar sesión", questionsLabel: "¿Tienes alguna pregunta durante el día?", coordinatorName: "Lucía de Andrés", coordinatorRole: "Coordinadora del evento", callBtn: "Llamar", whatsappBtn: "WhatsApp",
+    logout: "Cerrar sesión", questionsLabel: "¿Tienes alguna pregunta durante el día?", callBtn: "Llamar", whatsappBtn: "WhatsApp",
     tabFri: "Vie 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Libro y regalo",
     ceremonyHeading: "Ceremonia", receptionHeading: "Recepción", drinksHeading: "Copas de la tarde", beachHeading: "Día de playa",
     locationLabel: "Ubicación", transportLabel: "Transporte", dressLabel: "Código de vestimenta", scheduleLabel: "Horario",
@@ -252,32 +238,14 @@ const translations = {
     dayDateFri: "11 de septiembre", dayDateSat: "12 de septiembre", dayDateSun: "13 de septiembre",
     weatherLoading: "cargando previsión…", weatherUnavailable: "previsión no disponible", rainLabel: "lluvia",
     guestbookHeading: "Libro de visitas", giftfundHeading: "Fondo de regalo", thankYou: "¡Gracias!",
-    guestbookNote: "Déjanos un mensaje y sube tus fotos. También puedes añadir canciones a la lista de la fiesta. Esto solo se abre para usarse el día de la boda.",
-    giftfundNote: "Teneros aquí es de verdad el mejor regalo. Pero si queréis darnos otro, preferimos dinero.",
-    fri_c1: "Comienza la ceremonia", fri_c2: "Fotos a la salida de la iglesia",
-    fri_c_loc: "centro histórico de Málaga.",
-    fri_c_transport: "Solo se puede llegar a pie. No se permiten coches en el centro histórico, así que reserva unos minutos extra para llegar a tiempo.",
-    fri_c_dress: "Elegante informal o cóctel: vestidos largos de verano, camisa entallada, o pantalón de vestir con corbata y chaqueta. Por favor, cubre los hombros para la ceremonia.",
-    fri_r1: "Llegada de los invitados", fri_r2: "Cócteles en el patio inferior", fri_r3: "Cena en el patio principal",
-    fri_r4: "¡Empieza la fiesta!", fri_r5: "Aperitivos de madrugada", fri_r6: "Termina la barra libre",
-    fri_r_loc: "Camino de Casabermeja 128, Málaga.",
-    fri_r_transport: "Taxi, Uber o coche son las opciones más sencillas.",
-    fri_r_dress: "Elegante informal o cóctel: vestidos largos de verano, camisa entallada, o pantalón de vestir con corbata y chaqueta.",
-    sat_1: "Copas y tapas", sat_2: "Sube a la terraza o a la pista de baile si te apetece fiesta. No tenemos plan fijo para después, veamos hacia dónde nos lleva la noche.",
-    sat_loc: "Paseo de la Farola 25, Málaga.",
-    sat_transport: "Se recomienda taxi, Uber o coche.",
-    sat_dress: "Informal elegante de resort. Trocadero es una terraza junto al mar con estilo, así que piensa en algo elevado pero relajado: camisas de lino, vestidos de verano, sandalias elegantes o espadrilles. Sin bañador ni chanclas.",
-    sun_1: "Estaremos relajándonos en la playa a partir de esta hora, estáis invitados a acompañarnos. Si queréis ayuda para conseguir una tumbona, decidnoslo. Vienen en juegos de dos y cuestan 10 € el juego.",
-    sun_loc: "Torremolinos.",
-    sun_transport: "Se recomienda taxi, Uber o coche.",
-    sun_dress: "Ropa de playa informal, evidentemente."
+    loadingContent: "Cargando…"
   },
   pt: {
     pageTitle: "Casamento de Merici e David", weddingKicker: "O casamento", amp: "e",
     passwordPlaceholder: "Palavra-passe", passwordLabel: "Palavra-passe", loginBtn: "Entrar", loggingIn: "A entrar...",
     errPasswordRequired: "Palavra-passe obrigatória.", errAuthFailed: "Falha na autenticação.", errConnection: "Erro de ligação. Tente novamente.",
     langHint: "Pode alterar o idioma depois a partir do menu.",
-    logout: "Sair", questionsLabel: "Tens alguma pergunta durante o dia?", coordinatorName: "Lucía de Andrés", coordinatorRole: "Coordenadora do evento", callBtn: "Ligar", whatsappBtn: "WhatsApp",
+    logout: "Sair", questionsLabel: "Tens alguma pergunta durante o dia?", callBtn: "Ligar", whatsappBtn: "WhatsApp",
     tabFri: "Sex 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Livro e presente",
     ceremonyHeading: "Cerimónia", receptionHeading: "Receção", drinksHeading: "Copos da tarde", beachHeading: "Dia de praia",
     locationLabel: "Local", transportLabel: "Transporte", dressLabel: "Código de vestuário", scheduleLabel: "Horário",
@@ -285,25 +253,7 @@ const translations = {
     dayDateFri: "11 de setembro", dayDateSat: "12 de setembro", dayDateSun: "13 de setembro",
     weatherLoading: "a carregar previsão…", weatherUnavailable: "previsão indisponível", rainLabel: "chuva",
     guestbookHeading: "Livro de visitas", giftfundHeading: "Fundo de presente", thankYou: "Obrigado!",
-    guestbookNote: "Deixa-nos uma mensagem e envia as tuas fotos. Também podes adicionar músicas à lista da festa. Isto só abre para uso no dia do casamento.",
-    giftfundNote: "Ter-vos aqui é realmente o melhor presente. Mas se quiserem dar-nos outro, preferimos dinheiro.",
-    fri_c1: "A cerimónia começa", fri_c2: "Fotografias à saída da igreja",
-    fri_c_loc: "centro histórico de Málaga.",
-    fri_c_transport: "Só é possível chegar a pé. Não são permitidos carros no centro histórico, por isso reserve alguns minutos extra para chegar a tempo.",
-    fri_c_dress: "Elegante casual ou cocktail: vestidos longos de verão, camisa social, ou calças de vestir com gravata e blazer. Por favor cubra os ombros para a cerimónia.",
-    fri_r1: "Chegada dos convidados", fri_r2: "Cocktails no pátio inferior", fri_r3: "Jantar no pátio principal",
-    fri_r4: "Começa a festa!", fri_r5: "Petiscos noturnos", fri_r6: "Fim do bar aberto",
-    fri_r_loc: "Camino de Casabermeja 128, Málaga.",
-    fri_r_transport: "Táxi, Uber ou carro são as opções mais fáceis.",
-    fri_r_dress: "Elegante casual ou cocktail: vestidos longos de verão, camisa social, ou calças de vestir com gravata e blazer.",
-    sat_1: "Copos e petiscos", sat_2: "Suba até ao terraço ou à pista de dança se quiser festa. Não temos plano fixo para depois, vamos ver para onde a noite nos leva.",
-    sat_loc: "Paseo de la Farola 25, Málaga.",
-    sat_transport: "Recomenda-se táxi, Uber ou carro.",
-    sat_dress: "Casual chique de resort. O Trocadero é um terraço à beira-mar com estilo, por isso pense em algo elegante mas relaxado: camisas de linho, vestidos de verão, sandálias elegantes ou espadrilles. Sem roupa de banho nem chinelos.",
-    sun_1: "Vamos estar a relaxar na praia a partir desta hora, são bem-vindos a juntar-se a nós. Se quiserem ajuda a conseguir uma espreguiçadeira, basta avisar-nos. Vêm em conjuntos de duas e custam 10 € o conjunto.",
-    sun_loc: "Torremolinos.",
-    sun_transport: "Recomenda-se táxi, Uber ou carro.",
-    sun_dress: "Roupa de praia casual, obviamente."
+    loadingContent: "A carregar…"
   }
 };
 
@@ -321,6 +271,7 @@ function wxDescription(code){ const e = wxCodeMap[code] || wxCodeMap[3]; return 
 /* ---------------- State ---------------- */
 let currentUser = null;
 let weatherData = null;
+let contentLoaded = false;
 let currentDay = getStoredDay();
 let menuOpen = false;
 
@@ -364,6 +315,23 @@ function weatherLine(loc, date) {
   if (!weatherData || weatherData.error || !weatherData[loc] || !weatherData[loc][date]) return t('weatherUnavailable');
   const d = weatherData[loc][date];
   return d.max + '°/' + d.min + '°C, ' + wxDescription(d.code) + ' · ' + d.rain + '% ' + t('rainLabel');
+}
+
+/* ---------------- Private content (schedule, venues, coordinator, links) ---------------- */
+function fetchContent() {
+  if (contentLoaded) { renderDay(); return; }
+  const authToken = sessionStorage.getItem('auth_token');
+  fetch('/.netlify/functions/content', { headers: authToken ? { 'Authorization': 'Bearer ' + authToken } : {} })
+    .then(res => res.ok ? res.json() : Promise.reject())
+    .then(data => {
+      ['en', 'es', 'pt'].forEach(lang => {
+        if (data[lang]) Object.assign(translations[lang], data[lang]);
+      });
+      contentLoaded = true;
+      applyHubTranslations();
+      renderDay();
+    })
+    .catch(() => { renderDay(); });
 }
 
 /* ---------------- Language & menu ---------------- */
@@ -421,26 +389,37 @@ function renderDay() {
   document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.day === currentDay));
   document.getElementById('dayHeaderExtra').style.display = currentDay === 'extra' ? '' : 'none';
   document.getElementById('dayHeaderNormal').style.display = currentDay === 'extra' ? 'none' : '';
+  if (currentDay !== 'extra') {
+    document.getElementById('dayTitle').textContent = t('dayName' + capitalize(currentDay));
+    document.getElementById('daySub').textContent = t('dayDate' + capitalize(currentDay)) + ' · ' + (currentDay === 'sun' ? weatherLine('torremolinos','2026-09-13') : weatherLine('malaga', currentDay === 'fri' ? '2026-09-11' : '2026-09-12'));
+  }
 
   const c = document.getElementById('dayContent');
 
+  // The actual wedding content only exists client-side once fetchContent()
+  // has merged it in post-login; show a brief loading state until then
+  // rather than rendering blank cards from missing translation keys.
+  if (!contentLoaded) {
+    c.innerHTML = '<div class="day-panel"><div class="card qr-card"><div class="qr-body"><div class="qr-note">' + t('loadingContent') + '</div></div></div></div>';
+    return;
+  }
+
   if (currentDay === 'extra') {
+    const guestbookUrl = t('guestbookUrl');
+    const giftfundUrl = t('giftfundUrl');
     c.innerHTML =
       '<div class="day-panel">' +
         '<div class="card qr-card"><div class="card-head center"><div class="dot"></div><div class="card-head-title">' + t('guestbookHeading') + '</div></div>' +
           '<div class="qr-body"><div class="qr-note">' + t('guestbookNote') + '</div>' +
-          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(GUESTBOOK_URL) + '" alt="Guest book QR code">' +
-          '<a class="qr-link" href="' + GUESTBOOK_URL + '" target="_blank" rel="noopener">' + GUESTBOOK_URL.replace(/^https?:\/\//,'') + '</a></div></div>' +
+          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(guestbookUrl) + '" alt="Guest book QR code">' +
+          '<a class="qr-link" href="' + guestbookUrl + '" target="_blank" rel="noopener">' + guestbookUrl.replace(/^https?:\/\//,'') + '</a></div></div>' +
         '<div class="card qr-card"><div class="card-head center"><div class="dot"></div><div class="card-head-title">' + t('giftfundHeading') + '</div></div>' +
           '<div class="qr-body"><div class="qr-note">' + t('giftfundNote') + '</div>' +
-          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(GIFTFUND_URL) + '" alt="Gift fund QR code">' +
-          '<a class="qr-link" href="' + GIFTFUND_URL + '" target="_blank" rel="noopener">' + GIFTFUND_URL.replace(/^https?:\/\//,'') + '</a></div></div>' +
+          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(giftfundUrl) + '" alt="Gift fund QR code">' +
+          '<a class="qr-link" href="' + giftfundUrl + '" target="_blank" rel="noopener">' + giftfundUrl.replace(/^https?:\/\//,'') + '</a></div></div>' +
       '</div>' + thankYouBlock();
     return;
   }
-
-  document.getElementById('dayTitle').textContent = t('dayName' + capitalize(currentDay));
-  document.getElementById('daySub').textContent = t('dayDate' + capitalize(currentDay)) + ' · ' + (currentDay === 'sun' ? weatherLine('torremolinos','2026-09-13') : weatherLine('malaga', currentDay === 'fri' ? '2026-09-11' : '2026-09-12'));
 
   function rail(rows) {
     return rows.map((r, i) => (
@@ -456,28 +435,31 @@ function renderDay() {
     return '<div class="card"><div class="card-head"><div class="dot"></div><div class="card-head-title">' + t(headingKey) + '</div></div>' +
       '<div class="rail"><div class="rail-label">' + t('scheduleLabel') + '</div>' + rail(railRows) + '</div>' + fields(fieldRows) + '</div>';
   }
+  function mapEmbed(mapKey, venueKey, locKey) {
+    return '<div class="map-embed"><iframe src="' + t(mapKey) + '" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">' + t(venueKey) + ', ' + t(locKey) + '</div>';
+  }
 
   let html = '<div class="day-panel">';
   if (currentDay === 'fri') {
-    html += card('ceremonyHeading', [['17:30', t('fri_c1')], ['18:15', t('fri_c2')]], [
-      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d44264.80183265609!2d-4.42061895!3d36.73558899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7960a0d93d9%3A0x4c5de4593229a6a5!2sIglesia%20de%20San%20Juan%20de%20M%C3%A1laga!5e0!3m2!1sen!2suk!4v1788265142526!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Iglesia de San Juan, ' + t('fri_c_loc') + '</div>'],
+    html += card('ceremonyHeading', t('fri_c_schedule'), [
+      [t('locationLabel'), mapEmbed('fri_c_map', 'fri_c_venue', 'fri_c_loc')],
       [t('transportLabel'), t('fri_c_transport')],
       [t('dressLabel'), t('fri_c_dress')]
     ]);
-    html += card('receptionHeading', [['19:00', t('fri_r1')], ['19:15', t('fri_r2')], ['20:30', t('fri_r3')], ['22:45', t('fri_r4')], ['01:15', t('fri_r5')], ['03:00', t('fri_r6')]], [
-      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5531.43439208823!2d-4.425044000000001!3d36.7586953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f64475c1d34f%3A0x5a2b7af23409ad48!2sHacienda%20Nadales!5e0!3m2!1sen!2suk!4v1788265463507!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Hacienda Nadales, ' + t('fri_r_loc') + '</div>'],
+    html += card('receptionHeading', t('fri_r_schedule'), [
+      [t('locationLabel'), mapEmbed('fri_r_map', 'fri_r_venue', 'fri_r_loc')],
       [t('transportLabel'), t('fri_r_transport')],
       [t('dressLabel'), t('fri_r_dress')]
     ]);
   } else if (currentDay === 'sat') {
-    html += card('drinksHeading', [['15:00', t('sat_1')], ['17:00', t('sat_2')]], [
-      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5534.722448509869!2d-4.4146975!3d36.7130757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7e997e94611%3A0x31211f666633e5b8!2sTrocadero%20Casa%20de%20Botes!5e0!3m2!1sen!2suk!4v1788265508037!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Trocadero Casa de Botes, ' + t('sat_loc') + '</div>'],
+    html += card('drinksHeading', t('sat_schedule'), [
+      [t('locationLabel'), mapEmbed('sat_map', 'sat_venue', 'sat_loc')],
       [t('transportLabel'), t('sat_transport')],
       [t('dressLabel'), t('sat_dress')]
     ]);
   } else if (currentDay === 'sun') {
-    html += card('beachHeading', [['13:00', t('sun_1')]], [
-      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e0!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">La Playa Surf House, ' + t('sun_loc') + '</div>'],
+    html += card('beachHeading', t('sun_schedule'), [
+      [t('locationLabel'), mapEmbed('sun_map', 'sun_venue', 'sun_loc')],
       [t('transportLabel'), t('sun_transport')],
       [t('dressLabel'), t('sun_dress')]
     ]);
@@ -489,13 +471,14 @@ function renderDay() {
 function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
 function footerCard() {
+  const phone = t('coordinatorPhone');
   return '<div class="footer-card"><div class="footer-inner"><div>' +
     '<div class="footer-label">' + t('questionsLabel') + '</div>' +
     '<div class="footer-name">' + t('coordinatorName') + '</div>' +
     '<div class="footer-role">' + t('coordinatorRole') + '</div></div>' +
     '<div class="footer-actions">' +
-      '<a href="tel:+34666891100" class="call-btn">' + t('callBtn') + '</a>' +
-      '<a href="https://wa.me/34666891100" target="_blank" rel="noopener" class="call-btn">' + t('whatsappBtn') + '</a>' +
+      '<a href="tel:' + phone + '" class="call-btn">' + t('callBtn') + '</a>' +
+      '<a href="https://wa.me/' + phone.replace(/^\+/, '') + '" target="_blank" rel="noopener" class="call-btn">' + t('whatsappBtn') + '</a>' +
     '</div></div></div>';
 }
 
@@ -536,6 +519,7 @@ function render() {
         currentDay = getStoredDay();
         renderDay();
         fetchWeather();
+        fetchContent();
       })
       .catch(() => { sessionStorage.removeItem('auth_token'); navigate('/'); });
     return;

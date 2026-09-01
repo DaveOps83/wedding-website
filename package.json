@@ -1,0 +1,8 @@
+{
+  "name": "wedding-website",
+  "private": true,
+  "description": "Merici & David's wedding guest hub — static site + Netlify Functions.",
+  "scripts": {
+    "test": "node --test"
+  }
+}
