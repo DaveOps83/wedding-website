@@ -43,6 +43,7 @@ This site is configured with security-first defaults:
 - Password and token-signing secret stored only in Netlify environment variables (`WEDDING_PASSWORD`, `WEDDING_TOKEN_SECRET`)
 - Session token is HMAC-signed and time-bound (~30 days); `verify.js`, `weather.js`, and `content.js` all re-check it server-side with a constant-time comparison
 - Token stored in sessionStorage, so it doesn't survive the browser tab closing
+- `login.js` rate-limits wrong-password attempts: after 5 failures from the same IP within 15 minutes, further attempts (including a correct password) get a `429` immediately. This is an in-memory, best-effort limiter — it's scoped to a single warm function instance, so a distributed attacker across many concurrent/cold instances isn't fully stopped by it; the fixed ~1.2s delay on every wrong attempt is what covers that case. A persistent store (e.g. Netlify Blobs) would close that gap at the cost of adding a dependency
 
 ### Private content
 - The wedding schedule, venue names/addresses, dress codes, transport notes, coordinator name/role/phone, guest book URL, and gift fund URL live only in `netlify/functions/content.js`, never in `index.html`

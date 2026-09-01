@@ -213,7 +213,7 @@ const translations = {
   en: {
     pageTitle: "Merici & David's Wedding", weddingKicker: "The Wedding", amp: "&",
     passwordPlaceholder: "Password", passwordLabel: "Password", loginBtn: "Login", loggingIn: "Logging in...",
-    errPasswordRequired: "Password required.", errAuthFailed: "Authentication failed.", errConnection: "Connection error. Please try again.",
+    errPasswordRequired: "Password required.", errAuthFailed: "Authentication failed.", errConnection: "Connection error. Please try again.", errTooManyAttempts: "Too many attempts. Please try again later.",
     langHint: "Language can be changed later from the menu.",
     logout: "Log out", questionsLabel: "Have any questions during the day?", callBtn: "Call", whatsappBtn: "WhatsApp",
     tabFri: "Fri 11", tabSat: "Sat 12", tabSun: "Sun 13", tabExtra: "Guest book & gifts",
@@ -228,7 +228,7 @@ const translations = {
   es: {
     pageTitle: "Boda de Merici y David", weddingKicker: "La boda", amp: "y",
     passwordPlaceholder: "Contraseña", passwordLabel: "Contraseña", loginBtn: "Entrar", loggingIn: "Entrando...",
-    errPasswordRequired: "Se requiere contraseña.", errAuthFailed: "Error de autenticación.", errConnection: "Error de conexión. Inténtalo de nuevo.",
+    errPasswordRequired: "Se requiere contraseña.", errAuthFailed: "Error de autenticación.", errConnection: "Error de conexión. Inténtalo de nuevo.", errTooManyAttempts: "Demasiados intentos. Inténtalo de nuevo más tarde.",
     langHint: "Puedes cambiar el idioma después desde el menú.",
     logout: "Cerrar sesión", questionsLabel: "¿Tienes alguna pregunta durante el día?", callBtn: "Llamar", whatsappBtn: "WhatsApp",
     tabFri: "Vie 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Libro y regalo",
@@ -243,7 +243,7 @@ const translations = {
   pt: {
     pageTitle: "Casamento de Merici e David", weddingKicker: "O casamento", amp: "e",
     passwordPlaceholder: "Palavra-passe", passwordLabel: "Palavra-passe", loginBtn: "Entrar", loggingIn: "A entrar...",
-    errPasswordRequired: "Palavra-passe obrigatória.", errAuthFailed: "Falha na autenticação.", errConnection: "Erro de ligação. Tente novamente.",
+    errPasswordRequired: "Palavra-passe obrigatória.", errAuthFailed: "Falha na autenticação.", errConnection: "Erro de ligação. Tente novamente.", errTooManyAttempts: "Demasiadas tentativas. Tente novamente mais tarde.",
     langHint: "Pode alterar o idioma depois a partir do menu.",
     logout: "Sair", questionsLabel: "Tens alguma pergunta durante o dia?", callBtn: "Ligar", whatsappBtn: "WhatsApp",
     tabFri: "Sex 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Livro e presente",
@@ -535,14 +535,15 @@ function tryLogin() {
   const originalText = t('loginBtn');
   btn.textContent = t('loggingIn'); btn.disabled = true;
   fetch('/.netlify/functions/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) })
-    .then(res => res.json())
-    .then(data => {
+    .then(res => res.json().then(data => ({ status: res.status, data })))
+    .then(({ status, data }) => {
       if (data.token) {
         sessionStorage.setItem('auth_token', data.token);
         currentUser = 'guest'; err.style.display='none';
         navigate('/hub');
       } else {
-        err.textContent = t('errAuthFailed'); err.style.display='block';
+        err.textContent = status === 429 ? t('errTooManyAttempts') : t('errAuthFailed');
+        err.style.display='block';
         btn.textContent = originalText; btn.disabled = false;
       }
     })
