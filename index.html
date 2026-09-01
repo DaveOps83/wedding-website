@@ -17,8 +17,8 @@
   input:focus-visible, button:focus-visible, a:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
 
   .page { display:none; }
-  .page.active { display:flex; justify-content:center; min-height:100vh; }
-  .wrap { width:100%; max-width:480px; min-height:100vh; display:flex; flex-direction:column; background:#fff; }
+  .page.active { display:flex; justify-content:center; min-height:100vh; min-height:100dvh; }
+  .wrap { width:100%; max-width:480px; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; background:#fff; }
 
   .tile-band { background-color:var(--terra); background-image:
       repeating-linear-gradient(45deg, rgba(246,238,223,.10) 0 1px, transparent 1px 17px),
@@ -27,18 +27,18 @@
     background-size:34px 34px, 34px 34px, 34px 34px; }
 
   /* Welcome / login */
-  #welcomePage .wrap { padding:28px 24px 40px; }
-  .lang-pills { display:flex; gap:6px; justify-content:center; }
+  #welcomePage .wrap { padding:28px 24px 40px; overflow-y:auto; }
+  .lang-pills { display:flex; gap:6px; justify-content:center; flex-shrink:0; }
   .lang-pill { padding:7px 16px; border-radius:999px; border:1px solid rgba(246,238,223,.35); background:transparent; color:rgba(246,238,223,.7); font:600 12px "DM Sans",sans-serif; letter-spacing:.1em; cursor:pointer; }
   .lang-pill.active { border-color:var(--gold); background:rgba(212,168,67,.22); color:var(--cream); }
-  .welcome-hero { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  .welcome-hero { flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:16px 0; }
   .welcome-kicker { font:400 13px "DM Sans",sans-serif; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
   .welcome-hero h1 { font:300 54px "Cormorant Garamond",serif; color:var(--cream); line-height:1.0; }
   .welcome-hero h1 em { font-style:italic; font-size:40px; color:var(--gold); }
   .welcome-rule { width:1px; height:34px; background:rgba(212,168,67,.6); margin:24px auto; }
   .welcome-place { font:500 13px "DM Sans",sans-serif; letter-spacing:.2em; text-transform:uppercase; color:rgba(246,238,223,.8); }
   .welcome-dates { font:400 13px "DM Sans",sans-serif; letter-spacing:.2em; text-transform:uppercase; color:rgba(246,238,223,.55); margin-top:4px; }
-  .login-card { background:#FCF8F0; border-radius:14px; padding:20px; }
+  .login-card { background:#FCF8F0; border-radius:14px; padding:20px; flex-shrink:0; }
   .login-card label { display:block; font:600 11px "DM Sans",sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:8px; }
   .login-card input { width:100%; padding:15px 14px; border:1px solid var(--border); border-radius:10px; background:#fff; font:400 16px "DM Sans",sans-serif; color:var(--ink); margin-bottom:10px; }
   .login-card button { width:100%; padding:15px; border:none; border-radius:10px; background:var(--terra); color:var(--cream); font:600 15px "DM Sans",sans-serif; cursor:pointer; }
@@ -46,6 +46,35 @@
   .login-card button:disabled { opacity:.6; cursor:not-allowed; }
   .login-err { color:#c23b3b; font:400 13px "DM Sans",sans-serif; margin-bottom:10px; }
   .login-hint { font:400 12.5px "DM Sans",sans-serif; color:#8A8378; margin-top:12px; text-align:center; }
+
+  /* Compact the login screen on short viewports so everything fits without scrolling */
+  @media (max-height:700px) {
+    #welcomePage .wrap { padding:16px 24px 20px; }
+    .welcome-hero { padding:8px 0; }
+    .welcome-kicker { margin-bottom:10px; }
+    .welcome-hero h1 { font-size:38px; }
+    .welcome-hero h1 em { font-size:28px; }
+    .welcome-rule { height:20px; margin:14px auto; }
+    .login-card { padding:14px; }
+    .login-card input { padding:12px 14px; margin-bottom:8px; }
+    .login-card button { padding:12px; }
+    .login-hint { margin-top:8px; }
+  }
+  /* Very short viewports (e.g. phones in landscape) need an even tighter layout */
+  @media (max-height:480px) {
+    #welcomePage .wrap { padding:10px 24px 12px; }
+    .welcome-hero { padding:0; }
+    .welcome-kicker { margin-bottom:4px; }
+    .welcome-hero h1 { font-size:26px; }
+    .welcome-hero h1 em { font-size:19px; }
+    .welcome-rule { height:10px; margin:6px auto; }
+    .welcome-dates { margin-top:2px; }
+    .login-card { padding:10px; }
+    .login-card label { margin-bottom:4px; }
+    .login-card input { padding:8px 12px; margin-bottom:6px; }
+    .login-card button { padding:9px; }
+    .login-hint { margin-top:5px; }
+  }
 
   /* Hub header + nav */
   .hub-header { padding:16px 20px 20px; }
