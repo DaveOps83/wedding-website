@@ -374,6 +374,7 @@ function changeLang(lang) {
   document.documentElement.lang = lang;
   document.title = t('pageTitle');
   menuOpen = false;
+  document.getElementById('menuPanel').classList.remove('open');
   if (document.getElementById('hubPage').classList.contains('active')) {
     applyHubTranslations(); renderDay();
   } else {
