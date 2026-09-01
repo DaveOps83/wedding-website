@@ -114,6 +114,9 @@
   .field-label { font:600 10.5px "DM Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#8A8378; margin-bottom:3px; }
   .field-value { font:400 14px "DM Sans",sans-serif; color:#3E3A34; }
   .field-value a { font-weight:500; text-decoration:underline; text-decoration-color:rgba(212,168,67,.9); text-underline-offset:3px; }
+  .map-embed { position:relative; width:100%; aspect-ratio:16/10; border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:8px; }
+  .map-embed iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
+  .map-caption { font:400 14px "DM Sans",sans-serif; color:#3E3A34; }
 
   .qr-card { text-align:center; }
   .qr-body { padding:22px 18px 24px; }
@@ -318,7 +321,7 @@ function wxDescription(code){ const e = wxCodeMap[code] || wxCodeMap[3]; return 
 /* ---------------- State ---------------- */
 let currentUser = null;
 let weatherData = null;
-let currentDay = todayDay();
+let currentDay = getStoredDay();
 let menuOpen = false;
 
 function todayDay() {
@@ -326,6 +329,14 @@ function todayDay() {
   if (iso === "2026-09-12") return "sat";
   if (iso === "2026-09-13") return "sun";
   return "fri";
+}
+
+// Restores the tab the guest was last viewing across a page refresh, falling
+// back to today's day if nothing was saved yet (or it's no longer valid).
+function getStoredDay() {
+  const saved = sessionStorage.getItem('currentDay');
+  if (saved && ['fri', 'sat', 'sun', 'extra'].includes(saved)) return saved;
+  return todayDay();
 }
 
 function getCookie(name){ const m = document.cookie.match('(?:^|; )' + name + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : null; }
@@ -393,7 +404,7 @@ function applyHubTranslations() {
 }
 
 /* ---------------- Day tabs ---------------- */
-function setDay(day) { currentDay = day; renderDay(); }
+function setDay(day) { currentDay = day; sessionStorage.setItem('currentDay', day); renderDay(); }
 
 function renderDay() {
   document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.day === currentDay));
@@ -438,24 +449,24 @@ function renderDay() {
   let html = '<div class="day-panel">';
   if (currentDay === 'fri') {
     html += card('ceremonyHeading', [['17:30', t('fri_c1')], ['18:15', t('fri_c2')]], [
-      [t('locationLabel'), '<a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener">Iglesia de San Juan</a>, ' + t('fri_c_loc')],
+      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d44264.80183265609!2d-4.42061895!3d36.73558899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7960a0d93d9%3A0x4c5de4593229a6a5!2sIglesia%20de%20San%20Juan%20de%20M%C3%A1laga!5e1!3m2!1sen!2suk!4v1788265142526!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Iglesia de San Juan, ' + t('fri_c_loc') + '</div>'],
       [t('transportLabel'), t('fri_c_transport')],
       [t('dressLabel'), t('fri_c_dress')]
     ]);
     html += card('receptionHeading', [['19:00', t('fri_r1')], ['19:15', t('fri_r2')], ['20:30', t('fri_r3')], ['22:45', t('fri_r4')], ['01:15', t('fri_r5')], ['03:00', t('fri_r6')]], [
-      [t('locationLabel'), '<a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener">Hacienda Nadales</a>, ' + t('fri_r_loc')],
+      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5531.43439208823!2d-4.425044000000001!3d36.7586953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f64475c1d34f%3A0x5a2b7af23409ad48!2sHacienda%20Nadales!5e1!3m2!1sen!2suk!4v1788265463507!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Hacienda Nadales, ' + t('fri_r_loc') + '</div>'],
       [t('transportLabel'), t('fri_r_transport')],
       [t('dressLabel'), t('fri_r_dress')]
     ]);
   } else if (currentDay === 'sat') {
     html += card('drinksHeading', [['15:00', t('sat_1')], ['17:00', t('sat_2')]], [
-      [t('locationLabel'), '<a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener">Trocadero Casa de Botes</a>, ' + t('sat_loc')],
+      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5534.722448509869!2d-4.4146975!3d36.7130757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7e997e94611%3A0x31211f666633e5b8!2sTrocadero%20Casa%20de%20Botes!5e1!3m2!1sen!2suk!4v1788265508037!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Trocadero Casa de Botes, ' + t('sat_loc') + '</div>'],
       [t('transportLabel'), t('sat_transport')],
       [t('dressLabel'), t('sat_dress')]
     ]);
   } else if (currentDay === 'sun') {
     html += card('beachHeading', [['13:00', t('sun_1')]], [
-      [t('locationLabel'), '<a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener">La Playa Surf House</a>, ' + t('sun_loc')],
+      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e1!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">La Playa Surf House, ' + t('sun_loc') + '</div>'],
       [t('transportLabel'), t('sun_transport')],
       [t('dressLabel'), t('sun_dress')]
     ]);
@@ -507,7 +518,7 @@ function render() {
         document.getElementById('hubPage').classList.add('active');
         document.title = t('pageTitle');
         applyHubTranslations();
-        currentDay = todayDay();
+        currentDay = getStoredDay();
         renderDay();
         fetchWeather();
       })
