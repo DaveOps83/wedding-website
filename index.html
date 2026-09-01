@@ -1,697 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow, noarchive">
-  <title>Merici & David's Wedding</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖤</text></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html { height: 100%; }
-    body { height: 100%; margin: 0; padding: 0; font: 16px "DM Sans", sans-serif; background: white; color: var(--ink); line-height:1.6; }
-    :root { --terra: #551C25; --orange: #551C25; --gold: #D4A843; --cobalt: #5B8DB8; --cream: #F6EEDF; --ink: #2C2A26; --ink-soft: #5C5650; --border: #E4DCC9; --bg: #FFFFFF; }
-    
-    .page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; }
-    .page.active { display: flex; }
-    
-    #welcomePage { background: linear-gradient(135deg, var(--cream) 0%, white 100%); }
-    
-    .welcome-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; width: 100%; }
-    
-    #hubPage { background: white; }
-    .hub-page { flex: 1; display: flex; flex-direction: column; width: 100%; height: 100%; position: relative; }
-    
-    .hub-content { flex: 1; overflow-y: auto; display: flex; justify-content: center; width: 100%; padding: 3rem 1.5rem; }
-    .hub-wrapper { max-width: 760px; width: 100%; }
-    
-    .hub-header { display: flex; gap: 2rem; margin-bottom: 3rem; align-items: flex-start; }
-    .hub-welcome { flex: 1; }
-    .hub-welcome h2 { font-size: 2.5rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 0.5rem; }
-    .hub-welcome p { color: var(--ink-soft); font-size: 1.05rem; }
-    
-    .hub-top-box { border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; background: white; width: 25%; flex-shrink: 0; }
-    .hub-top-box p { margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.5; }
-    .hub-top-box p:first-child { color: var(--ink-soft); font-size: 0.875rem; }
-    .hub-top-box p:last-child { font-weight: 600; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Merici &amp; David's Wedding</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🖤</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; }
+  body { font:15px "DM Sans", sans-serif; background:#fff; color:#2C2A26; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  :root { --terra:#551C25; --gold:#D4A843; --cream:#F6EEDF; --ink:#2C2A26; --ink-soft:#5C5650; --border:#E4DCC9; }
+  a { color:var(--terra); }
+  a:hover { color:#7d5411; }
+  input:focus-visible, button:focus-visible, a:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
 
-    /* Language selector */
-    .lang-bar { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
-    .lang-select { border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.6rem; font-size: 0.85rem; font-family: "DM Sans", sans-serif; color: var(--ink); background: white; cursor: pointer; }
-    .lang-select:focus { outline: none; border-color: var(--terra); }
-    .lang-bar-welcome { margin-bottom: 1.5rem; }
-    
-    .hub-footer { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; border-top: 1px solid var(--border); background: white; }
-    .hub-footer-content { max-width: 760px; width: 100%; text-align: center; }
-    
-    .s-card { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 2rem; overflow: hidden; background: white; }
-    .s-card-head { padding: 1.25rem; background: #F9F7F3; display: flex; align-items: center; gap: 0.75rem; justify-content: center; }
-    .s-card-title { text-align: center; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.01em; }
-    .s-card-badge { font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 4px; background: #E8E0D0; color: var(--ink); flex-shrink: 0; }
-    .badge-done { background: var(--terra); color: white; }
-    .badge-pend { background: #F0E6D8; }
-    .s-card-body { padding: 1.75rem 1.75rem; text-align: center; }
-    .form-grp { margin: 1rem 0; }
-    .form-lbl { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--ink); font-size: 0.875rem; }
-    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-    .form-inp { width: 100%; padding: 0.875rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; font-family: "DM Sans", sans-serif; }
-    .form-inp:focus { outline: none; border-color: var(--terra); box-shadow: 0 0 0 3px rgba(85,28,37,0.25); }
-    .save-btn, .login-btn { background: var(--terra); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 500; font-size: 1rem; }
-    .save-btn:hover, .login-btn:hover { opacity: 0.9; }
-    .save-btn:disabled, .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .save-ok { display: none; color: var(--terra); font-size: 0.875rem; margin-top: 0.5rem; }
-    .save-ok.show { display: block; }
-    .login-err { color: #c23b3b; margin-top: 1rem; font-size: 0.875rem; }
-    .hub-note { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.7; }
-    .prac-item { display: flex; flex-direction: column; padding: 1.1rem 0; border-bottom: 1px solid var(--border); gap: 0.5rem; text-align: left; }
-    .prac-item:last-child { border-bottom: none; }
-    .prac-item label { font-weight: 600; }
-    .prac-item span { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.6; }
-    .day-block { margin-bottom: 1.5rem; }
-    .day-block:last-child { margin-bottom: 0; }
-    .day-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--terra); }
-    .day-dress-code { font-size: 0.875rem; color: var(--ink-soft); margin-top: 0.5rem; margin-bottom: 1.5rem; text-align: left; }
-    .day-dress-code strong { color: var(--ink); }
-    
-    /* Invisible table styles */
-    .schedule-table { width: 100%; border-collapse: collapse; margin: 0 auto 1rem; }
-    .schedule-table td { padding: 0.65rem 0; border: none; text-align: left; font-size: 1rem; line-height: 1.55; }
-    .schedule-table td:first-child { width: 88px; font-weight: 600; white-space: nowrap; color: var(--terra); vertical-align: top; padding-top: 0.75rem; }
-    .schedule-table td:last-child { padding-left: 1rem; color: var(--ink-soft); padding-top: 0.65rem; }
+  .page { display:none; }
+  .page.active { display:flex; justify-content:center; min-height:100vh; }
+  .wrap { width:100%; max-width:480px; min-height:100vh; display:flex; flex-direction:column; background:#fff; }
 
-    /* Centered variant: used for ALL day schedules so every time column
-       aligns the same way — times right-aligned in a fixed-width column,
-       descriptions left-aligned immediately after. Capped at max-width so
-       long paragraphs (Saturday/Sunday) wrap into a narrower block instead
-       of stretching the table to the full card width, which would otherwise
-       cancel out the auto-margin centering entirely. */
-    .schedule-table.centered { width: auto; max-width: 480px; margin: 0 auto 1rem; }
-    .schedule-table.centered td { text-align: center; }
-    .schedule-table.centered td:first-child { width: 70px; padding-right: 1.1rem; text-align: right; }
-    .schedule-table.centered td:last-child { padding-left: 0; text-align: left; width: 100%; }
-    
-    .section-heading { font-size: 1.05rem; font-weight: 700; color: var(--terra); letter-spacing: 0.01em; margin-top: 1.85rem; margin-bottom: 0.9rem; text-align: left; }
-    .section-heading:first-of-type { margin-top: 0; text-align: center; }
-    
-    .event-note { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; margin-top: 1rem; font-style: italic; text-align: left; }
-    .map-link { color: var(--terra); text-decoration: underline; text-decoration-color: rgba(85,28,37,0.35); text-decoration-thickness: 1px; }
-    .map-link:hover { text-decoration-color: var(--terra); }
+  .tile-band { background-color:var(--terra); background-image:
+      repeating-linear-gradient(45deg, rgba(246,238,223,.10) 0 1px, transparent 1px 17px),
+      repeating-linear-gradient(-45deg, rgba(246,238,223,.10) 0 1px, transparent 1px 17px),
+      radial-gradient(circle at 50% 50%, rgba(212,168,67,.30) 2px, transparent 2.1px);
+    background-size:34px 34px, 34px 34px, 34px 34px; }
 
-    .event-field { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; margin: 0.6rem 0; padding-left: 0.85rem; border-left: 3px solid var(--border); text-align: left; }
-    .event-field:last-of-type { margin-bottom: 1rem; }
-    .event-field strong { display: inline-block; min-width: 6.5rem; color: var(--terra); font-weight: 600; }
+  /* Welcome / login */
+  #welcomePage .wrap { padding:28px 24px 40px; }
+  .lang-pills { display:flex; gap:6px; justify-content:center; }
+  .lang-pill { padding:7px 16px; border-radius:999px; border:1px solid rgba(246,238,223,.35); background:transparent; color:rgba(246,238,223,.7); font:600 12px "DM Sans",sans-serif; letter-spacing:.1em; cursor:pointer; }
+  .lang-pill.active { border-color:var(--gold); background:rgba(212,168,67,.22); color:var(--cream); }
+  .welcome-hero { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  .welcome-kicker { font:400 13px "DM Sans",sans-serif; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+  .welcome-hero h1 { font:300 54px "Cormorant Garamond",serif; color:var(--cream); line-height:1.0; }
+  .welcome-hero h1 em { font-style:italic; font-size:40px; color:var(--gold); }
+  .welcome-rule { width:1px; height:34px; background:rgba(212,168,67,.6); margin:24px auto; }
+  .welcome-place { font:500 13px "DM Sans",sans-serif; letter-spacing:.2em; text-transform:uppercase; color:rgba(246,238,223,.8); }
+  .welcome-dates { font:400 13px "DM Sans",sans-serif; letter-spacing:.2em; text-transform:uppercase; color:rgba(246,238,223,.55); margin-top:4px; }
+  .login-card { background:#FCF8F0; border-radius:14px; padding:20px; }
+  .login-card label { display:block; font:600 11px "DM Sans",sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:8px; }
+  .login-card input { width:100%; padding:15px 14px; border:1px solid var(--border); border-radius:10px; background:#fff; font:400 16px "DM Sans",sans-serif; color:var(--ink); margin-bottom:10px; }
+  .login-card button { width:100%; padding:15px; border:none; border-radius:10px; background:var(--terra); color:var(--cream); font:600 15px "DM Sans",sans-serif; cursor:pointer; }
+  .login-card button:hover { background:#43161d; }
+  .login-card button:disabled { opacity:.6; cursor:not-allowed; }
+  .login-err { color:#c23b3b; font:400 13px "DM Sans",sans-serif; margin-bottom:10px; }
+  .login-hint { font:400 12.5px "DM Sans",sans-serif; color:#8A8378; margin-top:12px; text-align:center; }
 
-    /* Responsive design */
-    @media (min-width: 768px) {
-      .prac-item { flex-direction: row; justify-content: space-between; gap: 1rem; text-align: left; }
-      .prac-item span { text-align: right; }
-    }
+  /* Hub header + nav */
+  .hub-header { padding:16px 20px 20px; }
+  .hub-header-top { display:flex; align-items:center; justify-content:space-between; }
+  .hub-brand { font:400 20px "Cormorant Garamond",serif; color:var(--cream); letter-spacing:.08em; }
+  .hub-brand em { font-style:italic; color:var(--gold); }
+  .menu-wrap { position:relative; }
+  .menu-btn { display:flex; align-items:center; gap:6px; border:1px solid rgba(246,238,223,.4); background:transparent; border-radius:999px; padding:6px 12px; cursor:pointer; font:600 11px "DM Sans",sans-serif; letter-spacing:.1em; color:var(--cream); }
+  .menu-panel { position:absolute; top:calc(100% + 8px); right:0; z-index:20; width:170px; padding:6px; background:#FCF8F0; border:1px solid var(--border); border-radius:8px; box-shadow:0 12px 32px rgba(45,43,43,.22); display:none; }
+  .menu-panel.open { display:block; }
+  .menu-item { display:block; width:100%; text-align:left; border:none; background:transparent; padding:8px 10px; border-radius:4px; cursor:pointer; color:#3E3A34; font:400 13.5px "DM Sans",sans-serif; }
+  .menu-item.active { background:rgba(85,28,37,.07); color:var(--terra); font-weight:600; }
+  .menu-divider { height:1px; background:var(--border); margin:6px 0; }
+  .hub-welcome-line { font:400 15px "DM Sans",sans-serif; color:rgba(246,238,223,.85); margin-top:6px; }
+  .hub-day-title { font:300 34px "Cormorant Garamond",serif; color:var(--cream); line-height:1.15; margin-top:2px; }
+  .hub-day-sub { font:400 12.5px "DM Sans",sans-serif; letter-spacing:.12em; text-transform:uppercase; color:rgba(246,238,223,.65); margin-top:2px; }
 
-    @media (max-width: 640px) {
-      .welcome-screen { padding: 1.5rem; }
-      h1 { font-size: 2rem !important; }
-      h2 { font-size: 2rem !important; }
-      .hub-content { padding: 2rem 1.25rem; }
-      .hub-footer { padding: 1.5rem 1rem; }
-      .s-card-head { padding: 1.1rem; }
-      .s-card-body { padding: 1.25rem; }
-      .day-title { font-size: 1rem; }
-      .schedule-table td { font-size: 0.95rem; }
-      .schedule-table td:first-child { width: 68px; font-size: 0.9rem; }
-      .schedule-table.centered { width: 100%; max-width: 100%; }
-      .schedule-table.centered td:first-child { width: 68px; }
-      .event-field { font-size: 0.9rem; }
-      .event-field strong { min-width: 5.5rem; }
-      .hub-header { flex-direction: column; gap: 1rem; margin-bottom: 2rem; align-items: stretch; }
-      .hub-welcome h2 { font-size: 1.8rem; }
-      .hub-top-box { width: 100%; flex-shrink: auto; padding: 1rem; }
-    }
-  </style>
+  .tabs { position:sticky; top:0; z-index:5; background:var(--terra); padding:0 20px 12px; display:flex; gap:7px; box-shadow:0 6px 12px -8px rgba(45,43,43,.5); }
+  .tab { flex:1; padding:9px 4px; border-radius:999px; border:1px solid rgba(246,238,223,.3); background:transparent; color:rgba(246,238,223,.75); font:600 13px "DM Sans",sans-serif; cursor:pointer; }
+  .tab.active { border-color:var(--cream); background:var(--cream); color:var(--terra); }
+
+  .day-panel { padding:22px 20px 0; display:flex; flex-direction:column; gap:16px; }
+  .card { border:1px solid var(--border); border-radius:14px; background:#FCF8F0; overflow:hidden; }
+  .card-head { padding:16px 18px 12px; border-bottom:1px solid #EDE6D8; display:flex; align-items:center; gap:10px; }
+  .card-head.center { justify-content:center; }
+  .dot { width:7px; height:7px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+  .card-head-title { font:700 12px "DM Sans",sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--terra); }
+  .rail { padding:14px 18px 4px; }
+  .rail-label { font:600 10.5px "DM Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#8A8378; margin-bottom:8px; }
+  .rail-row { display:grid; grid-template-columns:50px 18px 1fr; }
+  .rail-time { font:600 14px "DM Sans",sans-serif; font-variant-numeric:tabular-nums; color:var(--terra); text-align:right; padding-top:1px; }
+  .rail-line { border-left:1px solid var(--border); margin-left:8px; padding-top:6px; }
+  .rail-line.last { border-left:none; }
+  .rail-line-dot { width:7px; height:7px; border-radius:50%; background:var(--terra); margin-left:-4px; }
+  .rail-text { font:400 14.5px "DM Sans",sans-serif; color:#3E3A34; padding-bottom:14px; }
+  .rail-text.last { padding-bottom:8px; }
+  .fields { padding:4px 18px 18px; display:flex; flex-direction:column; gap:12px; }
+  .field-label { font:600 10.5px "DM Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#8A8378; margin-bottom:3px; }
+  .field-value { font:400 14px "DM Sans",sans-serif; color:#3E3A34; }
+  .field-value a { font-weight:500; text-decoration:underline; text-decoration-color:rgba(212,168,67,.9); text-underline-offset:3px; }
+
+  .qr-card { text-align:center; }
+  .qr-body { padding:22px 18px 24px; }
+  .qr-note { font:400 14px "DM Sans",sans-serif; color:var(--ink-soft); margin-bottom:16px; }
+  .qr-img { display:block; margin:0 auto; width:180px; height:180px; border:1px solid var(--border); border-radius:8px; background:#fff; }
+  .qr-url { font:400 12.5px "DM Sans",sans-serif; color:#8A8378; margin-top:12px; }
+
+  .footer-card { padding:20px 20px 30px; margin-top:auto; }
+  .footer-inner { border:1px dashed var(--gold); border-radius:14px; padding:18px; display:flex; align-items:center; justify-content:space-between; gap:14px; }
+  .footer-label { font:600 10.5px "DM Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#8A8378; }
+  .footer-name { font:500 15px "DM Sans",sans-serif; color:var(--ink); margin-top:2px; }
+  .call-btn { flex-shrink:0; border:1px solid var(--terra); border-radius:999px; padding:10px 16px; font:600 13.5px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
+
+  @media (max-width:400px) { .wrap { max-width:100%; } }
+</style>
 </head>
 <body>
 
-<!-- Welcome Page with Password -->
 <div id="welcomePage" class="page">
-  <div class="welcome-screen">
-    <div class="lang-bar lang-bar-welcome">
-      <select id="langSelectWelcome" class="lang-select" onchange="changeLang(this.value)" aria-label="Language / Idioma / Idioma">
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="pt">Português</option>
-      </select>
+  <div class="wrap tile-band">
+    <div class="lang-pills">
+      <button class="lang-pill" data-lang="en" onclick="changeLang('en')">EN</button>
+      <button class="lang-pill" data-lang="es" onclick="changeLang('es')">ES</button>
+      <button class="lang-pill" data-lang="pt" onclick="changeLang('pt')">PT</button>
     </div>
-    <h1 id="welcomeHeading" style="font-size: 2.8rem; font-family: 'Cormorant Garamond', serif; color: var(--terra); margin-bottom: 2rem;">Merici &amp; David's Wedding</h1>
-    <div style="margin-bottom: 1rem; width: 100%; max-width: 300px; margin-left: auto; margin-right: auto;">
-      <label for="passwordInp" class="visually-hidden" id="passwordLabel">Password</label>
-      <input type="password" id="passwordInp" placeholder="Password" autocomplete="current-password" style="width: 100%; padding: 0.875rem; border: 2px solid var(--terra); border-radius: 8px; font-size: 1rem;">
+    <div class="welcome-hero">
+      <div class="welcome-kicker" id="welcomeKicker">The Wedding</div>
+      <h1>Merici<br><em id="welcomeAmp">&amp;</em><br>David</h1>
+      <div class="welcome-rule"></div>
+      <div class="welcome-place">Málaga</div>
+      <div class="welcome-dates">11 – 13 · IX · 2026</div>
     </div>
-    <button class="login-btn" id="loginBtn" onclick="tryLogin()" style="">Login</button>
-    <div id="loginErr" class="login-err" role="alert" aria-live="polite"></div>
+    <div class="login-card">
+      <label for="passwordInp" id="passwordLabel">Password</label>
+      <input type="password" id="passwordInp" placeholder="Password" autocomplete="current-password">
+      <div id="loginErr" class="login-err" role="alert" aria-live="polite" style="display:none;"></div>
+      <button id="loginBtn" onclick="tryLogin()">Login</button>
+      <div class="login-hint" id="langHint">Language can be changed later from the menu.</div>
+    </div>
   </div>
 </div>
 
-<!-- Hub Page (Itinerary) -->
 <div id="hubPage" class="page">
-  <div class="hub-page">
-    <!-- Main content -->
-    <div class="hub-content">
-      <div class="hub-wrapper">
-        <div class="lang-bar">
-          <select id="langSelectHub" class="lang-select" onchange="changeLang(this.value)" aria-label="Language / Idioma / Idioma">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="pt">Português</option>
-          </select>
-        </div>
-        <!-- Welcome heading and Questions box on same row -->
-        <div class="hub-header">
-          <div class="hub-welcome">
-            <h2 id="hubWelcomeHeading">Welcome</h2>
-            <p id="hubSubtitleText">Here's everything you need for the weekend.</p>
-          </div>
-          <div class="hub-top-box">
-            <p id="hubQuestionsLabel">Questions?</p>
-            <p id="hubCoordinatorLine">Lucia &middot; Event Coordinator &middot; +34 666 89 11 00</p>
+  <div class="wrap">
+    <div class="hub-header tile-band">
+      <div class="hub-header-top">
+        <div class="hub-brand">M <em>&amp;</em> D</div>
+        <div class="menu-wrap">
+          <button class="menu-btn" id="menuBtn" onclick="toggleMenu()"><span id="menuLangLabel">EN</span> ▾</button>
+          <div class="menu-panel" id="menuPanel">
+            <button class="menu-item" data-lang="en" onclick="changeLang('en')">English</button>
+            <button class="menu-item" data-lang="es" onclick="changeLang('es')">Español</button>
+            <button class="menu-item" data-lang="pt" onclick="changeLang('pt')">Português</button>
+            <div class="menu-divider"></div>
+            <button class="menu-item" id="hubLogoutBtn" onclick="logout()">Log out</button>
           </div>
         </div>
-        
-        <div id="hubContent"></div>
-        
-        <!-- Footer with logout (inside scrollable content) -->
-        <div class="hub-footer">
-          <div class="hub-footer-content">
-            <button id="hubLogoutBtn" onclick="logout()" style="background: transparent; color: var(--terra); border: 1px solid var(--terra); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Log out</button>
-          </div>
+      </div>
+      <div class="hub-welcome-line" id="hubWelcomeLine">Welcome</div>
+      <div id="dayHeaderExtra" style="display:none;">
+        <div class="hub-day-title" id="dayTitleExtra">Guest book &amp; gifts</div>
+      </div>
+      <div id="dayHeaderNormal">
+        <div class="hub-day-title" id="dayTitle">Friday</div>
+        <div class="hub-day-sub" id="daySub">11 September · 28° / 20°C, clear</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab" data-day="fri" onclick="setDay('fri')">Fri 11</button>
+      <button class="tab" data-day="sat" onclick="setDay('sat')">Sat 12</button>
+      <button class="tab" data-day="sun" onclick="setDay('sun')">Sun 13</button>
+      <button class="tab" data-day="extra" onclick="setDay('extra')" id="tabExtraBtn">Guest book &amp; gifts</button>
+    </div>
+
+    <div id="dayContent"></div>
+
+    <div class="footer-card">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-label" id="footerQLabel">Questions?</div>
+          <div class="footer-name" id="footerName">Lucia · Coordinator</div>
         </div>
+        <a href="tel:+34666891100" class="call-btn" id="footerCallBtn">Call</a>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-let currentUser = null;
-let sharedData = {};
-let weatherData = null; // cached response from /.netlify/functions/weather
+/* ---------------- Data ---------------- */
+const GUESTBOOK_URL = "https://example.com/guestbook"; // replace with your real link
+const GIFTFUND_URL  = "https://example.com/giftfund";  // replace with your real link
 
-/* ---------------- Translations ---------------- */
 const translations = {
   en: {
-    pageTitle: "Merici & David's Wedding",
-    welcomeHeading: "Merici & David's Wedding",
-    passwordPlaceholder: "Password",
-    passwordLabel: "Password",
-    loginBtn: "Login",
-    loggingIn: "Logging in...",
-    errPasswordRequired: "Password required.",
-    errAuthFailed: "Authentication failed.",
-    errConnection: "Connection error. Please try again.",
-    hubWelcome: "Welcome",
-    hubSubtitle: "Here's everything you need for the weekend.",
-    questionsLabel: "Questions?",
-    coordinatorLine: "Lucia \u00b7 Event Coordinator \u00b7 +34 666 89 11 00",
-    logout: "Log out",
-    fridayTitle: "Friday 11 September",
-    saturdayTitle: "Saturday 12 September",
-    sundayTitle: "Sunday 13 September",
-    ceremonyHeading: "Ceremony",
-    receptionHeading: "Reception",
-    drinksHeading: "Drinks & tapas",
-    beachHeading: "Beach day",
-    locationLabel: "Location:",
-    transportLabel: "Transport:",
-    dressLabel: "Dress code:",
-    weatherFieldLabel: "Weather:",
-    weatherLoading: "Loading forecast\u2026",
-    weatherUnavailable: "Forecast unavailable right now",
-    rainLabel: "rain",
-    fri_c1: "Ceremony starts",
-    fri_c2: "Photos outside the church",
-    fri_c_loc: "Iglesia de San Juan, M\u00e1laga historic centre.",
-    fri_c_transport: "Only reachable on foot \u2014 cars aren't permitted in the historic centre, so allow a few extra minutes to arrive on time.",
+    pageTitle: "Merici & David's Wedding", weddingKicker: "The Wedding", amp: "&",
+    passwordPlaceholder: "Password", passwordLabel: "Password", loginBtn: "Login", loggingIn: "Logging in...",
+    errPasswordRequired: "Password required.", errAuthFailed: "Authentication failed.", errConnection: "Connection error. Please try again.",
+    langHint: "Language can be changed later from the menu.",
+    hubWelcome: "Welcome", logout: "Log out", questionsLabel: "Questions?", coordinatorName: "Lucia · Coordinator", callBtn: "Call",
+    tabFri: "Fri 11", tabSat: "Sat 12", tabSun: "Sun 13", tabExtra: "Guest book & gifts",
+    ceremonyHeading: "Ceremony", receptionHeading: "Reception", drinksHeading: "Drinks & tapas", beachHeading: "Beach day",
+    locationLabel: "Location", transportLabel: "Transport", dressLabel: "Dress code", scheduleLabel: "Schedule",
+    dayNameFri: "Friday", dayNameSat: "Saturday", dayNameSun: "Sunday",
+    dayDateFri: "11 September", dayDateSat: "12 September", dayDateSun: "13 September",
+    weatherLoading: "loading forecast…", weatherUnavailable: "forecast unavailable", rainLabel: "rain",
+    guestbookHeading: "Guest book", giftfundHeading: "Gift fund",
+    guestbookNote: "Scan to leave us a message, photo, or a bit of advice.",
+    giftfundNote: "Your presence is the gift — but if you'd like to contribute, scan here.",
+    fri_c1: "Ceremony starts", fri_c2: "Photos outside the church",
+    fri_c_loc: "Málaga historic centre.",
+    fri_c_transport: "Only reachable on foot — cars aren't permitted in the historic centre, so allow a few extra minutes to arrive on time.",
     fri_c_dress: "Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. Please cover your shoulders for the ceremony.",
-    fri_r1: "Guests arrive",
-    fri_r2: "Cocktails begin, lower forecourt",
-    fri_r3: "Dinner & celebration, main forecourt",
-    fri_r4: "Open bar & dancing",
-    fri_r5: "Late-night bites",
-    fri_r6: "Open bar ends",
-    fri_r_loc: "Hacienda Nadales, Camino de Casabermeja 128, M\u00e1laga.",
+    fri_r1: "Guests arrive", fri_r2: "Cocktails begin, lower forecourt", fri_r3: "Dinner & celebration, main forecourt",
+    fri_r4: "Open bar & dancing", fri_r5: "Late-night bites", fri_r6: "Open bar ends",
+    fri_r_loc: "Camino de Casabermeja 128, Málaga.",
     fri_r_transport: "Taxi, Uber, or car are the easiest options; we are not providing transport.",
     fri_r_dress: "Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer.",
-    sat_1: "Drinks & tapas",
-    sat_2: "Up to the terrace, chill-out area with skyline views, or the music & DJ area if you feel like partying. No fixed plan after that, we'll see how we feel.",
-    sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
+    sat_1: "Drinks & tapas", sat_2: "Up to the terrace, chill-out area with skyline views, or the music & DJ area if you feel like partying. No fixed plan after that, we'll see how we feel.",
+    sat_loc: "Paseo de la Farola 25, Málaga.",
     sat_transport: "Taxi, Uber, or car recommended; we are not providing transport.",
     sat_dress: "Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.",
     sun_1: "We'll be unwinding from the wedding on the beach, you're welcome to join us. If you'd like help arranging a beach bed, just let us know and we'll ask our planner.",
-    sun_loc: "La Playa Surf House, Torremolinos.",
+    sun_loc: "Torremolinos.",
     sun_transport: "Taxi, Uber, or car recommended; we are not providing transport.",
     sun_dress: "Casual beachwear, obviously."
   },
   es: {
-    pageTitle: "Boda de Merici y David",
-    welcomeHeading: "Boda de Merici y David",
-    passwordPlaceholder: "Contrase\u00f1a",
-    passwordLabel: "Contrase\u00f1a",
-    loginBtn: "Entrar",
-    loggingIn: "Entrando...",
-    errPasswordRequired: "Se requiere contrase\u00f1a.",
-    errAuthFailed: "Error de autenticaci\u00f3n.",
-    errConnection: "Error de conexi\u00f3n. Int\u00e9ntalo de nuevo.",
-    hubWelcome: "Bienvenidos",
-    hubSubtitle: "Aqu\u00ed ten\u00e9is todo lo que necesit\u00e1is para el fin de semana.",
-    questionsLabel: "\u00bfPreguntas?",
-    coordinatorLine: "Lucia \u00b7 Coordinadora del evento \u00b7 +34 666 89 11 00",
-    logout: "Cerrar sesi\u00f3n",
-    fridayTitle: "Viernes 11 de septiembre",
-    saturdayTitle: "S\u00e1bado 12 de septiembre",
-    sundayTitle: "Domingo 13 de septiembre",
-    ceremonyHeading: "Ceremonia",
-    receptionHeading: "Recepci\u00f3n",
-    drinksHeading: "Copas y tapas",
-    beachHeading: "D\u00eda de playa",
-    locationLabel: "Ubicaci\u00f3n:",
-    transportLabel: "Transporte:",
-    dressLabel: "C\u00f3digo de vestimenta:",
-    weatherFieldLabel: "Clima:",
-    weatherLoading: "Cargando previsi\u00f3n\u2026",
-    weatherUnavailable: "Previsi\u00f3n no disponible por ahora",
-    rainLabel: "lluvia",
-    fri_c1: "Comienza la ceremonia",
-    fri_c2: "Fotos a la salida de la iglesia",
-    fri_c_loc: "Iglesia de San Juan, centro hist\u00f3rico de M\u00e1laga.",
-    fri_c_transport: "Solo se puede llegar a pie \u2014 no se permiten coches en el centro hist\u00f3rico, as\u00ed que reserva unos minutos extra para llegar a tiempo.",
-    fri_c_dress: "Elegante informal o c\u00f3ctel: vestidos largos de verano, camisa entallada, o pantal\u00f3n de vestir con corbata y chaqueta. Por favor, cubre los hombros para la ceremonia.",
-    fri_r1: "Llegada de los invitados",
-    fri_r2: "Comienzan los c\u00f3cteles, patio inferior",
-    fri_r3: "Cena y celebraci\u00f3n, patio principal",
-    fri_r4: "Barra libre y baile",
-    fri_r5: "Aperitivos de madrugada",
-    fri_r6: "Termina la barra libre",
-    fri_r_loc: "Hacienda Nadales, Camino de Casabermeja 128, M\u00e1laga.",
-    fri_r_transport: "Taxi, Uber o coche son las opciones m\u00e1s sencillas; no proporcionamos transporte.",
-    fri_r_dress: "Elegante informal o c\u00f3ctel: vestidos largos de verano, camisa entallada, o pantal\u00f3n de vestir con corbata y chaqueta.",
-    sat_1: "Copas y tapas",
-    sat_2: "Sube a la terraza, zona chill-out con vistas al horizonte, o a la pista si te apetece fiesta. Sin plan fijo despu\u00e9s, \u00a1lo decidimos seg\u00fan nos sintamos!",
-    sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
+    pageTitle: "Boda de Merici y David", weddingKicker: "La boda", amp: "y",
+    passwordPlaceholder: "Contraseña", passwordLabel: "Contraseña", loginBtn: "Entrar", loggingIn: "Entrando...",
+    errPasswordRequired: "Se requiere contraseña.", errAuthFailed: "Error de autenticación.", errConnection: "Error de conexión. Inténtalo de nuevo.",
+    langHint: "Puedes cambiar el idioma después desde el menú.",
+    hubWelcome: "Bienvenidos", logout: "Cerrar sesión", questionsLabel: "¿Preguntas?", coordinatorName: "Lucia · Coordinadora", callBtn: "Llamar",
+    tabFri: "Vie 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Libro y regalo",
+    ceremonyHeading: "Ceremonia", receptionHeading: "Recepción", drinksHeading: "Copas y tapas", beachHeading: "Día de playa",
+    locationLabel: "Ubicación", transportLabel: "Transporte", dressLabel: "Código de vestimenta", scheduleLabel: "Horario",
+    dayNameFri: "Viernes", dayNameSat: "Sábado", dayNameSun: "Domingo",
+    dayDateFri: "11 de septiembre", dayDateSat: "12 de septiembre", dayDateSun: "13 de septiembre",
+    weatherLoading: "cargando previsión…", weatherUnavailable: "previsión no disponible", rainLabel: "lluvia",
+    guestbookHeading: "Libro de visitas", giftfundHeading: "Fondo de regalo",
+    guestbookNote: "Escanea para dejarnos un mensaje, foto o un consejo.",
+    giftfundNote: "Vuestra presencia es el regalo, pero si queréis contribuir, escanead aquí.",
+    fri_c1: "Comienza la ceremonia", fri_c2: "Fotos a la salida de la iglesia",
+    fri_c_loc: "centro histórico de Málaga.",
+    fri_c_transport: "Solo se puede llegar a pie — no se permiten coches en el centro histórico, así que reserva unos minutos extra para llegar a tiempo.",
+    fri_c_dress: "Elegante informal o cóctel: vestidos largos de verano, camisa entallada, o pantalón de vestir con corbata y chaqueta. Por favor, cubre los hombros para la ceremonia.",
+    fri_r1: "Llegada de los invitados", fri_r2: "Comienzan los cócteles, patio inferior", fri_r3: "Cena y celebración, patio principal",
+    fri_r4: "Barra libre y baile", fri_r5: "Aperitivos de madrugada", fri_r6: "Termina la barra libre",
+    fri_r_loc: "Camino de Casabermeja 128, Málaga.",
+    fri_r_transport: "Taxi, Uber o coche son las opciones más sencillas; no proporcionamos transporte.",
+    fri_r_dress: "Elegante informal o cóctel: vestidos largos de verano, camisa entallada, o pantalón de vestir con corbata y chaqueta.",
+    sat_1: "Copas y tapas", sat_2: "Sube a la terraza, zona chill-out con vistas al horizonte, o a la pista si te apetece fiesta. Sin plan fijo después, ¡lo decidimos según nos sintamos!",
+    sat_loc: "Paseo de la Farola 25, Málaga.",
     sat_transport: "Se recomienda taxi, Uber o coche; no proporcionamos transporte.",
-    sat_dress: "Informal elegante de resort. Trocadero es una terraza junto al mar con estilo, as\u00ed que piensa en algo elevado pero relajado: camisas de lino, vestidos de verano, sandalias elegantes o espadrilles. Sin ba\u00f1ador ni chanclas.",
-    sun_1: "Estaremos relaj\u00e1ndonos despu\u00e9s de la boda en la playa, est\u00e1is invitados a acompa\u00f1arnos. Si quer\u00e9is ayuda para reservar una cama en la playa, decidnoslo y se lo pediremos a nuestra wedding planner.",
-    sun_loc: "La Playa Surf House, Torremolinos.",
+    sat_dress: "Informal elegante de resort. Trocadero es una terraza junto al mar con estilo, así que piensa en algo elevado pero relajado: camisas de lino, vestidos de verano, sandalias elegantes o espadrilles. Sin bañador ni chanclas.",
+    sun_1: "Estaremos relajándonos después de la boda en la playa, estáis invitados a acompañarnos. Si queréis ayuda para reservar una cama en la playa, decidnoslo y se lo pediremos a nuestra wedding planner.",
+    sun_loc: "Torremolinos.",
     sun_transport: "Se recomienda taxi, Uber o coche; no proporcionamos transporte.",
     sun_dress: "Ropa de playa informal, evidentemente."
   },
   pt: {
-    pageTitle: "Casamento de Merici e David",
-    welcomeHeading: "Casamento de Merici e David",
-    passwordPlaceholder: "Palavra-passe",
-    passwordLabel: "Palavra-passe",
-    loginBtn: "Entrar",
-    loggingIn: "A entrar...",
-    errPasswordRequired: "Palavra-passe obrigat\u00f3ria.",
-    errAuthFailed: "Falha na autentica\u00e7\u00e3o.",
-    errConnection: "Erro de liga\u00e7\u00e3o. Tente novamente.",
-    hubWelcome: "Bem-vindos",
-    hubSubtitle: "Aqui est\u00e1 tudo o que precisam para o fim de semana.",
-    questionsLabel: "Perguntas?",
-    coordinatorLine: "Lucia \u00b7 Coordenadora do evento \u00b7 +34 666 89 11 00",
-    logout: "Sair",
-    fridayTitle: "Sexta-feira, 11 de setembro",
-    saturdayTitle: "S\u00e1bado, 12 de setembro",
-    sundayTitle: "Domingo, 13 de setembro",
-    ceremonyHeading: "Cerim\u00f3nia",
-    receptionHeading: "Rece\u00e7\u00e3o",
-    drinksHeading: "Copos e petiscos",
-    beachHeading: "Dia de praia",
-    locationLabel: "Local:",
-    transportLabel: "Transporte:",
-    dressLabel: "C\u00f3digo de vestu\u00e1rio:",
-    weatherFieldLabel: "Tempo:",
-    weatherLoading: "A carregar previs\u00e3o\u2026",
-    weatherUnavailable: "Previs\u00e3o indispon\u00edvel neste momento",
-    rainLabel: "chuva",
-    fri_c1: "A cerim\u00f3nia come\u00e7a",
-    fri_c2: "Fotografias \u00e0 sa\u00edda da igreja",
-    fri_c_loc: "Iglesia de San Juan, centro hist\u00f3rico de M\u00e1laga.",
-    fri_c_transport: "S\u00f3 \u00e9 poss\u00edvel chegar a p\u00e9 \u2014 n\u00e3o s\u00e3o permitidos carros no centro hist\u00f3rico, por isso reserve alguns minutos extra para chegar a tempo.",
-    fri_c_dress: "Elegante casual ou cocktail: vestidos longos de ver\u00e3o, camisa social, ou cal\u00e7as de vestir com gravata e blazer. Por favor cubra os ombros para a cerim\u00f3nia.",
-    fri_r1: "Chegada dos convidados",
-    fri_r2: "In\u00edcio dos cocktails, p\u00e1tio inferior",
-    fri_r3: "Jantar e celebra\u00e7\u00e3o, p\u00e1tio principal",
-    fri_r4: "Bar aberto e dan\u00e7a",
-    fri_r5: "Petiscos noturnos",
-    fri_r6: "Fim do bar aberto",
-    fri_r_loc: "Hacienda Nadales, Camino de Casabermeja 128, M\u00e1laga.",
-    fri_r_transport: "T\u00e1xi, Uber ou carro s\u00e3o as op\u00e7\u00f5es mais f\u00e1ceis; n\u00e3o fornecemos transporte.",
-    fri_r_dress: "Elegante casual ou cocktail: vestidos longos de ver\u00e3o, camisa social, ou cal\u00e7as de vestir com gravata e blazer.",
-    sat_1: "Copos e petiscos",
-    sat_2: "Suba at\u00e9 ao terra\u00e7o, zona de descontra\u00e7\u00e3o com vista para o horizonte, ou \u00e0 pista de dan\u00e7a se quiser festa. Sem plano fixo depois disso, vamos ver como nos sentimos!",
-    sat_loc: "Trocadero Casa de Botes, Paseo de la Farola 25, M\u00e1laga.",
-    sat_transport: "Recomenda-se t\u00e1xi, Uber ou carro; n\u00e3o fornecemos transporte.",
-    sat_dress: "Casual chique de resort. O Trocadero \u00e9 um terra\u00e7o \u00e0 beira-mar com estilo, por isso pense em algo elegante mas relaxado: camisas de linho, vestidos de ver\u00e3o, sand\u00e1lias elegantes ou espadrilles. Sem roupa de banho nem chinelos.",
-    sun_1: "Vamos estar a relaxar depois do casamento na praia, s\u00e3o bem-vindos a juntar-se a n\u00f3s. Se quiserem ajuda a reservar uma cama de praia, basta avisar-nos e pedimos \u00e0 nossa wedding planner.",
-    sun_loc: "La Playa Surf House, Torremolinos.",
-    sun_transport: "Recomenda-se t\u00e1xi, Uber ou carro; n\u00e3o fornecemos transporte.",
+    pageTitle: "Casamento de Merici e David", weddingKicker: "O casamento", amp: "e",
+    passwordPlaceholder: "Palavra-passe", passwordLabel: "Palavra-passe", loginBtn: "Entrar", loggingIn: "A entrar...",
+    errPasswordRequired: "Palavra-passe obrigatória.", errAuthFailed: "Falha na autenticação.", errConnection: "Erro de ligação. Tente novamente.",
+    langHint: "Pode alterar o idioma depois a partir do menu.",
+    hubWelcome: "Bem-vindos", logout: "Sair", questionsLabel: "Perguntas?", coordinatorName: "Lucia · Coordenadora", callBtn: "Ligar",
+    tabFri: "Sex 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Livro e presente",
+    ceremonyHeading: "Cerimónia", receptionHeading: "Receção", drinksHeading: "Copos e petiscos", beachHeading: "Dia de praia",
+    locationLabel: "Local", transportLabel: "Transporte", dressLabel: "Código de vestuário", scheduleLabel: "Horário",
+    dayNameFri: "Sexta-feira", dayNameSat: "Sábado", dayNameSun: "Domingo",
+    dayDateFri: "11 de setembro", dayDateSat: "12 de setembro", dayDateSun: "13 de setembro",
+    weatherLoading: "a carregar previsão…", weatherUnavailable: "previsão indisponível", rainLabel: "chuva",
+    guestbookHeading: "Livro de visitas", giftfundHeading: "Fundo de presente",
+    guestbookNote: "Digitalize para nos deixar uma mensagem, foto ou conselho.",
+    giftfundNote: "A vossa presença é o presente, mas se quiserem contribuir, digitalizem aqui.",
+    fri_c1: "A cerimónia começa", fri_c2: "Fotografias à saída da igreja",
+    fri_c_loc: "centro histórico de Málaga.",
+    fri_c_transport: "Só é possível chegar a pé — não são permitidos carros no centro histórico, por isso reserve alguns minutos extra para chegar a tempo.",
+    fri_c_dress: "Elegante casual ou cocktail: vestidos longos de verão, camisa social, ou calças de vestir com gravata e blazer. Por favor cubra os ombros para a cerimónia.",
+    fri_r1: "Chegada dos convidados", fri_r2: "Início dos cocktails, pátio inferior", fri_r3: "Jantar e celebração, pátio principal",
+    fri_r4: "Bar aberto e dança", fri_r5: "Petiscos noturnos", fri_r6: "Fim do bar aberto",
+    fri_r_loc: "Camino de Casabermeja 128, Málaga.",
+    fri_r_transport: "Táxi, Uber ou carro são as opções mais fáceis; não fornecemos transporte.",
+    fri_r_dress: "Elegante casual ou cocktail: vestidos longos de verão, camisa social, ou calças de vestir com gravata e blazer.",
+    sat_1: "Copos e petiscos", sat_2: "Suba até ao terraço, zona de descontração com vista para o horizonte, ou à pista de dança se quiser festa. Sem plano fixo depois disso, vamos ver como nos sentimos!",
+    sat_loc: "Paseo de la Farola 25, Málaga.",
+    sat_transport: "Recomenda-se táxi, Uber ou carro; não fornecemos transporte.",
+    sat_dress: "Casual chique de resort. O Trocadero é um terraço à beira-mar com estilo, por isso pense em algo elegante mas relaxado: camisas de linho, vestidos de verão, sandálias elegantes ou espadrilles. Sem roupa de banho nem chinelos.",
+    sun_1: "Vamos estar a relaxar depois do casamento na praia, são bem-vindos a juntar-se a nós. Se quiserem ajuda a reservar uma cama de praia, basta avisar-nos e pedimos à nossa wedding planner.",
+    sun_loc: "Torremolinos.",
+    sun_transport: "Recomenda-se táxi, Uber ou carro; não fornecemos transporte.",
     sun_dress: "Roupa de praia casual, obviamente."
   }
 };
 
-/* ---------------- Weather ---------------- */
 const wxCodeMap = {
-  0: { en: 'Clear sky', es: 'Cielo despejado', pt: 'C\u00e9u limpo' },
-  1: { en: 'Mostly clear', es: 'Mayormente despejado', pt: 'Praticamente limpo' },
-  2: { en: 'Partly cloudy', es: 'Parcialmente nublado', pt: 'Parcialmente nublado' },
-  3: { en: 'Cloudy', es: 'Nublado', pt: 'Nublado' },
-  45: { en: 'Fog', es: 'Niebla', pt: 'N\u00e9voa' },
-  48: { en: 'Fog', es: 'Niebla', pt: 'N\u00e9voa' },
-  51: { en: 'Light drizzle', es: 'Llovizna ligera', pt: 'Chuvisco leve' },
-  53: { en: 'Drizzle', es: 'Llovizna', pt: 'Chuvisco' },
-  55: { en: 'Heavy drizzle', es: 'Llovizna intensa', pt: 'Chuvisco forte' },
-  61: { en: 'Light rain', es: 'Lluvia ligera', pt: 'Chuva leve' },
-  63: { en: 'Rain', es: 'Lluvia', pt: 'Chuva' },
-  65: { en: 'Heavy rain', es: 'Lluvia intensa', pt: 'Chuva forte' },
-  80: { en: 'Rain showers', es: 'Chubascos', pt: 'Aguaceiros' },
-  81: { en: 'Rain showers', es: 'Chubascos', pt: 'Aguaceiros' },
-  82: { en: 'Heavy showers', es: 'Chubascos intensos', pt: 'Aguaceiros fortes' },
-  95: { en: 'Thunderstorm', es: 'Tormenta', pt: 'Trovoada' },
-  96: { en: 'Thunderstorm', es: 'Tormenta', pt: 'Trovoada' },
-  99: { en: 'Thunderstorm', es: 'Tormenta', pt: 'Trovoada' }
+  0:{en:'clear',es:'despejado',pt:'céu limpo'},1:{en:'mostly clear',es:'mayormente despejado',pt:'praticamente limpo'},
+  2:{en:'partly cloudy',es:'parcialmente nublado',pt:'parcialmente nublado'},3:{en:'cloudy',es:'nublado',pt:'nublado'},
+  45:{en:'fog',es:'niebla',pt:'névoa'},48:{en:'fog',es:'niebla',pt:'névoa'},
+  51:{en:'light drizzle',es:'llovizna ligera',pt:'chuvisco leve'},53:{en:'drizzle',es:'llovizna',pt:'chuvisco'},55:{en:'heavy drizzle',es:'llovizna intensa',pt:'chuvisco forte'},
+  61:{en:'light rain',es:'lluvia ligera',pt:'chuva leve'},63:{en:'rain',es:'lluvia',pt:'chuva'},65:{en:'heavy rain',es:'lluvia intensa',pt:'chuva forte'},
+  80:{en:'rain showers',es:'chubascos',pt:'aguaceiros'},81:{en:'rain showers',es:'chubascos',pt:'aguaceiros'},82:{en:'heavy showers',es:'chubascos intensos',pt:'aguaceiros fortes'},
+  95:{en:'thunderstorm',es:'tormenta',pt:'trovoada'},96:{en:'thunderstorm',es:'tormenta',pt:'trovoada'},99:{en:'thunderstorm',es:'tormenta',pt:'trovoada'}
 };
+function wxDescription(code){ const e = wxCodeMap[code] || wxCodeMap[3]; return e[currentLang] || e.en; }
 
-function wxDescription(code) {
-  const entry = wxCodeMap[code] || wxCodeMap[3];
-  return entry[currentLang] || entry.en;
-}
+/* ---------------- State ---------------- */
+let currentUser = null;
+let weatherData = null;
+let currentDay = todayDay();
+let menuOpen = false;
 
-// Weather is rendered as its own event-field row (matching Location/
-// Transport/Dress code), placed directly underneath Dress code in each
-// event card.
-function weatherFieldPlaceholder(loc, date) {
-  return '<div class="event-field"><strong>' + t('weatherFieldLabel') + '</strong> <span data-wx-loc="' + loc + '" data-wx-date="' + date + '">' + t('weatherLoading') + '</span></div>';
-}
-
-function weatherFieldInner(loc, date) {
-  if (!weatherData || weatherData.error || !weatherData[loc] || !weatherData[loc][date]) {
-    return t('weatherUnavailable');
-  }
-  const d = weatherData[loc][date];
-  return '<strong style="color:var(--terra);">' + d.max + '\u00b0/' + d.min + '\u00b0C</strong> \u00b7 ' + wxDescription(d.code) + ' \u00b7 ' + d.rain + '% ' + t('rainLabel');
+function todayDay() {
+  const iso = new Date().toISOString().slice(0,10);
+  if (iso === "2026-09-12") return "sat";
+  if (iso === "2026-09-13") return "sun";
+  return "fri";
 }
 
-function renderWeatherPills() {
-  document.querySelectorAll('[data-wx-loc]').forEach(function (el) {
-    el.innerHTML = weatherFieldInner(el.getAttribute('data-wx-loc'), el.getAttribute('data-wx-date'));
-  });
-}
-
-function fetchWeather() {
-  if (weatherData) {
-    renderWeatherPills();
-    return;
-  }
-  fetch('/.netlify/functions/weather')
-    .then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
-    .then(function (r) {
-      weatherData = r.ok ? r.body : { error: true };
-      renderWeatherPills();
-    })
-    .catch(function () {
-      weatherData = { error: true };
-      renderWeatherPills();
-    });
-}
-
-function getCookie(name) {
-  const match = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
-  return match ? decodeURIComponent(match[1]) : null;
-}
-function setCookie(name, value, days) {
-  const maxAge = days * 24 * 60 * 60;
-  document.cookie = name + '=' + encodeURIComponent(value) + '; max-age=' + maxAge + '; path=/; SameSite=Lax';
-}
+function getCookie(name){ const m = document.cookie.match('(?:^|; )' + name + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : null; }
+function setCookie(name, value, days){ document.cookie = name + '=' + encodeURIComponent(value) + '; max-age=' + (days*24*60*60) + '; path=/; SameSite=Lax'; }
 
 let currentLang = getCookie('lang') || 'en';
 if (!translations[currentLang]) currentLang = 'en';
+function t(key){ return (translations[currentLang] && translations[currentLang][key]) || translations.en[key] || ''; }
 
-function t(key) {
-  return (translations[currentLang] && translations[currentLang][key]) || translations.en[key] || '';
+/* ---------------- Weather ---------------- */
+function fetchWeather() {
+  if (weatherData) { renderDay(); return; }
+  fetch('/.netlify/functions/weather')
+    .then(res => res.json().then(body => ({ ok: res.ok, body })))
+    .then(r => { weatherData = r.ok ? r.body : { error: true }; renderDay(); })
+    .catch(() => { weatherData = { error: true }; renderDay(); });
+}
+function weatherLine(loc, date) {
+  if (!weatherData || weatherData.error || !weatherData[loc] || !weatherData[loc][date]) return t('weatherUnavailable');
+  const d = weatherData[loc][date];
+  return d.max + '°/' + d.min + '°C, ' + wxDescription(d.code) + ' · ' + d.rain + '% ' + t('rainLabel');
 }
 
-function syncLangSelectors() {
-  const w = document.getElementById('langSelectWelcome');
-  const h = document.getElementById('langSelectHub');
-  if (w) w.value = currentLang;
-  if (h) h.value = currentLang;
-}
-
+/* ---------------- Language & menu ---------------- */
 function changeLang(lang) {
   if (!translations[lang]) return;
   currentLang = lang;
   setCookie('lang', lang, 365);
   document.documentElement.lang = lang;
   document.title = t('pageTitle');
-  syncLangSelectors();
+  menuOpen = false;
   if (document.getElementById('hubPage').classList.contains('active')) {
-    applyHubTranslations();
-    renderHub();
-    renderWeatherPills();
+    applyHubTranslations(); renderDay();
   } else {
     applyWelcomeTranslations();
   }
 }
+function toggleMenu() { menuOpen = !menuOpen; document.getElementById('menuPanel').classList.toggle('open', menuOpen); }
+document.addEventListener('click', function(e) {
+  const wrap = document.querySelector('.menu-wrap');
+  if (wrap && !wrap.contains(e.target) && menuOpen) { menuOpen = false; document.getElementById('menuPanel').classList.remove('open'); }
+});
 
 function applyWelcomeTranslations() {
-  document.getElementById('welcomeHeading').textContent = t('welcomeHeading');
+  document.getElementById('welcomeKicker').textContent = t('weddingKicker');
+  document.getElementById('welcomeAmp').textContent = t('amp');
   document.getElementById('passwordLabel').textContent = t('passwordLabel');
-  const pass = document.getElementById('passwordInp');
-  if (pass) pass.placeholder = t('passwordPlaceholder');
+  document.getElementById('passwordInp').placeholder = t('passwordPlaceholder');
+  document.getElementById('langHint').textContent = t('langHint');
   const btn = document.getElementById('loginBtn');
-  if (btn && !btn.disabled) btn.textContent = t('loginBtn');
-  document.getElementById('loginErr').textContent = '';
+  if (!btn.disabled) btn.textContent = t('loginBtn');
+  document.getElementById('loginErr').style.display = 'none';
+  document.querySelectorAll('.lang-pill').forEach(el => el.classList.toggle('active', el.dataset.lang === currentLang));
 }
-
 function applyHubTranslations() {
-  document.getElementById('hubWelcomeHeading').textContent = t('hubWelcome');
-  document.getElementById('hubSubtitleText').textContent = t('hubSubtitle');
-  document.getElementById('hubQuestionsLabel').textContent = t('questionsLabel');
-  document.getElementById('hubCoordinatorLine').innerHTML = t('coordinatorLine');
+  document.getElementById('hubWelcomeLine').textContent = t('hubWelcome');
   document.getElementById('hubLogoutBtn').textContent = t('logout');
+  document.getElementById('footerQLabel').textContent = t('questionsLabel');
+  document.getElementById('footerName').textContent = t('coordinatorName');
+  document.getElementById('footerCallBtn').textContent = t('callBtn');
+  document.getElementById('menuLangLabel').textContent = currentLang.toUpperCase();
+  document.querySelector('[data-day="fri"]').textContent = t('tabFri');
+  document.querySelector('[data-day="sat"]').textContent = t('tabSat');
+  document.querySelector('[data-day="sun"]').textContent = t('tabSun');
+  document.getElementById('tabExtraBtn').textContent = t('tabExtra');
+  document.getElementById('dayTitleExtra').textContent = t('tabExtra');
+  document.querySelectorAll('.menu-item[data-lang]').forEach(el => el.classList.toggle('active', el.dataset.lang === currentLang));
 }
 
-/* ---------------- Routing ---------------- */
+/* ---------------- Day tabs ---------------- */
+function setDay(day) { currentDay = day; renderDay(); }
 
-function navigate(path) {
-  window.history.pushState({}, '', path);
-  render();
+function renderDay() {
+  document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.day === currentDay));
+  document.getElementById('dayHeaderExtra').style.display = currentDay === 'extra' ? '' : 'none';
+  document.getElementById('dayHeaderNormal').style.display = currentDay === 'extra' ? 'none' : '';
+
+  const c = document.getElementById('dayContent');
+
+  if (currentDay === 'extra') {
+    c.innerHTML =
+      '<div class="day-panel">' +
+        '<div class="card qr-card"><div class="card-head center"><div class="dot"></div><div class="card-head-title">' + t('guestbookHeading') + '</div></div>' +
+          '<div class="qr-body"><div class="qr-note">' + t('guestbookNote') + '</div>' +
+          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(GUESTBOOK_URL) + '" alt="Guest book QR code">' +
+          '<div class="qr-url">' + GUESTBOOK_URL.replace(/^https?:\/\//,'') + '</div></div></div>' +
+        '<div class="card qr-card"><div class="card-head center"><div class="dot"></div><div class="card-head-title">' + t('giftfundHeading') + '</div></div>' +
+          '<div class="qr-body"><div class="qr-note">' + t('giftfundNote') + '</div>' +
+          '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(GIFTFUND_URL) + '" alt="Gift fund QR code">' +
+          '<div class="qr-url">' + GIFTFUND_URL.replace(/^https?:\/\//,'') + '</div></div></div>' +
+      '</div>';
+    return;
+  }
+
+  document.getElementById('dayTitle').textContent = t('dayName' + capitalize(currentDay));
+  document.getElementById('daySub').textContent = t('dayDate' + capitalize(currentDay)) + ' · ' + (currentDay === 'sun' ? weatherLine('torremolinos','2026-09-13') : weatherLine('malaga', currentDay === 'fri' ? '2026-09-11' : '2026-09-12'));
+
+  function rail(rows) {
+    return rows.map((r, i) => (
+      '<div class="rail-row"><div class="rail-time">' + r[0] + '</div>' +
+      '<div class="rail-line' + (i === rows.length - 1 ? ' last' : '') + '"><div class="rail-line-dot"></div></div>' +
+      '<div class="rail-text' + (i === rows.length - 1 ? ' last' : '') + '">' + r[1] + '</div></div>'
+    )).join('');
+  }
+  function fields(rows) {
+    return '<div class="fields">' + rows.map(r => '<div><div class="field-label">' + r[0] + '</div><div class="field-value">' + r[1] + '</div></div>').join('') + '</div>';
+  }
+  function card(headingKey, railRows, fieldRows) {
+    return '<div class="card"><div class="card-head"><div class="dot"></div><div class="card-head-title">' + t(headingKey) + '</div></div>' +
+      '<div class="rail"><div class="rail-label">' + t('scheduleLabel') + '</div>' + rail(railRows) + '</div>' + fields(fieldRows) + '</div>';
+  }
+
+  let html = '<div class="day-panel">';
+  if (currentDay === 'fri') {
+    html += card('ceremonyHeading', [['17:30', t('fri_c1')], ['18:15', t('fri_c2')]], [
+      [t('locationLabel'), '<a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener">Iglesia de San Juan</a>, ' + t('fri_c_loc')],
+      [t('transportLabel'), t('fri_c_transport')],
+      [t('dressLabel'), t('fri_c_dress')]
+    ]);
+    html += card('receptionHeading', [['19:00', t('fri_r1')], ['19:15', t('fri_r2')], ['20:30', t('fri_r3')], ['22:45', t('fri_r4')], ['01:15', t('fri_r5')], ['03:00', t('fri_r6')]], [
+      [t('locationLabel'), '<a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener">Hacienda Nadales</a>, ' + t('fri_r_loc')],
+      [t('transportLabel'), t('fri_r_transport')],
+      [t('dressLabel'), t('fri_r_dress')]
+    ]);
+  } else if (currentDay === 'sat') {
+    html += card('drinksHeading', [['15:00', t('sat_1')], ['17:00', t('sat_2')]], [
+      [t('locationLabel'), '<a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener">Trocadero Casa de Botes</a>, ' + t('sat_loc')],
+      [t('transportLabel'), t('sat_transport')],
+      [t('dressLabel'), t('sat_dress')]
+    ]);
+  } else if (currentDay === 'sun') {
+    html += card('beachHeading', [['13:00', t('sun_1')]], [
+      [t('locationLabel'), '<a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener">La Playa Surf House</a>, ' + t('sun_loc')],
+      [t('transportLabel'), t('sun_transport')],
+      [t('dressLabel'), t('sun_dress')]
+    ]);
+  }
+  html += '</div>';
+  c.innerHTML = html;
 }
+function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* ---------------- Routing / auth (unchanged from original site) ---------------- */
+function navigate(path) { window.history.pushState({}, '', path); render(); }
 
 function showWelcome() {
   document.getElementById('welcomePage').classList.add('active');
   document.getElementById('hubPage').classList.remove('active');
   applyWelcomeTranslations();
-  syncLangSelectors();
-  setTimeout(() => {
-    const pass = document.getElementById('passwordInp');
-    if (pass) {
-      pass.value = '';
-      pass.focus();
-    }
-  }, 0);
+  setTimeout(() => { const p = document.getElementById('passwordInp'); if (p) { p.value=''; p.focus(); } }, 0);
 }
 
 function render() {
   const path = window.location.pathname;
-  
-  // Hide all pages
   document.getElementById('welcomePage').classList.remove('active');
   document.getElementById('hubPage').classList.remove('active');
-  
-  // Show appropriate page
-  if (path === '/' || path === '') {
-    showWelcome();
-  } else if (path === '/hub') {
+  if (path === '/' || path === '') { showWelcome(); return; }
+  if (path === '/hub') {
     const token = sessionStorage.getItem('auth_token');
-    if (!token) {
-      navigate('/');
-      return;
-    }
-    // Never trust the mere presence of a token — verify its signature and
-    // expiry with the server before rendering any hub content. This closes
-    // the bypass where a fake sessionStorage value used to grant access.
-    fetch('/.netlify/functions/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token })
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('invalid');
-      return res.json();
-    })
-    .then(data => {
-      if (!data.valid) throw new Error('invalid');
-      document.getElementById('hubPage').classList.add('active');
-      document.title = t('pageTitle');
-      applyHubTranslations();
-      syncLangSelectors();
-      renderHub();
-      fetchWeather();
-    })
-    .catch(() => {
-      sessionStorage.removeItem('auth_token');
-      navigate('/');
-    });
-  } else {
-    navigate('/');
+    if (!token) { navigate('/'); return; }
+    fetch('/.netlify/functions/verify', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token }) })
+      .then(res => { if (!res.ok) throw new Error('invalid'); return res.json(); })
+      .then(data => {
+        if (!data.valid) throw new Error('invalid');
+        document.getElementById('hubPage').classList.add('active');
+        document.title = t('pageTitle');
+        applyHubTranslations();
+        currentDay = todayDay();
+        renderDay();
+        fetchWeather();
+      })
+      .catch(() => { sessionStorage.removeItem('auth_token'); navigate('/'); });
+    return;
   }
+  navigate('/');
 }
 
 function tryLogin() {
   const pass = document.getElementById('passwordInp').value.trim();
   const err = document.getElementById('loginErr');
   const btn = document.getElementById('loginBtn');
-  
-  if (!pass) {
-    err.textContent = t('errPasswordRequired');
-    return;
-  }
-
-  // Show loading state
+  if (!pass) { err.textContent = t('errPasswordRequired'); err.style.display='block'; return; }
   const originalText = t('loginBtn');
-  btn.textContent = t('loggingIn');
-  btn.disabled = true;
-
-  // Send password to server for validation
-  fetch('/.netlify/functions/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ password: pass })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.token) {
-      // Store the signed, time-bound token in sessionStorage (cleared when
-      // the browser closes). /hub re-verifies it server-side on every visit.
-      sessionStorage.setItem('auth_token', data.token);
-      currentUser = 'guest';
-      err.textContent = '';
-      navigate('/hub');
-    } else {
-      err.textContent = data.error ? t('errAuthFailed') : t('errAuthFailed');
-      btn.textContent = originalText;
-      btn.disabled = false;
-    }
-  })
-  .catch(err2 => {
-    console.error('Login error:', err2);
-    err.textContent = t('errConnection');
-    btn.textContent = originalText;
-    btn.disabled = false;
-  });
+  btn.textContent = t('loggingIn'); btn.disabled = true;
+  fetch('/.netlify/functions/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pass }) })
+    .then(res => res.json())
+    .then(data => {
+      if (data.token) {
+        sessionStorage.setItem('auth_token', data.token);
+        currentUser = 'guest'; err.style.display='none';
+        navigate('/hub');
+      } else {
+        err.textContent = t('errAuthFailed'); err.style.display='block';
+        btn.textContent = originalText; btn.disabled = false;
+      }
+    })
+    .catch(() => { err.textContent = t('errConnection'); err.style.display='block'; btn.textContent = originalText; btn.disabled = false; });
 }
 
-function logout() {
-  currentUser = null;
-  sharedData = {};
-  sessionStorage.removeItem('auth_token');
-  navigate('/');
-}
+function logout() { currentUser = null; sessionStorage.removeItem('auth_token'); navigate('/'); }
 
 document.addEventListener('DOMContentLoaded', function() {
   document.documentElement.lang = currentLang;
   document.title = t('pageTitle');
-  syncLangSelectors();
-  // Handle back/forward buttons
+  document.querySelectorAll('.lang-pill').forEach(el => el.classList.toggle('active', el.dataset.lang === currentLang));
   window.addEventListener('popstate', render);
-  
-  // Initial render
   render();
 });
-
-// Allow Enter key on password field
-document.addEventListener('keypress', function(e) {
-  if (e.target.id === 'passwordInp' && e.key === 'Enter') {
-    tryLogin();
-  }
-});
-
-function renderHub() {
-  const c = document.getElementById('hubContent');
-  let html = '';
-
-  html += '<div class="s-card">' +
-    '<div class="s-card-head">' +
-    '<div class="s-card-title">' + t('fridayTitle') + '</div>' +
-    '</div>' +
-    '<div class="s-card-body">' +
-
-    '<div class="section-heading">' + t('ceremonyHeading') + '</div>' +
-    '<table class="schedule-table centered">' +
-    '<tr><td>17:30</td><td>' + t('fri_c1') + '</td></tr>' +
-    '<tr><td>18:15</td><td>' + t('fri_c2') + '</td></tr>' +
-    '</table>' +
-    '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Juan+Malaga" target="_blank" rel="noopener" class="map-link">Iglesia de San Juan</a>, ' + t('fri_c_loc').replace('Iglesia de San Juan, ', '') + '</div>' +
-    '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('fri_c_transport') + '</div>' +
-    '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('fri_c_dress') + '</div>' +
-    weatherFieldPlaceholder('malaga', '2026-09-11') +
-
-    '<div class="section-heading" style="text-align:center">' + t('receptionHeading') + '</div>' +
-    '<table class="schedule-table centered">' +
-    '<tr><td>19:00</td><td>' + t('fri_r1') + '</td></tr>' +
-    '<tr><td>19:15</td><td>' + t('fri_r2') + '</td></tr>' +
-    '<tr><td>20:30</td><td>' + t('fri_r3') + '</td></tr>' +
-    '<tr><td>22:45</td><td>' + t('fri_r4') + '</td></tr>' +
-    '<tr><td>01:15</td><td>' + t('fri_r5') + '</td></tr>' +
-    '<tr><td>03:00</td><td>' + t('fri_r6') + '</td></tr>' +
-    '</table>' +
-    '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Hacienda+Nadales+Camino+de+Casabermeja+128+Malaga" target="_blank" rel="noopener" class="map-link">Hacienda Nadales</a>, ' + t('fri_r_loc').replace('Hacienda Nadales, ', '') + '</div>' +
-    '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('fri_r_transport') + '</div>' +
-    '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('fri_r_dress') + '</div>' +
-    weatherFieldPlaceholder('malaga', '2026-09-11') +
-
-    '</div>' +
-    '</div>';
-
-  html += '<div class="s-card">' +
-    '<div class="s-card-head">' +
-    '<div class="s-card-title">' + t('saturdayTitle') + '</div>' +
-    '</div>' +
-    '<div class="s-card-body">' +
-
-    '<div class="section-heading">' + t('drinksHeading') + '</div>' +
-    '<table class="schedule-table centered">' +
-    '<tr><td>15:00</td><td>' + t('sat_1') + '</td></tr>' +
-    '<tr><td>17:00</td><td>' + t('sat_2') + '</td></tr>' +
-    '</table>' +
-    '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=Trocadero+Casa+de+Botes+Paseo+de+la+Farola+25+Malaga" target="_blank" rel="noopener" class="map-link">Trocadero Casa de Botes</a>, ' + t('sat_loc').replace('Trocadero Casa de Botes, ', '') + '</div>' +
-    '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('sat_transport') + '</div>' +
-    '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sat_dress') + '</div>' +
-    weatherFieldPlaceholder('malaga', '2026-09-12') +
-
-    '</div>' +
-    '</div>';
-
-  html += '<div class="s-card">' +
-    '<div class="s-card-head">' +
-    '<div class="s-card-title">' + t('sundayTitle') + '</div>' +
-    '</div>' +
-    '<div class="s-card-body">' +
-
-    '<div class="section-heading">' + t('beachHeading') + '</div>' +
-    '<table class="schedule-table centered">' +
-    '<tr><td>13:00</td><td>' + t('sun_1') + '</td></tr>' +
-    '</table>' +
-    '<div class="event-field"><strong>' + t('locationLabel') + '</strong> <a href="https://www.google.com/maps/search/?api=1&query=La+Playa+Surf+House+Torremolinos" target="_blank" rel="noopener" class="map-link">La Playa Surf House</a>, ' + t('sun_loc').replace('La Playa Surf House, ', '') + '</div>' +
-    '<div class="event-field"><strong>' + t('transportLabel') + '</strong> ' + t('sun_transport') + '</div>' +
-    '<div class="event-field"><strong>' + t('dressLabel') + '</strong> ' + t('sun_dress') + '</div>' +
-    weatherFieldPlaceholder('torremolinos', '2026-09-13') +
-
-    '</div>' +
-    '</div>';
-
-  c.innerHTML = html;
-  renderWeatherPills();
-}
+document.addEventListener('keypress', function(e) { if (e.target.id === 'passwordInp' && e.key === 'Enter') tryLogin(); });
 </script>
 </body>
 </html>
