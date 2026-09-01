@@ -1,13 +1,4 @@
-const crypto = require('crypto');
-
-// Tokens are valid for 48 hours after issuance — long enough to cover the whole
-// wedding weekend from a single login, short enough that a leaked token doesn't
-// grant indefinite access.
-const TOKEN_TTL_MS = 48 * 60 * 60 * 1000;
-
-function sign(timestamp, secret) {
-  return crypto.createHmac('sha256', secret).update(String(timestamp)).digest('hex');
-}
+const { verifyToken } = require('./lib/tokens');
 
 exports.handler = async (event) => {
   // Only allow POST
@@ -30,40 +21,7 @@ exports.handler = async (event) => {
       };
     }
 
-    if (!token || typeof token !== 'string' || token.indexOf('.') === -1) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ error: 'Invalid token' })
-      };
-    }
-
-    const separatorIndex = token.indexOf('.');
-    const timestampStr = token.slice(0, separatorIndex);
-    const signature = token.slice(separatorIndex + 1);
-    const timestamp = Number(timestampStr);
-
-    if (!timestamp || !signature) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ error: 'Invalid token' })
-      };
-    }
-
-    if (Date.now() - timestamp > TOKEN_TTL_MS || timestamp > Date.now()) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ error: 'Token expired' })
-      };
-    }
-
-    const expected = sign(timestamp, tokenSecret);
-    const expectedBuf = Buffer.from(expected, 'hex');
-    const givenBuf = Buffer.from(signature, 'hex');
-
-    // Constant-time comparison to avoid leaking signature bytes via timing.
-    const isValid = expectedBuf.length === givenBuf.length && crypto.timingSafeEqual(expectedBuf, givenBuf);
-
-    if (!isValid) {
+    if (!verifyToken(token, tokenSecret)) {
       return {
         statusCode: 401,
         body: JSON.stringify({ error: 'Invalid token' })

@@ -1,8 +1,4 @@
-const crypto = require('crypto');
-
-function sign(timestamp, secret) {
-  return crypto.createHmac('sha256', secret).update(String(timestamp)).digest('hex');
-}
+const { sign } = require('./lib/tokens');
 
 exports.handler = async (event) => {
   // Only allow POST

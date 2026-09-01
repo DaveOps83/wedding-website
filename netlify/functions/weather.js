@@ -1,16 +1,41 @@
 // Proxies a 3-day daily forecast for Málaga (ceremony/reception/drinks) and
 // Torremolinos (beach day) from Open-Meteo (free, no API key). Kept server-side
 // so the CSP's connect-src stays locked to 'self' and results can be cached
-// briefly to avoid hammering the upstream API on every page load.
+// briefly to avoid hammering the upstream API on every page load. Requires the
+// same signed session token as the hub page, so it isn't a free open proxy for
+// anyone who finds the URL.
+
+const { verifyToken } = require('./lib/tokens');
 
 let cache = { data: null, expires: 0 };
 
-exports.handler = async () => {
+exports.handler = async (event) => {
+  const tokenSecret = process.env.WEDDING_TOKEN_SECRET;
+  if (!tokenSecret) {
+    console.error('WEDDING_TOKEN_SECRET environment variable not set');
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Server configuration error' })
+    };
+  }
+
+  const authHeader = (event.headers && (event.headers.authorization || event.headers.Authorization)) || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+
+  if (!verifyToken(token, tokenSecret)) {
+    return {
+      statusCode: 401,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Unauthorized' })
+    };
+  }
+
   const now = Date.now();
   if (cache.data && now < cache.expires) {
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=1800' },
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'private, max-age=1800' },
       body: JSON.stringify(cache.data)
     };
   }
@@ -54,7 +79,7 @@ exports.handler = async () => {
 
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=1800' },
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'private, max-age=1800' },
       body: JSON.stringify(data)
     };
   } catch (err) {

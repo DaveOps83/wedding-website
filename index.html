@@ -93,13 +93,15 @@
   .qr-link { display:inline-block; margin-top:14px; padding:11px 22px; border:1px solid var(--terra); border-radius:999px; background:#fff; font:600 14px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
   .qr-link:hover { background:var(--terra); color:var(--cream); }
 
-  .footer-card { padding:20px 20px 30px; }
-  .footer-inner { border:1px dashed var(--gold); border-radius:14px; padding:18px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; row-gap:12px; }
+  .footer-card { padding:20px 16px 30px; }
+  .footer-inner { border:1px dashed var(--gold); border-radius:14px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
   .footer-label { font:600 10.5px "DM Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#8A8378; }
-  .footer-name { font:500 15px "DM Sans",sans-serif; color:var(--ink); margin-top:2px; white-space:nowrap; }
-  .footer-role { font:400 12.5px "DM Sans",sans-serif; color:var(--ink-soft); margin-top:2px; }
-  .footer-actions { flex-shrink:0; display:flex; gap:8px; }
-  .call-btn { flex-shrink:0; border:1px solid var(--terra); border-radius:999px; padding:10px 16px; font:600 13.5px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
+  .footer-name { font:500 14px "DM Sans",sans-serif; color:var(--ink); margin-top:2px; white-space:nowrap; }
+  .footer-role { font:400 12px "DM Sans",sans-serif; color:var(--ink-soft); margin-top:2px; white-space:nowrap; }
+  .footer-actions { flex-shrink:0; display:flex; gap:6px; }
+  .thankyou-block { text-align:center; padding:36px 20px 8px; }
+  .thankyou-text { font:400 46px "Cormorant Garamond",serif; color:var(--terra); }
+  .call-btn { flex-shrink:0; border:1px solid var(--terra); border-radius:999px; padding:8px 12px; font:600 12px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
 
   @media (max-width:400px) { .wrap { max-width:100%; } }
 </style>
@@ -184,19 +186,19 @@ const translations = {
     dayNameFri: "Friday", dayNameSat: "Saturday", dayNameSun: "Sunday",
     dayDateFri: "11 September", dayDateSat: "12 September", dayDateSun: "13 September",
     weatherLoading: "loading forecast…", weatherUnavailable: "forecast unavailable", rainLabel: "rain",
-    guestbookHeading: "Guest book", giftfundHeading: "Gift fund",
+    guestbookHeading: "Guest book", giftfundHeading: "Gift fund", thankYou: "Thank you!",
     guestbookNote: "Leave us a message and upload your photos. You can also add song requests to the party playlist. This only opens up for use on the wedding day.",
     giftfundNote: "Having you here is truly the best gift. But if you want to give us another, we'd prefer money.",
     fri_c1: "Ceremony starts", fri_c2: "Photos outside the church",
     fri_c_loc: "Málaga historic centre.",
-    fri_c_transport: "Only reachable on foot — cars aren't permitted in the historic centre, so allow a few extra minutes to arrive on time.",
+    fri_c_transport: "Only reachable on foot. Cars aren't permitted in the historic centre, so allow a few extra minutes to arrive on time.",
     fri_c_dress: "Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer. Please cover your shoulders for the ceremony.",
     fri_r1: "Guests arrive", fri_r2: "Cocktails on the lower forecourt", fri_r3: "Dinner on the main forecourt",
     fri_r4: "The party begins!", fri_r5: "Late-night bites", fri_r6: "Open bar ends",
     fri_r_loc: "Camino de Casabermeja 128, Málaga.",
     fri_r_transport: "Taxi, Uber, or car are the easiest options.",
     fri_r_dress: "Casual elegant or cocktail, think long summer dresses, a button-down shirt, or dress trousers with a tie and blazer.",
-    sat_1: "Drinks & tapas", sat_2: "Up to the terrace or the music & DJ area if you feel like partying. We have no fixed plan after that, let's see where the night takes us.",
+    sat_1: "Drinks & tapas", sat_2: "Up to the terrace or the dance area if you feel like partying. We have no fixed plan after that, let's see where the night takes us.",
     sat_loc: "Paseo de la Farola 25, Málaga.",
     sat_transport: "Taxi, Uber, or car recommended.",
     sat_dress: "Smart resort casual, Trocadero is a stylish waterfront terrace, so think elevated but relaxed: linen shirts, sundresses, smart sandals or espadrilles. No swimwear or flip-flops.",
@@ -217,19 +219,19 @@ const translations = {
     dayNameFri: "Viernes", dayNameSat: "Sábado", dayNameSun: "Domingo",
     dayDateFri: "11 de septiembre", dayDateSat: "12 de septiembre", dayDateSun: "13 de septiembre",
     weatherLoading: "cargando previsión…", weatherUnavailable: "previsión no disponible", rainLabel: "lluvia",
-    guestbookHeading: "Libro de visitas", giftfundHeading: "Fondo de regalo",
+    guestbookHeading: "Libro de visitas", giftfundHeading: "Fondo de regalo", thankYou: "¡Gracias!",
     guestbookNote: "Déjanos un mensaje y sube tus fotos. También puedes añadir canciones a la lista de la fiesta. Esto solo se abre para usarse el día de la boda.",
     giftfundNote: "Teneros aquí es de verdad el mejor regalo. Pero si queréis darnos otro, preferimos dinero.",
     fri_c1: "Comienza la ceremonia", fri_c2: "Fotos a la salida de la iglesia",
     fri_c_loc: "centro histórico de Málaga.",
-    fri_c_transport: "Solo se puede llegar a pie — no se permiten coches en el centro histórico, así que reserva unos minutos extra para llegar a tiempo.",
+    fri_c_transport: "Solo se puede llegar a pie. No se permiten coches en el centro histórico, así que reserva unos minutos extra para llegar a tiempo.",
     fri_c_dress: "Elegante informal o cóctel: vestidos largos de verano, camisa entallada, o pantalón de vestir con corbata y chaqueta. Por favor, cubre los hombros para la ceremonia.",
     fri_r1: "Llegada de los invitados", fri_r2: "Cócteles en el patio inferior", fri_r3: "Cena en el patio principal",
     fri_r4: "¡Empieza la fiesta!", fri_r5: "Aperitivos de madrugada", fri_r6: "Termina la barra libre",
     fri_r_loc: "Camino de Casabermeja 128, Málaga.",
     fri_r_transport: "Taxi, Uber o coche son las opciones más sencillas.",
     fri_r_dress: "Elegante informal o cóctel: vestidos largos de verano, camisa entallada, o pantalón de vestir con corbata y chaqueta.",
-    sat_1: "Copas y tapas", sat_2: "Sube a la terraza o a la pista de música y DJ si te apetece fiesta. No tenemos plan fijo después de eso, veamos hacia dónde nos lleva la noche.",
+    sat_1: "Copas y tapas", sat_2: "Sube a la terraza o a la pista de baile si te apetece fiesta. No tenemos plan fijo después de eso, veamos hacia dónde nos lleva la noche.",
     sat_loc: "Paseo de la Farola 25, Málaga.",
     sat_transport: "Se recomienda taxi, Uber o coche.",
     sat_dress: "Informal elegante de resort. Trocadero es una terraza junto al mar con estilo, así que piensa en algo elevado pero relajado: camisas de lino, vestidos de verano, sandalias elegantes o espadrilles. Sin bañador ni chanclas.",
@@ -250,19 +252,19 @@ const translations = {
     dayNameFri: "Sexta-feira", dayNameSat: "Sábado", dayNameSun: "Domingo",
     dayDateFri: "11 de setembro", dayDateSat: "12 de setembro", dayDateSun: "13 de setembro",
     weatherLoading: "a carregar previsão…", weatherUnavailable: "previsão indisponível", rainLabel: "chuva",
-    guestbookHeading: "Livro de visitas", giftfundHeading: "Fundo de presente",
+    guestbookHeading: "Livro de visitas", giftfundHeading: "Fundo de presente", thankYou: "Obrigado!",
     guestbookNote: "Deixa-nos uma mensagem e envia as tuas fotos. Também podes adicionar músicas à lista da festa. Isto só abre para uso no dia do casamento.",
     giftfundNote: "Ter-vos aqui é realmente o melhor presente. Mas se quiserem dar-nos outro, preferimos dinheiro.",
     fri_c1: "A cerimónia começa", fri_c2: "Fotografias à saída da igreja",
     fri_c_loc: "centro histórico de Málaga.",
-    fri_c_transport: "Só é possível chegar a pé — não são permitidos carros no centro histórico, por isso reserve alguns minutos extra para chegar a tempo.",
+    fri_c_transport: "Só é possível chegar a pé. Não são permitidos carros no centro histórico, por isso reserve alguns minutos extra para chegar a tempo.",
     fri_c_dress: "Elegante casual ou cocktail: vestidos longos de verão, camisa social, ou calças de vestir com gravata e blazer. Por favor cubra os ombros para a cerimónia.",
     fri_r1: "Chegada dos convidados", fri_r2: "Cocktails no pátio inferior", fri_r3: "Jantar no pátio principal",
     fri_r4: "Começa a festa!", fri_r5: "Petiscos noturnos", fri_r6: "Fim do bar aberto",
     fri_r_loc: "Camino de Casabermeja 128, Málaga.",
     fri_r_transport: "Táxi, Uber ou carro são as opções mais fáceis.",
     fri_r_dress: "Elegante casual ou cocktail: vestidos longos de verão, camisa social, ou calças de vestir com gravata e blazer.",
-    sat_1: "Copos e petiscos", sat_2: "Suba até ao terraço ou à zona de música e DJ se quiser festa. Não temos plano fixo depois disso, vamos ver para onde a noite nos leva.",
+    sat_1: "Copos e petiscos", sat_2: "Suba até ao terraço ou à pista de dança se quiser festa. Não temos plano fixo depois disso, vamos ver para onde a noite nos leva.",
     sat_loc: "Paseo de la Farola 25, Málaga.",
     sat_transport: "Recomenda-se táxi, Uber ou carro.",
     sat_dress: "Casual chique de resort. O Trocadero é um terraço à beira-mar com estilo, por isso pense em algo elegante mas relaxado: camisas de linho, vestidos de verão, sandálias elegantes ou espadrilles. Sem roupa de banho nem chinelos.",
@@ -307,7 +309,8 @@ function t(key){ return (translations[currentLang] && translations[currentLang][
 /* ---------------- Weather ---------------- */
 function fetchWeather() {
   if (weatherData) { renderDay(); return; }
-  fetch('/.netlify/functions/weather')
+  const authToken = sessionStorage.getItem('auth_token');
+  fetch('/.netlify/functions/weather', { headers: authToken ? { 'Authorization': 'Bearer ' + authToken } : {} })
     .then(res => res.json().then(body => ({ ok: res.ok, body })))
     .then(r => { weatherData = r.ok ? r.body : { error: true }; renderDay(); })
     .catch(() => { weatherData = { error: true }; renderDay(); });
@@ -381,7 +384,7 @@ function renderDay() {
           '<div class="qr-body"><div class="qr-note">' + t('giftfundNote') + '</div>' +
           '<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&color=551C25&bgcolor=FCF8F0&data=' + encodeURIComponent(GIFTFUND_URL) + '" alt="Gift fund QR code">' +
           '<a class="qr-link" href="' + GIFTFUND_URL + '" target="_blank" rel="noopener">' + GIFTFUND_URL.replace(/^https?:\/\//,'') + '</a></div></div>' +
-      '</div>' + footerCard();
+      '</div>' + thankYouBlock();
     return;
   }
 
@@ -443,6 +446,10 @@ function footerCard() {
       '<a href="tel:+34666891100" class="call-btn">' + t('callBtn') + '</a>' +
       '<a href="https://wa.me/34666891100" target="_blank" rel="noopener" class="call-btn">' + t('whatsappBtn') + '</a>' +
     '</div></div></div>';
+}
+
+function thankYouBlock() {
+  return '<div class="thankyou-block"><div class="thankyou-text">' + t('thankYou') + '</div></div>';
 }
 
 /* ---------------- Routing / auth (unchanged from original site) ---------------- */
