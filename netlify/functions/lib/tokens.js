@@ -1,9 +1,9 @@
 const crypto = require('crypto');
 
-// Tokens are valid for two weeks after issuance — long enough that a guest who
+// Tokens are valid for one month after issuance — long enough that a guest who
 // logs in once before the wedding stays signed in through the whole trip,
 // short enough that a leaked token doesn't grant indefinite access.
-const TOKEN_TTL_MS = 14 * 24 * 60 * 60 * 1000;
+const TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 function sign(timestamp, secret) {
   return crypto.createHmac('sha256', secret).update(String(timestamp)).digest('hex');
