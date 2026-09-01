@@ -449,24 +449,24 @@ function renderDay() {
   let html = '<div class="day-panel">';
   if (currentDay === 'fri') {
     html += card('ceremonyHeading', [['17:30', t('fri_c1')], ['18:15', t('fri_c2')]], [
-      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d44264.80183265609!2d-4.42061895!3d36.73558899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7960a0d93d9%3A0x4c5de4593229a6a5!2sIglesia%20de%20San%20Juan%20de%20M%C3%A1laga!5e1!3m2!1sen!2suk!4v1788265142526!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Iglesia de San Juan, ' + t('fri_c_loc') + '</div>'],
+      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d44264.80183265609!2d-4.42061895!3d36.73558899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7960a0d93d9%3A0x4c5de4593229a6a5!2sIglesia%20de%20San%20Juan%20de%20M%C3%A1laga!5e0!3m2!1sen!2suk!4v1788265142526!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Iglesia de San Juan, ' + t('fri_c_loc') + '</div>'],
       [t('transportLabel'), t('fri_c_transport')],
       [t('dressLabel'), t('fri_c_dress')]
     ]);
     html += card('receptionHeading', [['19:00', t('fri_r1')], ['19:15', t('fri_r2')], ['20:30', t('fri_r3')], ['22:45', t('fri_r4')], ['01:15', t('fri_r5')], ['03:00', t('fri_r6')]], [
-      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5531.43439208823!2d-4.425044000000001!3d36.7586953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f64475c1d34f%3A0x5a2b7af23409ad48!2sHacienda%20Nadales!5e1!3m2!1sen!2suk!4v1788265463507!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Hacienda Nadales, ' + t('fri_r_loc') + '</div>'],
+      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5531.43439208823!2d-4.425044000000001!3d36.7586953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f64475c1d34f%3A0x5a2b7af23409ad48!2sHacienda%20Nadales!5e0!3m2!1sen!2suk!4v1788265463507!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Hacienda Nadales, ' + t('fri_r_loc') + '</div>'],
       [t('transportLabel'), t('fri_r_transport')],
       [t('dressLabel'), t('fri_r_dress')]
     ]);
   } else if (currentDay === 'sat') {
     html += card('drinksHeading', [['15:00', t('sat_1')], ['17:00', t('sat_2')]], [
-      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5534.722448509869!2d-4.4146975!3d36.7130757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7e997e94611%3A0x31211f666633e5b8!2sTrocadero%20Casa%20de%20Botes!5e1!3m2!1sen!2suk!4v1788265508037!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Trocadero Casa de Botes, ' + t('sat_loc') + '</div>'],
+      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5534.722448509869!2d-4.4146975!3d36.7130757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7e997e94611%3A0x31211f666633e5b8!2sTrocadero%20Casa%20de%20Botes!5e0!3m2!1sen!2suk!4v1788265508037!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">Trocadero Casa de Botes, ' + t('sat_loc') + '</div>'],
       [t('transportLabel'), t('sat_transport')],
       [t('dressLabel'), t('sat_dress')]
     ]);
   } else if (currentDay === 'sun') {
     html += card('beachHeading', [['13:00', t('sun_1')]], [
-      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e1!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">La Playa Surf House, ' + t('sun_loc') + '</div>'],
+      [t('locationLabel'), '<div class="map-embed"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e0!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="map-caption">La Playa Surf House, ' + t('sun_loc') + '</div>'],
       [t('transportLabel'), t('sun_transport')],
       [t('dressLabel'), t('sun_dress')]
     ]);
