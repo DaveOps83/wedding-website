@@ -487,6 +487,7 @@ function navigate(path) { window.history.pushState({}, '', path); render(); }
 function showWelcome() {
   document.getElementById('welcomePage').classList.add('active');
   document.getElementById('hubPage').classList.remove('active');
+  document.getElementById('loginBtn').disabled = false;
   applyWelcomeTranslations();
   setTimeout(() => { const p = document.getElementById('passwordInp'); if (p) { p.value=''; p.focus(); } }, 0);
 }
