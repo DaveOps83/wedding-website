@@ -475,11 +475,14 @@ function renderDay() {
   // Renders the "who do I call" contact block as an in-card sub-section, so
   // every event across all days carries its own Questions row directly
   // beneath Dress code, instead of sharing one contact card at the bottom.
-  function questionsField() {
-    const phone = t('coordinatorPhone');
+  // nameKey/phoneKey default to the shared event coordinator, but Friday's
+  // Ceremony card overrides them to point at Ana instead — she's the
+  // on-the-ground contact for that specific event only.
+  function questionsField(nameKey, phoneKey) {
+    const name = t(nameKey || 'coordinatorName');
+    const phone = t(phoneKey || 'coordinatorPhone');
     return '<div class="field-questions-box"><div class="field-questions-info">' +
-      '<div class="field-questions-name">' + t('coordinatorName') + '</div>' +
-      '<div class="field-questions-role">' + t('coordinatorRole') + '</div></div>' +
+      '<div class="field-questions-name">' + name + '</div></div>' +
       '<div class="field-questions-actions">' +
         '<a href="tel:' + phone + '" class="call-btn">' + t('callBtn') + '</a>' +
         '<a href="https://wa.me/' + phone.replace(/^\+/, '') + '" target="_blank" rel="noopener" class="call-btn">' + t('whatsappBtn') + '</a>' +
@@ -492,7 +495,7 @@ function renderDay() {
       [t('locationLabel'), mapEmbed('fri_c_map', 'fri_c_venue', 'fri_c_loc')],
       [t('transportLabel'), t('fri_c_transport')],
       [t('dressLabel'), t('fri_c_dress')],
-      [t('questionsLabel'), questionsField()]
+      [t('questionsLabel'), questionsField('fri_c_contactName', 'fri_c_contactPhone')]
     ]);
     html += card('receptionHeading', t('fri_r_schedule'), [
       [t('locationLabel'), mapEmbed('fri_r_map', 'fri_r_venue', 'fri_r_loc')],
