@@ -95,7 +95,10 @@
   .tab { flex:1; padding:9px 4px; border-radius:999px; border:1px solid rgba(246,238,223,.3); background:transparent; color:rgba(246,238,223,.75); font:600 13px "DM Sans",sans-serif; cursor:pointer; }
   .tab.active { border-color:var(--cream); background:var(--cream); color:var(--terra); }
 
-  .day-panel { padding:22px 20px 40px; display:flex; flex-direction:column; gap:16px; }
+  /* Bottom padding intentionally matches the inter-card gap (16px) so the
+     last card's spacing to the page edge reads the same as the spacing
+     between any two cards — no visually "extra" gap at the very bottom. */
+  .day-panel { padding:22px 20px 16px; display:flex; flex-direction:column; gap:16px; }
   .card { border:1px solid var(--border); border-radius:14px; background:#FCF8F0; overflow:hidden; }
   .card-head { padding:16px 18px 12px; border-bottom:1px solid #EDE6D8; display:flex; align-items:center; gap:10px; }
   .card-head.center { justify-content:center; }
@@ -235,7 +238,7 @@ const translations = {
     passwordPlaceholder: "Password", passwordLabel: "Password", loginBtn: "Login", loggingIn: "Logging in...",
     errPasswordRequired: "Password required.", errAuthFailed: "Authentication failed.", errConnection: "Connection error. Please try again.", errTooManyAttempts: "Too many attempts. Please try again later.",
     langHint: "Language can be changed later from the menu.",
-    logout: "Log out", questionsLabel: "Questions during this event", callBtn: "Call", whatsappBtn: "WhatsApp",
+    logout: "Log out", questionsLabel: "Contact person", callBtn: "Call", whatsappBtn: "WhatsApp",
     tabFri: "Fri 11", tabSat: "Sat 12", tabSun: "Sun 13", tabExtra: "Guest book & gifts",
     ceremonyHeading: "Ceremony", receptionHeading: "Reception", drinksHeading: "Afternoon Drinks", beachHeading: "Beach day",
     locationLabel: "Location", transportLabel: "Transport", dressLabel: "Dress code", scheduleLabel: "Schedule", notesLabel: "Notes",
@@ -250,7 +253,7 @@ const translations = {
     passwordPlaceholder: "Contrase\u00f1a", passwordLabel: "Contrase\u00f1a", loginBtn: "Entrar", loggingIn: "Entrando...",
     errPasswordRequired: "Se requiere contrase\u00f1a.", errAuthFailed: "Error de autenticaci\u00f3n.", errConnection: "Error de conexi\u00f3n. Int\u00e9ntalo de nuevo.", errTooManyAttempts: "Demasiados intentos. Int\u00e9ntalo de nuevo m\u00e1s tarde.",
     langHint: "Puedes cambiar el idioma despu\u00e9s desde el men\u00fa.",
-    logout: "Cerrar sesi\u00f3n", questionsLabel: "Preguntas durante este evento", callBtn: "Llamar", whatsappBtn: "WhatsApp",
+    logout: "Cerrar sesi\u00f3n", questionsLabel: "Persona de contacto", callBtn: "Llamar", whatsappBtn: "WhatsApp",
     tabFri: "Vie 11", tabSat: "S\u00e1b 12", tabSun: "Dom 13", tabExtra: "Libro y regalo",
     ceremonyHeading: "Ceremonia", receptionHeading: "Recepci\u00f3n", drinksHeading: "Copas de la tarde", beachHeading: "D\u00eda de playa",
     locationLabel: "Ubicaci\u00f3n", transportLabel: "Transporte", dressLabel: "C\u00f3digo de vestimenta", scheduleLabel: "Horario", notesLabel: "Notas",
@@ -265,7 +268,7 @@ const translations = {
     passwordPlaceholder: "Palavra-passe", passwordLabel: "Palavra-passe", loginBtn: "Entrar", loggingIn: "A entrar...",
     errPasswordRequired: "Palavra-passe obrigat\u00f3ria.", errAuthFailed: "Falha na autentica\u00e7\u00e3o.", errConnection: "Erro de liga\u00e7\u00e3o. Tente novamente.", errTooManyAttempts: "Demasiadas tentativas. Tente novamente mais tarde.",
     langHint: "Pode alterar o idioma depois a partir do menu.",
-    logout: "Sair", questionsLabel: "Perguntas durante este evento", callBtn: "Ligar", whatsappBtn: "WhatsApp",
+    logout: "Sair", questionsLabel: "Pessoa de contacto", callBtn: "Ligar", whatsappBtn: "WhatsApp",
     tabFri: "Sex 11", tabSat: "S\u00e1b 12", tabSun: "Dom 13", tabExtra: "Livro e presente",
     ceremonyHeading: "Cerim\u00f3nia", receptionHeading: "Rece\u00e7\u00e3o", drinksHeading: "Copos da tarde", beachHeading: "Dia de praia",
     locationLabel: "Local", transportLabel: "Transporte", dressLabel: "C\u00f3digo de vestu\u00e1rio", scheduleLabel: "Hor\u00e1rio", notesLabel: "Notas",
