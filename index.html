@@ -95,7 +95,7 @@
   .tab { flex:1; padding:9px 4px; border-radius:999px; border:1px solid rgba(246,238,223,.3); background:transparent; color:rgba(246,238,223,.75); font:600 13px "DM Sans",sans-serif; cursor:pointer; }
   .tab.active { border-color:var(--cream); background:var(--cream); color:var(--terra); }
 
-  .day-panel { padding:22px 20px 0; display:flex; flex-direction:column; gap:16px; }
+  .day-panel { padding:22px 20px 40px; display:flex; flex-direction:column; gap:16px; }
   .card { border:1px solid var(--border); border-radius:14px; background:#FCF8F0; overflow:hidden; }
   .card-head { padding:16px 18px 12px; border-bottom:1px solid #EDE6D8; display:flex; align-items:center; gap:10px; }
   .card-head.center { justify-content:center; }
@@ -138,12 +138,6 @@
   .qr-link { display:inline-block; margin-top:14px; padding:11px 22px; border:1px solid var(--terra); border-radius:999px; background:#fff; font:600 14px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
   .qr-link:hover { background:var(--terra); color:var(--cream); }
 
-  .footer-card { padding:20px 16px 30px; }
-  .footer-inner { border:1px dashed var(--gold); border-radius:14px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-  .footer-label { font:600 10.5px "DM Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#8A8378; }
-  .footer-name { font:500 14px "DM Sans",sans-serif; color:var(--ink); margin-top:2px; white-space:nowrap; }
-  .footer-role { font:400 12px "DM Sans",sans-serif; color:var(--ink-soft); margin-top:2px; white-space:nowrap; }
-  .footer-actions { flex-shrink:0; display:flex; gap:6px; }
   .thankyou-block { text-align:center; padding:36px 20px 8px; }
   .thankyou-text { font:400 46px "Cormorant Garamond",serif; color:var(--terra); }
   .call-btn { flex-shrink:0; border:1px solid var(--terra); border-radius:999px; padding:8px 12px; font:600 12px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
@@ -479,9 +473,8 @@ function renderDay() {
     return '<div class="notes-list">' + t(key).map(item => '<div class="notes-item">' + item + '</div>').join('') + '</div>';
   }
   // Renders the "who do I call" contact block as an in-card sub-section, so
-  // each event on the Friday page carries its own Questions row directly
-  // beneath Dress code, instead of everyone sharing one contact card at the
-  // very bottom of the whole day.
+  // every event across all days carries its own Questions row directly
+  // beneath Dress code, instead of sharing one contact card at the bottom.
   function questionsField() {
     const phone = t('coordinatorPhone');
     return '<div class="field-questions-box"><div class="field-questions-info">' +
@@ -511,35 +504,22 @@ function renderDay() {
     html += card('drinksHeading', t('sat_schedule'), [
       [t('locationLabel'), mapEmbed('sat_map', 'sat_venue', 'sat_loc')],
       [t('transportLabel'), t('sat_transport')],
-      [t('dressLabel'), t('sat_dress')]
+      [t('dressLabel'), t('sat_dress')],
+      [t('questionsLabel'), questionsField()]
     ]);
   } else if (currentDay === 'sun') {
     html += card('beachHeading', t('sun_schedule'), [
       [t('locationLabel'), mapEmbed('sun_map', 'sun_venue', 'sun_loc')],
       [t('transportLabel'), t('sun_transport')],
       [t('dressLabel'), t('sun_dress')],
+      [t('questionsLabel'), questionsField()],
       [t('notesLabel'), notesList('sun_notes')]
     ]);
   }
   html += '</div>';
-  // Friday now carries its own Questions row inside each event card, so the
-  // shared page-bottom contact footer only applies to Saturday and Sunday.
-  if (currentDay !== 'fri') html += footerCard();
   c.innerHTML = html;
 }
 function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
-
-function footerCard() {
-  const phone = t('coordinatorPhone');
-  return '<div class="footer-card"><div class="footer-inner"><div>' +
-    '<div class="footer-label">' + t('questionsLabel') + '</div>' +
-    '<div class="footer-name">' + t('coordinatorName') + '</div>' +
-    '<div class="footer-role">' + t('coordinatorRole') + '</div></div>' +
-    '<div class="footer-actions">' +
-      '<a href="tel:' + phone + '" class="call-btn">' + t('callBtn') + '</a>' +
-      '<a href="https://wa.me/' + phone.replace(/^\+/, '') + '" target="_blank" rel="noopener" class="call-btn">' + t('whatsappBtn') + '</a>' +
-    '</div></div></div>';
-}
 
 function thankYouBlock() {
   return '<div class="thankyou-block"><div class="thankyou-text">' + t('thankYou') + '</div></div>';
