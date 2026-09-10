@@ -124,11 +124,11 @@
   /* Questions sub-section within an event card (moved out of the shared
      page footer so each event carries its own "who do I call" contact,
      matching the field-label/field-value pattern used by Location/
-     Transport/Dress code above it). */
+     Transport/Dress code above it). Always rendered last in the fields
+     list for every card — see renderDay() below. */
   .field-questions-box { border:1px dashed var(--gold); border-radius:10px; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:2px; }
   .field-questions-info { min-width:0; }
   .field-questions-name { font:500 14px "DM Sans",sans-serif; color:var(--ink); white-space:nowrap; }
-  .field-questions-role { font:400 12px "DM Sans",sans-serif; color:var(--ink-soft); margin-top:2px; white-space:nowrap; }
   .field-questions-actions { flex-shrink:0; display:flex; gap:6px; }
 
   .qr-card { text-align:center; }
@@ -140,7 +140,20 @@
 
   .thankyou-block { text-align:center; padding:36px 20px 8px; }
   .thankyou-text { font:400 46px "Cormorant Garamond",serif; color:var(--terra); }
-  .call-btn { flex-shrink:0; border:1px solid var(--terra); border-radius:999px; padding:8px 12px; font:600 12px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
+
+  /* Call/WhatsApp buttons in the Questions box: filled with the same terra
+     color as the page header (--terra) so they read as clear buttons rather
+     than outline links. Specificity note: nested one level deeper than
+     '.field-value a' (which underlines generic links inside a field value)
+     so this rule needs to win explicitly — targeted via the parent class
+     combo below rather than relying on source order alone. */
+  .field-questions-actions a.call-btn,
+  .call-btn {
+    flex-shrink:0; border:1px solid var(--terra); border-radius:999px; padding:8px 12px;
+    font:600 12px "DM Sans",sans-serif; background:var(--terra); color:var(--cream) !important;
+    text-decoration:none !important;
+  }
+  .call-btn:hover { background:#43161d; }
 
   @media (max-width:400px) { .wrap { max-width:100%; } }
 </style>
@@ -222,7 +235,7 @@ const translations = {
     passwordPlaceholder: "Password", passwordLabel: "Password", loginBtn: "Login", loggingIn: "Logging in...",
     errPasswordRequired: "Password required.", errAuthFailed: "Authentication failed.", errConnection: "Connection error. Please try again.", errTooManyAttempts: "Too many attempts. Please try again later.",
     langHint: "Language can be changed later from the menu.",
-    logout: "Log out", questionsLabel: "Have any questions during this event?", callBtn: "Call", whatsappBtn: "WhatsApp",
+    logout: "Log out", questionsLabel: "Questions during this event", callBtn: "Call", whatsappBtn: "WhatsApp",
     tabFri: "Fri 11", tabSat: "Sat 12", tabSun: "Sun 13", tabExtra: "Guest book & gifts",
     ceremonyHeading: "Ceremony", receptionHeading: "Reception", drinksHeading: "Afternoon Drinks", beachHeading: "Beach day",
     locationLabel: "Location", transportLabel: "Transport", dressLabel: "Dress code", scheduleLabel: "Schedule", notesLabel: "Notes",
@@ -237,7 +250,7 @@ const translations = {
     passwordPlaceholder: "Contrase\u00f1a", passwordLabel: "Contrase\u00f1a", loginBtn: "Entrar", loggingIn: "Entrando...",
     errPasswordRequired: "Se requiere contrase\u00f1a.", errAuthFailed: "Error de autenticaci\u00f3n.", errConnection: "Error de conexi\u00f3n. Int\u00e9ntalo de nuevo.", errTooManyAttempts: "Demasiados intentos. Int\u00e9ntalo de nuevo m\u00e1s tarde.",
     langHint: "Puedes cambiar el idioma despu\u00e9s desde el men\u00fa.",
-    logout: "Cerrar sesi\u00f3n", questionsLabel: "\u00bfTienes alguna pregunta durante este evento?", callBtn: "Llamar", whatsappBtn: "WhatsApp",
+    logout: "Cerrar sesi\u00f3n", questionsLabel: "Preguntas durante este evento", callBtn: "Llamar", whatsappBtn: "WhatsApp",
     tabFri: "Vie 11", tabSat: "S\u00e1b 12", tabSun: "Dom 13", tabExtra: "Libro y regalo",
     ceremonyHeading: "Ceremonia", receptionHeading: "Recepci\u00f3n", drinksHeading: "Copas de la tarde", beachHeading: "D\u00eda de playa",
     locationLabel: "Ubicaci\u00f3n", transportLabel: "Transporte", dressLabel: "C\u00f3digo de vestimenta", scheduleLabel: "Horario", notesLabel: "Notas",
@@ -252,7 +265,7 @@ const translations = {
     passwordPlaceholder: "Palavra-passe", passwordLabel: "Palavra-passe", loginBtn: "Entrar", loggingIn: "A entrar...",
     errPasswordRequired: "Palavra-passe obrigat\u00f3ria.", errAuthFailed: "Falha na autentica\u00e7\u00e3o.", errConnection: "Erro de liga\u00e7\u00e3o. Tente novamente.", errTooManyAttempts: "Demasiadas tentativas. Tente novamente mais tarde.",
     langHint: "Pode alterar o idioma depois a partir do menu.",
-    logout: "Sair", questionsLabel: "Tens alguma pergunta durante este evento?", callBtn: "Ligar", whatsappBtn: "WhatsApp",
+    logout: "Sair", questionsLabel: "Perguntas durante este evento", callBtn: "Ligar", whatsappBtn: "WhatsApp",
     tabFri: "Sex 11", tabSat: "S\u00e1b 12", tabSun: "Dom 13", tabExtra: "Livro e presente",
     ceremonyHeading: "Cerim\u00f3nia", receptionHeading: "Rece\u00e7\u00e3o", drinksHeading: "Copos da tarde", beachHeading: "Dia de praia",
     locationLabel: "Local", transportLabel: "Transporte", dressLabel: "C\u00f3digo de vestu\u00e1rio", scheduleLabel: "Hor\u00e1rio", notesLabel: "Notas",
@@ -472,12 +485,12 @@ function renderDay() {
   function notesList(key) {
     return '<div class="notes-list">' + t(key).map(item => '<div class="notes-item">' + item + '</div>').join('') + '</div>';
   }
-  // Renders the "who do I call" contact block as an in-card sub-section, so
-  // every event across all days carries its own Questions row directly
-  // beneath Dress code, instead of sharing one contact card at the bottom.
+  // Renders the "who do I call" contact block as an in-card sub-section.
   // nameKey/phoneKey default to the shared event coordinator, but Friday's
   // Ceremony card overrides them to point at Ana instead — she's the
-  // on-the-ground contact for that specific event only.
+  // on-the-ground contact for that specific event only. Always passed as
+  // the LAST field row for a card so the Questions box renders at the
+  // bottom, below Location/Transport/Dress code/Notes.
   function questionsField(nameKey, phoneKey) {
     const name = t(nameKey || 'coordinatorName');
     const phone = t(phoneKey || 'coordinatorPhone');
@@ -515,8 +528,8 @@ function renderDay() {
       [t('locationLabel'), mapEmbed('sun_map', 'sun_venue', 'sun_loc')],
       [t('transportLabel'), t('sun_transport')],
       [t('dressLabel'), t('sun_dress')],
-      [t('questionsLabel'), questionsField()],
-      [t('notesLabel'), notesList('sun_notes')]
+      [t('notesLabel'), notesList('sun_notes')],
+      [t('questionsLabel'), questionsField()]
     ]);
   }
   html += '</div>';
