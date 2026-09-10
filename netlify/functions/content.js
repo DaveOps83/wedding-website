@@ -8,7 +8,7 @@ const { verifyToken } = require('./lib/tokens');
 
 const CONTENT = {
   en: {
-    coordinatorName: "Luc\u00eda de Andr\u00e9s",
+    coordinatorName: "Luc\u00eda",
     coordinatorRole: "Event Coordinator",
     coordinatorPhone: "+34666891100",
     fri_c_contactName: "Ana",
@@ -49,7 +49,7 @@ const CONTENT = {
     sun_map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e0!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk"
   },
   es: {
-    coordinatorName: "Luc\u00eda de Andr\u00e9s",
+    coordinatorName: "Luc\u00eda",
     coordinatorRole: "Coordinadora del evento",
     coordinatorPhone: "+34666891100",
     fri_c_contactName: "Ana",
@@ -90,7 +90,7 @@ const CONTENT = {
     sun_map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d710.952215165983!2d-4.478702105348915!3d36.64286746715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f962bed1b663%3A0xbae0e1e4ff7170bd!2sLa%20Playa%20Surf%20House%20%7C%20Chiringuito%20Torremolinos!5e0!3m2!1sen!2suk!4v1788265940335!5m2!1sen!2suk"
   },
   pt: {
-    coordinatorName: "Luc\u00eda de Andr\u00e9s",
+    coordinatorName: "Luc\u00eda",
     coordinatorRole: "Coordenadora do evento",
     coordinatorPhone: "+34666891100",
     fri_c_contactName: "Ana",
