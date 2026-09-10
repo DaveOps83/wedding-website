@@ -121,6 +121,16 @@
   .notes-item { position:relative; padding-left:14px; font:400 14px "DM Sans",sans-serif; color:#3E3A34; }
   .notes-item::before { content:'•'; position:absolute; left:0; color:var(--gold); }
 
+  /* Questions sub-section within an event card (moved out of the shared
+     page footer so each event carries its own "who do I call" contact,
+     matching the field-label/field-value pattern used by Location/
+     Transport/Dress code above it). */
+  .field-questions-box { border:1px dashed var(--gold); border-radius:10px; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:2px; }
+  .field-questions-info { min-width:0; }
+  .field-questions-name { font:500 14px "DM Sans",sans-serif; color:var(--ink); white-space:nowrap; }
+  .field-questions-role { font:400 12px "DM Sans",sans-serif; color:var(--ink-soft); margin-top:2px; white-space:nowrap; }
+  .field-questions-actions { flex-shrink:0; display:flex; gap:6px; }
+
   .qr-card { text-align:center; }
   .qr-body { padding:22px 18px 24px; }
   .qr-note { font:400 14px "DM Sans",sans-serif; color:var(--ink-soft); margin-bottom:16px; }
@@ -224,46 +234,46 @@ const translations = {
     locationLabel: "Location", transportLabel: "Transport", dressLabel: "Dress code", scheduleLabel: "Schedule", notesLabel: "Notes",
     dayNameFri: "Friday", dayNameSat: "Saturday", dayNameSun: "Sunday",
     dayDateFri: "11 September", dayDateSat: "12 September", dayDateSun: "13 September",
-    weatherLoading: "loading forecast…", weatherUnavailable: "forecast unavailable", rainLabel: "rain",
+    weatherLoading: "loading forecast\u2026", weatherUnavailable: "forecast unavailable", rainLabel: "rain",
     guestbookHeading: "Guest book", giftfundHeading: "Gift fund", thankYou: "Thank you!",
-    loadingContent: "Loading…"
+    loadingContent: "Loading\u2026"
   },
   es: {
     pageTitle: "Boda de Merici y David", weddingKicker: "La boda", amp: "y",
-    passwordPlaceholder: "Contraseña", passwordLabel: "Contraseña", loginBtn: "Entrar", loggingIn: "Entrando...",
-    errPasswordRequired: "Se requiere contraseña.", errAuthFailed: "Error de autenticación.", errConnection: "Error de conexión. Inténtalo de nuevo.", errTooManyAttempts: "Demasiados intentos. Inténtalo de nuevo más tarde.",
-    langHint: "Puedes cambiar el idioma después desde el menú.",
-    logout: "Cerrar sesión", questionsLabel: "¿Tienes alguna pregunta durante el día?", callBtn: "Llamar", whatsappBtn: "WhatsApp",
-    tabFri: "Vie 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Libro y regalo",
-    ceremonyHeading: "Ceremonia", receptionHeading: "Recepción", drinksHeading: "Copas de la tarde", beachHeading: "Día de playa",
-    locationLabel: "Ubicación", transportLabel: "Transporte", dressLabel: "Código de vestimenta", scheduleLabel: "Horario", notesLabel: "Notas",
-    dayNameFri: "Viernes", dayNameSat: "Sábado", dayNameSun: "Domingo",
+    passwordPlaceholder: "Contrase\u00f1a", passwordLabel: "Contrase\u00f1a", loginBtn: "Entrar", loggingIn: "Entrando...",
+    errPasswordRequired: "Se requiere contrase\u00f1a.", errAuthFailed: "Error de autenticaci\u00f3n.", errConnection: "Error de conexi\u00f3n. Int\u00e9ntalo de nuevo.", errTooManyAttempts: "Demasiados intentos. Int\u00e9ntalo de nuevo m\u00e1s tarde.",
+    langHint: "Puedes cambiar el idioma despu\u00e9s desde el men\u00fa.",
+    logout: "Cerrar sesi\u00f3n", questionsLabel: "\u00bfTienes alguna pregunta durante el d\u00eda?", callBtn: "Llamar", whatsappBtn: "WhatsApp",
+    tabFri: "Vie 11", tabSat: "S\u00e1b 12", tabSun: "Dom 13", tabExtra: "Libro y regalo",
+    ceremonyHeading: "Ceremonia", receptionHeading: "Recepci\u00f3n", drinksHeading: "Copas de la tarde", beachHeading: "D\u00eda de playa",
+    locationLabel: "Ubicaci\u00f3n", transportLabel: "Transporte", dressLabel: "C\u00f3digo de vestimenta", scheduleLabel: "Horario", notesLabel: "Notas",
+    dayNameFri: "Viernes", dayNameSat: "S\u00e1bado", dayNameSun: "Domingo",
     dayDateFri: "11 de septiembre", dayDateSat: "12 de septiembre", dayDateSun: "13 de septiembre",
-    weatherLoading: "cargando previsión…", weatherUnavailable: "previsión no disponible", rainLabel: "lluvia",
-    guestbookHeading: "Libro de visitas", giftfundHeading: "Fondo de regalo", thankYou: "¡Gracias!",
-    loadingContent: "Cargando…"
+    weatherLoading: "cargando previsi\u00f3n\u2026", weatherUnavailable: "previsi\u00f3n no disponible", rainLabel: "lluvia",
+    guestbookHeading: "Libro de visitas", giftfundHeading: "Fondo de regalo", thankYou: "\u00a1Gracias!",
+    loadingContent: "Cargando\u2026"
   },
   pt: {
     pageTitle: "Casamento de Merici e David", weddingKicker: "O casamento", amp: "e",
     passwordPlaceholder: "Palavra-passe", passwordLabel: "Palavra-passe", loginBtn: "Entrar", loggingIn: "A entrar...",
-    errPasswordRequired: "Palavra-passe obrigatória.", errAuthFailed: "Falha na autenticação.", errConnection: "Erro de ligação. Tente novamente.", errTooManyAttempts: "Demasiadas tentativas. Tente novamente mais tarde.",
+    errPasswordRequired: "Palavra-passe obrigat\u00f3ria.", errAuthFailed: "Falha na autentica\u00e7\u00e3o.", errConnection: "Erro de liga\u00e7\u00e3o. Tente novamente.", errTooManyAttempts: "Demasiadas tentativas. Tente novamente mais tarde.",
     langHint: "Pode alterar o idioma depois a partir do menu.",
     logout: "Sair", questionsLabel: "Tens alguma pergunta durante o dia?", callBtn: "Ligar", whatsappBtn: "WhatsApp",
-    tabFri: "Sex 11", tabSat: "Sáb 12", tabSun: "Dom 13", tabExtra: "Livro e presente",
-    ceremonyHeading: "Cerimónia", receptionHeading: "Receção", drinksHeading: "Copos da tarde", beachHeading: "Dia de praia",
-    locationLabel: "Local", transportLabel: "Transporte", dressLabel: "Código de vestuário", scheduleLabel: "Horário", notesLabel: "Notas",
-    dayNameFri: "Sexta-feira", dayNameSat: "Sábado", dayNameSun: "Domingo",
+    tabFri: "Sex 11", tabSat: "S\u00e1b 12", tabSun: "Dom 13", tabExtra: "Livro e presente",
+    ceremonyHeading: "Cerim\u00f3nia", receptionHeading: "Rece\u00e7\u00e3o", drinksHeading: "Copos da tarde", beachHeading: "Dia de praia",
+    locationLabel: "Local", transportLabel: "Transporte", dressLabel: "C\u00f3digo de vestu\u00e1rio", scheduleLabel: "Hor\u00e1rio", notesLabel: "Notas",
+    dayNameFri: "Sexta-feira", dayNameSat: "S\u00e1bado", dayNameSun: "Domingo",
     dayDateFri: "11 de setembro", dayDateSat: "12 de setembro", dayDateSun: "13 de setembro",
-    weatherLoading: "a carregar previsão…", weatherUnavailable: "previsão indisponível", rainLabel: "chuva",
+    weatherLoading: "a carregar previs\u00e3o\u2026", weatherUnavailable: "previs\u00e3o indispon\u00edvel", rainLabel: "chuva",
     guestbookHeading: "Livro de visitas", giftfundHeading: "Fundo de presente", thankYou: "Obrigado!",
-    loadingContent: "A carregar…"
+    loadingContent: "A carregar\u2026"
   }
 };
 
 const wxCodeMap = {
-  0:{en:'clear',es:'despejado',pt:'céu limpo'},1:{en:'mostly clear',es:'mayormente despejado',pt:'praticamente limpo'},
+  0:{en:'clear',es:'despejado',pt:'c\u00e9u limpo'},1:{en:'mostly clear',es:'mayormente despejado',pt:'praticamente limpo'},
   2:{en:'partly cloudy',es:'parcialmente nublado',pt:'parcialmente nublado'},3:{en:'cloudy',es:'nublado',pt:'nublado'},
-  45:{en:'fog',es:'niebla',pt:'névoa'},48:{en:'fog',es:'niebla',pt:'névoa'},
+  45:{en:'fog',es:'niebla',pt:'n\u00e9voa'},48:{en:'fog',es:'niebla',pt:'n\u00e9voa'},
   51:{en:'light drizzle',es:'llovizna ligera',pt:'chuvisco leve'},53:{en:'drizzle',es:'llovizna',pt:'chuvisco'},55:{en:'heavy drizzle',es:'llovizna intensa',pt:'chuvisco forte'},
   61:{en:'light rain',es:'lluvia ligera',pt:'chuva leve'},63:{en:'rain',es:'lluvia',pt:'chuva'},65:{en:'heavy rain',es:'lluvia intensa',pt:'chuva forte'},
   80:{en:'rain showers',es:'chubascos',pt:'aguaceiros'},81:{en:'rain showers',es:'chubascos',pt:'aguaceiros'},82:{en:'heavy showers',es:'chubascos intensos',pt:'aguaceiros fortes'},
@@ -318,7 +328,7 @@ function fetchWeather() {
 function weatherLine(loc, date) {
   if (!weatherData || weatherData.error || !weatherData[loc] || !weatherData[loc][date]) return t('weatherUnavailable');
   const d = weatherData[loc][date];
-  return d.max + '°/' + d.min + '°C, ' + wxDescription(d.code) + ' · ' + d.rain + '% ' + t('rainLabel');
+  return d.max + '\u00b0/' + d.min + '\u00b0C, ' + wxDescription(d.code) + ' \u00b7 ' + d.rain + '% ' + t('rainLabel');
 }
 
 /* ---------------- Private content (schedule, venues, coordinator, links) ---------------- */
@@ -411,7 +421,7 @@ function renderDay() {
   document.getElementById('dayHeaderNormal').style.display = currentDay === 'extra' ? 'none' : '';
   if (currentDay !== 'extra') {
     document.getElementById('dayTitle').textContent = t('dayName' + capitalize(currentDay));
-    document.getElementById('daySub').textContent = t('dayDate' + capitalize(currentDay)) + ' · ' + (currentDay === 'sun' ? weatherLine('torremolinos','2026-09-13') : weatherLine('malaga', currentDay === 'fri' ? '2026-09-11' : '2026-09-12'));
+    document.getElementById('daySub').textContent = t('dayDate' + capitalize(currentDay)) + ' \u00b7 ' + (currentDay === 'sun' ? weatherLine('torremolinos','2026-09-13') : weatherLine('malaga', currentDay === 'fri' ? '2026-09-11' : '2026-09-12'));
   }
 
   const c = document.getElementById('dayContent');
@@ -468,18 +478,34 @@ function renderDay() {
   function notesList(key) {
     return '<div class="notes-list">' + t(key).map(item => '<div class="notes-item">' + item + '</div>').join('') + '</div>';
   }
+  // Renders the "who do I call" contact block as an in-card sub-section, so
+  // each event on the Friday page carries its own Questions row directly
+  // beneath Dress code, instead of everyone sharing one contact card at the
+  // very bottom of the whole day.
+  function questionsField() {
+    const phone = t('coordinatorPhone');
+    return '<div class="field-questions-box"><div class="field-questions-info">' +
+      '<div class="field-questions-name">' + t('coordinatorName') + '</div>' +
+      '<div class="field-questions-role">' + t('coordinatorRole') + '</div></div>' +
+      '<div class="field-questions-actions">' +
+        '<a href="tel:' + phone + '" class="call-btn">' + t('callBtn') + '</a>' +
+        '<a href="https://wa.me/' + phone.replace(/^\+/, '') + '" target="_blank" rel="noopener" class="call-btn">' + t('whatsappBtn') + '</a>' +
+      '</div></div>';
+  }
 
   let html = '<div class="day-panel">';
   if (currentDay === 'fri') {
     html += card('ceremonyHeading', t('fri_c_schedule'), [
       [t('locationLabel'), mapEmbed('fri_c_map', 'fri_c_venue', 'fri_c_loc')],
       [t('transportLabel'), t('fri_c_transport')],
-      [t('dressLabel'), t('fri_c_dress')]
+      [t('dressLabel'), t('fri_c_dress')],
+      [t('questionsLabel'), questionsField()]
     ]);
     html += card('receptionHeading', t('fri_r_schedule'), [
       [t('locationLabel'), mapEmbed('fri_r_map', 'fri_r_venue', 'fri_r_loc')],
       [t('transportLabel'), t('fri_r_transport')],
-      [t('dressLabel'), t('fri_r_dress')]
+      [t('dressLabel'), t('fri_r_dress')],
+      [t('questionsLabel'), questionsField()]
     ]);
   } else if (currentDay === 'sat') {
     html += card('drinksHeading', t('sat_schedule'), [
@@ -496,7 +522,9 @@ function renderDay() {
     ]);
   }
   html += '</div>';
-  html += footerCard();
+  // Friday now carries its own Questions row inside each event card, so the
+  // shared page-bottom contact footer only applies to Saturday and Sunday.
+  if (currentDay !== 'fri') html += footerCard();
   c.innerHTML = html;
 }
 function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
