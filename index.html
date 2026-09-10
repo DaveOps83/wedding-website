@@ -141,7 +141,14 @@
   .qr-link { display:inline-block; margin-top:14px; padding:11px 22px; border:1px solid var(--terra); border-radius:999px; background:#fff; font:600 14px "DM Sans",sans-serif; color:var(--terra); text-decoration:none; }
   .qr-link:hover { background:var(--terra); color:var(--cream); }
 
-  .thankyou-block { text-align:center; padding:36px 20px 8px; }
+  /* Thank-you sign-off below the guest-book/gift-fund cards. Padding-top
+     (36px) plus the day-panel's own bottom padding (16px, see .day-panel
+     above) gives 52px of breathing room between the last card and this
+     text. Padding-bottom is set to the SAME 52px total so the space below
+     "Thank you!" visually matches the space above it — nothing else
+     follows this block, so its own bottom padding is the only thing
+     controlling that gap. */
+  .thankyou-block { text-align:center; padding:36px 20px 52px; }
   .thankyou-text { font:400 46px "Cormorant Garamond",serif; color:var(--terra); }
 
   /* Call/WhatsApp buttons in the Questions box: filled with the same terra
